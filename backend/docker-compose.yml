@@ -1,0 +1,58 @@
+version: '3.7'
+
+services:
+
+  mysql_db:
+    container_name: mysql_container
+    image: mysql:8.0.19
+    hostname: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=claim
+    volumes:
+      - mysql_data:/srv/backend-service/mysql_data
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+  phpmyadmin:
+    container_name: phpmyadmin_container
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mysql_db
+    environment:
+      PMA_HOST: mysql_db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - "${PMA_PORT:-5252}:80"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+  backend:
+    container_name: backend
+    build: .
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql_container:3306/claim?autoReconnect=true&failOverReadOnly=false&maxReconnects=10
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql_db
+    links:
+      - "mysql_db"
+    networks:
+      - mysql
+
+networks:
+  mysql:
+    driver: bridge
+
+volumes:
+  mysql_data:
