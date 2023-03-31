@@ -24,18 +24,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "firstname")
-    private String firstname;
-
-    @Column(name = "middlename")
-    private String middlename;
-
-    @Column(name = "lastname")
-    private String lastname;
-
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "login")
     private String login;
 
@@ -55,7 +43,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return getLogin();
     }
 
     @Override
@@ -75,6 +63,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isEnable;
+        return true;
     }
 }
