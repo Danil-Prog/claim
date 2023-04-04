@@ -1,6 +1,7 @@
 package com.claim.api.config;
 
 
+import com.claim.api.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -19,9 +20,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers(new AntPathRequestMatcher("/registration")).permitAll()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests()
+                .requestMatchers("/registration").permitAll()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/home").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and().formLogin()
+                .loginPage("/login").permitAll()
+                .and()
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
