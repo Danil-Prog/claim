@@ -1,7 +1,7 @@
 package com.claim.api.service;
 
-import com.claim.api.entity.Role;
 import com.claim.api.entity.User;
+import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -25,19 +26,38 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return userRepository.findByLogin(login);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username).orElseThrow();
     }
 
-    public boolean saveUser(User user){
-        User userFromDataBase = userRepository.findByLogin(user.getUsername());
+    public boolean saveUser(User user) {
+        Optional<User> userFromDataBase = userRepository.findByUsername(user.getUsername());
 
-        if (userFromDataBase != null){
+        if (userFromDataBase.isPresent()) {
             return false;
         }
         user.setRole(user.getRole());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    public Optional<User> validUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsername(username)
+                .filter(user -> bCryptPasswordEncoder.matches(password, user.getPassword()));
+    }
+
+    public List<User> getUserList() {
+        return userRepository.findAll();
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new UserNotFoundException("User with id=" + id + " not found"));
+    }
+
+    public User removeUserById(Long id) {
+        return userRepository.deleteUserById(id).orElseThrow(() ->
+                new UserNotFoundException("User with id=" + id + " not found"));
     }
 }
