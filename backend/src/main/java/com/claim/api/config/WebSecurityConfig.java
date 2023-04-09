@@ -1,16 +1,15 @@
 package com.claim.api.config;
 
 
-import com.claim.api.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -23,12 +22,15 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/registration").permitAll()
                 .requestMatchers("/").permitAll()
+                .requestMatchers("/public/**", "/auth/**").permitAll()
                 .requestMatchers("/home").hasRole("ADMIN")
+                .requestMatchers("/api/v1/admin", "/api/v1/admin/**").hasRole("SUPER_ADMIN")
+                .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin()
-                .loginPage("/login").permitAll()
                 .and()
                 .httpBasic(Customizer.withDefaults());
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors().and().csrf().disable();
         return http.build();
     }
 
