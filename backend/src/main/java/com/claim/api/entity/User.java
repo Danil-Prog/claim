@@ -1,6 +1,8 @@
 package com.claim.api.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,11 +29,13 @@ public class User implements UserDetails {
     @Column(name = "username")
     private String username;
 
+    @Size(min = 5, max = 10)
     @Column(name = "password")
     private String password;
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private Role role;
 
     boolean isEnable;
