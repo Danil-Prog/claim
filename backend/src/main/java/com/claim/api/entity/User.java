@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @NotNull
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
 
     @OneToMany(cascade = CascadeType.ALL)
