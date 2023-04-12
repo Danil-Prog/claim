@@ -1,6 +1,7 @@
 package com.claim.api.service;
 
 import com.claim.api.entity.User;
+import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,14 @@ public class UserService implements UserDetailsService {
     public User removeUserById(Long id) {
         return userRepository.deleteUserById(id).orElseThrow(() ->
                 new UserNotFoundException("User with id=" + id + " not found"));
+    }
+
+    public User update(Long id, User user) throws BadRequestException {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);
+        } else
+            throw new BadRequestException("User id:" + id + " not found!");
     }
 }
