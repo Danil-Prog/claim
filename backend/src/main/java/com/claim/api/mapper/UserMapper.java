@@ -10,6 +10,6 @@ public class UserMapper {
     public UserDto toUserDto(User user) {
         if (user == null)
             return null;
-        return new UserDto(user.getId(), user.getUsername(), user.getRole());
+        return new UserDto(user.getId(), user.getUsername(), user.getRole(), user.getProfile());
     }
 }
