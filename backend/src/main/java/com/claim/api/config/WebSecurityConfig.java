@@ -23,6 +23,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/registration").permitAll()
                 .requestMatchers("/public/**", "/auth/**").permitAll()
                 .requestMatchers("/api/v1/admin", "/api/v1/admin/**").hasRole("SUPER_ADMIN")
+                .requestMatchers("/api/v1/department", "/api/v1/department/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/api/v1/user", "/api/v1/user/**").authenticated()
                 .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
