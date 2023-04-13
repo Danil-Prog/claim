@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "task")
 @Getter
@@ -23,7 +25,13 @@ public class Task {
     @Column(name = "description")
     private String description;
     @Column(name = "status_task")
-    private StatusTask statusTask;
+    private StatusTask statusTask = StatusTask.REVIEW;
     @OneToOne
     private Department department;
+    @OneToOne
+    private User executor;
+    @Column(name = "start_date")
+    private Date startDate = new Date();
+    @Column(name = "end_date")
+    private Date endDate;
 }
