@@ -8,12 +8,27 @@ function CreateUser() {
 
     const handlerSubmit = (event) => {
         event.preventDefault();
-        createUser({username, password, role});
+        authUser({username, password});
     }
 
-    const createUser = async (obj) => {
+    // const createUser = async (obj) => {
+    //     try {
+    //         await axios.post('http://localhost:8080/registration', obj);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+       
+    // }
+
+    const authUser = async (obj) => {
         try {
-            await axios.post('http://localhost:8080/registration', obj);
+            await axios.post('http://localhost:8080/auth', obj, {
+                auth: {
+                    username: obj.username,
+                    password: obj.password
+                  }
+            });
+            console.log(btoa(obj))
         } catch (error) {
             console.log(error);
         }
