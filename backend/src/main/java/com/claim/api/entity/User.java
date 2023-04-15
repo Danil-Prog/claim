@@ -45,7 +45,7 @@ public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private Set<Task> task = new HashSet<Task>();
+    private Set<Task> task = new HashSet<>();
 
     boolean isEnable;
 
@@ -77,5 +77,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setTask(Task task) {
+        this.task.add(task);
     }
 }
