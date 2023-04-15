@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class ValidationExceptionHandler {
+public class AdviceExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -41,6 +41,12 @@ public class ValidationExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<CustomResponseException> badRequestException(BadRequestException ex) {
+        CustomResponseException customResponseException = new CustomResponseException(ex.getMessage());
+        return new ResponseEntity<>(customResponseException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<CustomResponseException> userNotFoundException(UserNotFoundException ex) {
         CustomResponseException customResponseException = new CustomResponseException(ex.getMessage());
         return new ResponseEntity<>(customResponseException, HttpStatus.BAD_REQUEST);
     }
