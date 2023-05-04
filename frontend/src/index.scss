@@ -1,14 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
-*{
-	font-family: 'Open Sans', 'sans-serif', 'FontAwesome';
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
+* {
+  font-family: "Open Sans", "sans-serif", "FontAwesome";
 }
 :root {
-  --body-color: #18191A;
+  --body-color: #18191a;
   --body-color-light: #242526;
-  --primary-color: #3A3B3C;
+  --primary-color: #3a3b3c;
   --primary-color-light: #4d4e50;
-  --text-color: #CCC;
+  --text-color: #ccc;
 
   --tran-02: all 0.2 ease;
   --tran-03: all 0.3 ease;
@@ -16,9 +16,10 @@
   --tran-05: all 0.5 ease;
 }
 body {
+  color: var(--text-color);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,9 +34,7 @@ body {
     margin-left: -160px;
     top: 50%;
     margin-top: -75px;
-    
   }
-
 
   #signin {
     height: 90px;
@@ -48,26 +47,28 @@ body {
     position: relative;
     height: 2px;
     background: var(--primary-color-light);
-    content: '';
+    content: "";
     top: 44px;
     margin-left: 20px;
     z-index: 1;
   }
-  #signin input:first-of-type{
+  #signin input:first-of-type {
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
   }
-  #signin input:last-of-type{
+  #signin input:last-of-type {
     border-bottom-right-radius: 8px;
     border-bottom-left-radius: 8px;
   }
-  #signin  input[type="text"], #signin  input[type="password"], #signin button[type="submit"]{
+  #signin input[type="text"],
+  #signin input[type="password"],
+  #signin button[type="submit"] {
     background: var(--body-color-light);
-    box-shadow: inset -100px -100px 0 var(--body-color-light);; /*Prevent yellow autofill color*/
+    box-shadow: inset -100px -100px 0 var(--body-color-light); /*Prevent yellow autofill color*/
     color: var(--text-color);
-    
   }
-  #signin  input[type="text"], #signin  input[type="password"]{
+  #signin input[type="text"],
+  #signin input[type="password"] {
     position: relative;
     display: block;
     width: 280px;
@@ -78,11 +79,11 @@ body {
     padding: 0 0 0 20px;
     font-weight: 700;
   }
-  #signin  input[type="text"]:focus, #signin  input[type="password"]:focus{
+  #signin input[type="text"]:focus,
+  #signin input[type="password"]:focus {
     color: rgb(255, 255, 255);
   }
-  #signin button[type="submit"]{
-    
+  #signin button[type="submit"] {
     display: block;
     position: absolute;
     width: 52px;
@@ -100,7 +101,7 @@ body {
     padding-bottom: 3px;
     text-align: center;
   }
-  #signin button[type="submit"]:hover{
+  #signin button[type="submit"]:hover {
     color: rgb(0, 126, 165);
     text-shadow: 0 0 10px rgb(0, 126, 165);
     cursor: pointer;
@@ -112,11 +113,11 @@ body {
     font-size: 12px;
     margin: 5px 0 0 0;
   }
-  #signin p > a{
+  #signin p > a {
     color: var(--text-color);
     text-decoration: none;
   }
-  #signin p > a:hover{
+  #signin p > a:hover {
     border-bottom: 1px solid;
   }
 }

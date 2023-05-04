@@ -1,19 +1,27 @@
-import './index.scss';
-import CreateUser from './components/CreateUser'
+import { Routes, Route, Navigate } from "react-router-dom";
+
+import "./index.scss";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import { AuthProvider } from "./context/UserContext";
+import AdminRoute from "./Routes/AdminRoute";
 
 function App() {
   return (
-    // <div className="container">
-    //   <div className="wrapper">
-    //     <form id="signin" method="post">
-    //       <input type="text" id="user" name="user" placeholder="username" />
-    //       <input type="password" id="pass" name="pass" placeholder="password" />
-    //       <button type="submit">&#xf0da;</button>
-    //     </form>
-    //   </div>
-    // </div>
-
-    <CreateUser />
+    <AuthProvider>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <AdminRoute>
+              <HomePage />
+            </AdminRoute>
+          }
+        />
+        <Route exact path="/login" element={<LoginPage />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
