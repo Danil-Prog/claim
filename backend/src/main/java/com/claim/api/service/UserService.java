@@ -5,13 +5,14 @@ import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,8 +49,8 @@ public class UserService implements UserDetailsService {
                 .filter(user -> bCryptPasswordEncoder.matches(password, user.getPassword()));
     }
 
-    public List<User> getUserList() {
-        return userRepository.findAll();
+    public Page<User> getUserList(PageRequest pageRequest) {
+        return userRepository.findAll(pageRequest);
     }
 
     public User getUserById(Long id) {
