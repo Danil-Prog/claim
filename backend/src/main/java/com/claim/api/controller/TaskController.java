@@ -34,6 +34,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getTasks(pageRequest));
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Task> getTask(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
+    }
+
     @GetMapping("/user={id}")
     public ResponseEntity<Set<Task>> getTasksByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTasksByUserId(id));
