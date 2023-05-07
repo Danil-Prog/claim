@@ -8,6 +8,10 @@ import com.claim.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,11 +38,16 @@ public class UserController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping("/user")
-    public ResponseEntity<List<UserDto>> getUsers() {
-        return new ResponseEntity<>(userService.getUserList().stream()
+    @GetMapping
+    public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
+                                                  @RequestParam(defaultValue = "10") int size,
+                                                  @RequestParam(defaultValue = "ASC") String sortBy,
+                                                  @RequestParam(defaultValue = "id") String[] sort) {
+        PageRequest pageRequest = PageRequest.of(page, size , Sort.by(Sort.Direction.fromString(sortBy), sort));
+        List<UserDto> users = userService.getUserList(pageRequest).stream()
                 .map(userMapper::toUserDto)
-                .collect(Collectors.toList()), HttpStatus.OK);
+                .toList();
+        return ResponseEntity.ok(new PageImpl<>(users));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})

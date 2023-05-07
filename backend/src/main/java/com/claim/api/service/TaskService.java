@@ -7,6 +7,8 @@ import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.TaskRepository;
 import com.claim.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -24,6 +26,10 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+    }
+
+    public Page<Task> getTasks(PageRequest pageRequest) {
+        return taskRepository.findAll(pageRequest);
     }
 
     public Task getTaskById(Long id) {
