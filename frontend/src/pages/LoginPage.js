@@ -1,73 +1,92 @@
-import { Link } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import React from "react";
-import axios from "axios";
+import { Navigate } from 'react-router-dom';
+import React from 'react';
+import axios from 'axios';
+
+import UserContext from '../context/UserContext';
 
 const LoginPage = () => {
   const contextType = React.useContext(UserContext);
 
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
     const isLogIn = contextType.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
-    console.log("didmount");
+    console.log('Компонент обновлён');
   }, []);
 
   const authenticate = (obj) => {
     axios
-      .post("http://localhost:8080/auth", obj)
+      .post('http://localhost:8080/auth', obj)
       .then((response) => {
         const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ":" + password);
+        const authdata = window.btoa(username + ':' + password);
         const user = { id, username, role, authdata };
-        console.log("хуй");
+        setIsLoggedIn(true);
 
         contextType.userLogin(user);
       })
       .catch((error) => {
-        console.log("37: Отправленное имя: " + username + " pas: " + password);
         console.log(error);
         setIsError(true);
       });
   };
 
   const handleSubmit = (event) => {
-    console.log("21: Отправленное имя: " + username + " pas: " + password);
     event.preventDefault();
-    authenticate({ login: username, password: password });
+    authenticate({ username: username, password: password });
   };
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div>
-      <h1>Вход</h1>
-      <form onSubmit={handleSubmit}>
-        <p>username</p>
-        <input
-          name="username"
-          type="text"
-          autoComplete="off"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+      {isLoggedIn ? (
+        <Navigate to="/" />
+      ) : (
+        <div className="container">
+          <div className="signin">
+            <form id="form-login" onSubmit={handleSubmit}>
+              <h2>Вход</h2>
 
-        <p>password</p>
-        <input
-          name="password"
-          type="password"
-          autoComplete="off"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+              <label htmlFor="username" className="field__item">
+                <input
+                  required
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="new-password"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <span>username</span>
+                <div className="line"></div>
+              </label>
 
-        <input type="submit" value="Вход" />
-      </form>
-      <p>
-        Или <Link to="/register">Регистрация</Link>
-      </p>
+              <label htmlFor="password" className="field__item">
+                <input
+                  required
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span>password</span>
+                <div className="line"></div>
+              </label>
+
+              <input className="btn-main" type="submit" value="Вход" />
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
