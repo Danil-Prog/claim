@@ -1,5 +1,6 @@
 package com.claim.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,4 +35,8 @@ public class Task {
     private Date startDate = new Date();
     @Column(name = "end_date")
     private Date endDate;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="customer_id", nullable=false)
+    @JsonIgnore
+    private User customer;
 }

@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
+import java.security.Principal;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class TaskService {
@@ -40,23 +38,33 @@ public class TaskService {
         throw new BadRequestException("Task id=" + id + " not exist");
     }
 
-    public Set<Task> getTasksByUserId(Long id) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public Page<Task> getUserTasks(Principal principal, PageRequest pageRequest) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
-            return userOptional.get().getTask();
+            User user = userOptional.get();
+            return taskRepository.getTasksByCustomer(user, pageRequest);
         }
-        throw new UserNotFoundException("User id=" + id + " not exist");
+        throw new UserNotFoundException("User id=" + userOptional.get().getId() + " not exist");
     }
 
-    public Task createTask(Long id, Task task) {
-        Optional<User> userOptional = userRepository.findById(id);
+    public Task createTask(Principal principal, Task task) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             task.setDepartment(user.getProfile().getDepartment());
-            userOptional.get().setTask(task);
+            task.setCustomer(user);
+            user.setTask(task);
             taskRepository.save(task);
             return task;
         }
-        throw new UserNotFoundException("User id=" + id + " not exist");
+        throw new UserNotFoundException("User id: " + userOptional.get().getId() + " not exist");
+    }
+
+    public Task updateTask(Task task) {
+        Optional<Task> taskOptional = taskRepository.findById(task.getId());
+        if (taskOptional.isPresent()) {
+            return taskRepository.save(task);
+        }
+        throw new BadRequestException("Task id: " + task.getId() + " not exist");
     }
 }
