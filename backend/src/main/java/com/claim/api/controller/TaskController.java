@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/task")
@@ -23,9 +23,28 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
+    @GetMapping
+    public ResponseEntity<Page<Task>> getUserTasks(Principal principal,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(defaultValue = "ASC") String sortBy,
+                                                   @RequestParam(defaultValue = "id") String[] sort) {
+        PageRequest pageRequest = PageRequest.of(page, size , Sort.by(Sort.Direction.fromString(sortBy), sort));
+        return ResponseEntity.ok(taskService.getUserTasks(principal, pageRequest));
+    }
+
+    @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task, Principal principal) {
+        return ResponseEntity.ok(taskService.createTask(principal, task));
+    }
+
+    @PutMapping
+    public ResponseEntity<Task> updateTask(@RequestBody Task task) {
+        return ResponseEntity.ok(taskService.updateTask(task));
+    }
 
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Page<Task>> getTasks(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size,
                                                @RequestParam(defaultValue = "ASC") String sortBy,
@@ -37,15 +56,5 @@ public class TaskController {
     @GetMapping("{id}")
     public ResponseEntity<Task> getTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
-    }
-
-    @GetMapping("/user={id}")
-    public ResponseEntity<Set<Task>> getTasksByUserId(@PathVariable Long id) {
-        return ResponseEntity.ok(taskService.getTasksByUserId(id));
-    }
-
-    @PostMapping("/user={id}")
-    public ResponseEntity<Task> createTask(@PathVariable Long id, @RequestBody Task task) {
-        return ResponseEntity.ok(taskService.createTask(id, task));
     }
 }
