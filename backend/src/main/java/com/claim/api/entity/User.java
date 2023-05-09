@@ -40,11 +40,11 @@ public class User implements UserDetails {
     @NotNull
     private Role role;
 
+    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private Set<Task> task = new HashSet<>();
 
     boolean isEnable;
