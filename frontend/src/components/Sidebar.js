@@ -21,7 +21,7 @@ const Sidebar = () => {
   };
   return (
     <div>
-      <nav className="sidebar">
+      <nav className="sidebar-open">
         <header>
           <div className="image-text">
             <span className="image">
@@ -74,12 +74,11 @@ const Sidebar = () => {
             </li>
             <li className="mode">
               <div className="moon-sun">
-                <i className="bx bx-moon icon moon"></i>
-                <i className="bx bx-sun icon sun"></i>
+                <i className={theme ? 'bx bx-moon icon moon' : 'bx bx-sun icon sun'}></i>
               </div>
               <span className="mode-text text">Dark Mode</span>
               <div className="toggle-switch">
-                <span className="switch" onClick={setModeValue}></span>
+                <span className={theme ? 'switch-on' : 'switch-off'} onClick={setModeValue}></span>
               </div>
             </li>
           </div>
