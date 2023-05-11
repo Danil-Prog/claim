@@ -51,7 +51,6 @@ public class TaskService {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            task.setDepartment(user.getProfile().getDepartment());
             task.setCustomer(user);
             user.setTask(task);
             taskRepository.save(task);
