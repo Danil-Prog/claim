@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -24,16 +24,183 @@
   --dark-toggle-color: #fff;
   --dark-text-color: #ccc;
 
-  transition: {
-    property: all;
-    duration: 0.2s;
-    timing-function: ease;
-    delay: 0s;
-  }
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
 }
 
 body {
   margin: 0;
+}
+
+// Цвета тёмной темы
+.dark {
+  background-color: var(--dark-body-color);
+  width: 100%;
+  height: 100vh;
+  transition: var(--tran-03);
+  .container {
+    .signin {
+      form {
+        h2 {
+          color: var(--dark-text-color);
+        }
+        background: var(--dark-sidebar-color);
+
+        .field__item {
+          input {
+            background-color: var(--dark-primary-color-light);
+            &:focus {
+              + span {
+                background: var(--dark-primary-color);
+              }
+            }
+            &:valid {
+              + span {
+                background: var(--dark-primary-color);
+              }
+            }
+          }
+          span {
+            color: var(--dark-text-color);
+          }
+        }
+        .btn-main {
+          background-color: var(--dark-primary-color);
+          color: var(--dark-text-color);
+
+          &:hover {
+            box-shadow: 0 2px 0 var(--dark-text-color);
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar {
+    background-color: var(--dark-sidebar-color);
+    .menu-bar {
+      .mode {
+        background-color: var(--dark-primary-color-light);
+        .toggle-switch {
+          .switch-on {
+            background-color: var(--dark-text-color);
+            &::before {
+              background: var(--dark-primary-color-light);
+            }
+          }
+        }
+      }
+    }
+
+    li {
+      a {
+        color: var(--dark-text-color);
+        &:hover {
+          background-color: var(--dark-primary-color-light);
+        }
+      }
+    }
+
+    header {
+      a {
+        color: var(--dark-text-color);
+      }
+      .toggle {
+        color: var(--dark-text-color);
+      }
+    }
+  }
+}
+
+// Цвета светлой темы
+.light {
+  background-color: var(--body-color);
+  width: 100%;
+  height: 100vh;
+  transition: var(--tran-03);
+  .container {
+    .signin {
+      form {
+        h2 {
+          color: var(--title-text-color);
+        }
+        background: var(--sidebar-color);
+
+        .field__item {
+          input {
+            background-color: var(--body-color);
+            &:focus {
+              + span {
+                background: var(--primary-color);
+                color: var(--dark-toggle-color);
+              }
+            }
+            &:valid {
+              + span {
+                background: var(--primary-color);
+                color: var(--dark-toggle-color);
+              }
+            }
+          }
+          span {
+            color: var(--title-text-color);
+          }
+        }
+        .btn-main {
+          background-color: var(--primary-color);
+          color: var(--text-color-light);
+
+          &:hover {
+            box-shadow: 0 2px 0 var(--dark-sidebar-color);
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar {
+    background-color: var(--sidebar-color);
+    transition: {
+      property: all;
+      duration: 0.3s;
+      timing-function: ease;
+      delay: 0s;
+    }
+
+    .menu-bar {
+      .mode {
+        background-color: var(--primary-color-light);
+        .toggle-switch {
+          .switch-off {
+            background-color: var(--text-color);
+            &::before {
+              background: var(--primary-color-light);
+            }
+          }
+        }
+      }
+    }
+
+    li {
+      a {
+        color: var(--text-color);
+        &:hover {
+          background-color: var(--primary-color-light);
+        }
+      }
+    }
+
+    header {
+      a {
+        color: var(--text-color);
+      }
+      .toggle {
+        color: var(--sidebar-color);
+      }
+    }
+  }
 }
 
 .container {
@@ -139,196 +306,14 @@ body {
   }
 }
 
-.dark {
-  background-color: var(--dark-body-color);
-  width: 100%;
-  height: 100vh;
-  transition: {
-    property: all;
-    duration: 0.3s;
-    timing-function: ease;
-    delay: 0s;
-  }
-  .container {
-    .signin {
-      form {
-        h2 {
-          color: var(--dark-text-color);
-        }
-        background: var(--dark-sidebar-color);
-
-        .field__item {
-          input {
-            background-color: var(--dark-primary-color-light);
-            &:focus {
-              + span {
-                background: var(--dark-primary-color);
-              }
-            }
-            &:valid {
-              + span {
-                background: var(--dark-primary-color);
-              }
-            }
-          }
-          span {
-            color: var(--dark-text-color);
-          }
-        }
-        .btn-main {
-          background-color: var(--dark-primary-color);
-          color: var(--dark-text-color);
-
-          &:hover {
-            box-shadow: 0 2px 0 var(--dark-text-color);
-          }
-        }
-      }
-    }
-  }
-
-  .sidebar-open {
-    background-color: var(--dark-sidebar-color);
-    transition: {
-      property: all;
-      duration: 0.3s;
-      timing-function: ease;
-      delay: 0s;
-    }
-    .menu-bar {
-      .mode {
-        background-color: var(--dark-primary-color-light);
-        .toggle-switch {
-          .switch-on {
-            background-color: var(--dark-text-color);
-            &::before {
-              background: var(--dark-primary-color-light);
-            }
-          }
-        }
-      }
-    }
-
-    li {
-      a {
-        color: var(--dark-text-color);
-        &:hover {
-          background-color: var(--dark-primary-color-light);
-        }
-      }
-    }
-
-    header {
-      a {
-        color: var(--dark-text-color);
-      }
-      .toggle {
-        color: var(--dark-text-color);
-      }
-    }
-  }
-}
-
-.light {
-  background-color: var(--body-color);
-  width: 100%;
-  height: 100vh;
-  transition: {
-    property: all;
-    duration: 0.3s;
-    timing-function: ease;
-    delay: 0s;
-  }
-  .container {
-    .signin {
-      form {
-        h2 {
-          color: var(--title-text-color);
-        }
-        background: var(--sidebar-color);
-
-        .field__item {
-          input {
-            background-color: var(--body-color);
-            &:focus {
-              + span {
-                background: var(--primary-color);
-                color: var(--dark-toggle-color);
-              }
-            }
-            &:valid {
-              + span {
-                background: var(--primary-color);
-                color: var(--dark-toggle-color);
-              }
-            }
-          }
-          span {
-            color: var(--title-text-color);
-          }
-        }
-        .btn-main {
-          background-color: var(--primary-color);
-          color: var(--text-color-light);
-
-          &:hover {
-            box-shadow: 0 2px 0 var(--dark-sidebar-color);
-          }
-        }
-      }
-    }
-  }
-
-  .sidebar-open {
-    background-color: var(--sidebar-color);
-    transition: {
-      property: all;
-      duration: 0.3s;
-      timing-function: ease;
-      delay: 0s;
-    }
-    .menu-bar {
-      .mode {
-        background-color: var(--primary-color-light);
-        .toggle-switch {
-          .switch-off {
-            background-color: var(--text-color);
-            &::before {
-              background: var(--primary-color-light);
-            }
-          }
-        }
-      }
-    }
-
-    li {
-      a {
-        color: var(--text-color);
-        &:hover {
-          background-color: var(--primary-color-light);
-        }
-      }
-    }
-
-    header {
-      a {
-        color: var(--text-color);
-      }
-      .toggle {
-        color: var(--sidebar-color);
-      }
-    }
-  }
-}
-
-.sidebar-open {
+.sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  width: 250px;
-  padding: 10px;
 
+  padding: 10px;
+  transition: var(--tran-03);
   .menu-bar {
     height: calc(100% - 80px);
     display: flex;
@@ -336,14 +321,12 @@ body {
     justify-content: space-between;
 
     .mode {
+      position: relative;
       border-radius: 6px;
-      transition: {
-        property: all;
-        duration: 0.3s;
-        timing-function: ease;
-        delay: 0s;
-      }
+      transition: var(--tran-03);
       .toggle-switch {
+        position: absolute;
+        right: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -356,14 +339,9 @@ body {
           height: 22px;
           width: 44px;
           border-radius: 25px;
-          transition: {
-            property: all;
-            duration: 0.2s;
-            timing-function: ease;
-            delay: 0s;
-          }
+          transition: var(--tran-02);
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -371,12 +349,7 @@ body {
             top: 50%;
             left: 4px;
             transform: translateY(-50%);
-            transition: {
-              property: all;
-              duration: 0.2s;
-              timing-function: ease;
-              delay: 0s;
-            }
+            transition: var(--tran-02);
           }
         }
         .switch-on {
@@ -384,15 +357,10 @@ body {
           height: 22px;
           width: 44px;
           border-radius: 25px;
-          transition: {
-            property: all;
-            duration: 0.3s;
-            timing-function: ease;
-            delay: 0s;
-          }
+          transition: var(--tran-03);
 
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -400,12 +368,7 @@ body {
             top: 50%;
             left: 25px;
             transform: translateY(-50%);
-            transition: {
-              property: all;
-              duration: 0.3s;
-              timing-function: ease;
-              delay: 0s;
-            }
+            transition: var(--tran-03);
           }
         }
       }
@@ -433,12 +396,15 @@ body {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 23px;
       min-width: 60px;
     }
     .text {
       font-size: 18px;
-      font-weight: 500;
+      font-weight: 400;
+      white-space: nowrap;
+      transition: var(--tran-01);
+      overflow: hidden;
     }
 
     a {
@@ -447,14 +413,8 @@ body {
       align-items: center;
       text-decoration: none;
       border-radius: 6px;
-
       width: 100%;
-      transition: {
-        property: all;
-        duration: 0.3s;
-        timing-function: ease;
-        delay: 0s;
-      }
+      transition: var(--tran-03);
     }
   }
 
@@ -466,31 +426,25 @@ body {
     }
   }
 
-  .text {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
   header {
     position: relative;
 
     a {
-      transition: {
-        property: all;
-        duration: 0.2s;
-        timing-function: ease;
-        delay: 0s;
-      }
+      transition: var(--tran-02);
     }
 
     .image-text {
       display: flex;
       align-items: center;
+      .name {
+        font-size: 23px;
+        font-weight: 700;
+      }
     }
 
     .toggle {
       position: absolute;
-      top: 30%;
+      top: 50%;
       right: -23px;
       transform: translateY(-50%);
       height: 25px;
@@ -500,12 +454,7 @@ body {
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      transition: {
-        property: all;
-        duration: 0.2s;
-        timing-function: ease;
-        delay: 0s;
-      }
+      transition: var(--tran-04);
 
       font-size: 25px;
       cursor: pointer;
@@ -516,5 +465,49 @@ body {
     .logout {
       cursor: pointer;
     }
+  }
+}
+
+.sidebar.open {
+  width: 250px;
+  .menu-bar {
+    .mode {
+      .moon-sun {
+        i {
+          opacity: 1;
+          transition: var(--tran-05);
+        }
+      }
+    }
+  }
+
+  .text {
+    opacity: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  header {
+    .toggle {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+}
+
+.sidebar.close {
+  width: 78px;
+  .menu-bar {
+    .mode {
+      .moon-sun {
+        i {
+          opacity: 0;
+          transition: var(--tran-02);
+        }
+      }
+    }
+  }
+
+  .text {
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
 }
