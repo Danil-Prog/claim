@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -32,7 +34,9 @@ public class Task {
     @OneToOne
     private User executor;
     @Column(name = "start_date")
-    private Date startDate = new Date();
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp startDate;
     @Column(name = "end_date")
     private Date endDate;
     @ManyToOne(cascade = CascadeType.ALL)
