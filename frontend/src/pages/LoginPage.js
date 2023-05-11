@@ -1,29 +1,29 @@
-import { Navigate } from 'react-router-dom';
-import React from 'react';
-import axios from 'axios';
+import { Navigate } from "react-router-dom";
+import React from "react";
+import axios from "axios";
 
-import UserContext from '../context/UserContext';
+import UserContext from "../context/UserContext";
 
 const LoginPage = () => {
   const contextType = React.useContext(UserContext);
 
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
     const isLogIn = contextType.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
-    console.log('Компонент обновлён');
+    console.log("Компонент обновлён");
   }, []);
 
   const authenticate = (obj) => {
     axios
-      .post('http://localhost:8080/auth', obj)
+      .post("http://localhost:8080/auth", obj)
       .then((response) => {
         const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ':' + password);
+        const authdata = window.btoa(username + ":" + password);
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 

@@ -1,18 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  text-decoration: none;
 }
 :root {
   --body-color: #e4e9f7;
   --sidebar-color: #fff;
   --primary-color: #695cfe;
-  --primary-color-light: #f6f5ff;
+  --primary-color-light: #ada6ff;
   --toggle-color: #ddd;
-  --text-color: #707070;
+  --text-color-light: #fff;
+  --text-color: #000;
+  --title-text-color: #707070;
 
   --dark-body-color: #18191a;
   --dark-sidebar-color: #242526;
@@ -21,9 +24,6 @@
   --dark-toggle-color: #fff;
   --dark-text-color: #ccc;
 
-  --tran-03: all 0.3 ease;
-  --tran-04: all 0.4 ease;
-  --tran-05: all 0.5 ease;
   transition: {
     property: all;
     duration: 0.2s;
@@ -33,11 +33,7 @@
 }
 
 body {
-  color: var(--text-color);
   margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: var(--body-color);
 }
 
 .container {
@@ -48,7 +44,6 @@ body {
     height: 90vh;
 
     form {
-      background: var(--primary-color);
       padding: 20px 40px 30px;
       border-radius: 15px;
       width: 100%;
@@ -79,7 +74,6 @@ body {
           font-size: 18px;
           position: absolute;
           bottom: 0;
-          background-color: var(--body-color);
 
           &:focus {
             + span {
@@ -146,6 +140,53 @@ body {
 }
 
 .dark {
+  background-color: var(--dark-body-color);
+  width: 100%;
+  height: 100vh;
+  transition: {
+    property: all;
+    duration: 0.3s;
+    timing-function: ease;
+    delay: 0s;
+  }
+  .container {
+    .signin {
+      form {
+        h2 {
+          color: var(--dark-text-color);
+        }
+        background: var(--dark-sidebar-color);
+
+        .field__item {
+          input {
+            background-color: var(--dark-primary-color-light);
+            &:focus {
+              + span {
+                background: var(--dark-primary-color);
+              }
+            }
+            &:valid {
+              + span {
+                background: var(--dark-primary-color);
+              }
+            }
+          }
+          span {
+            color: var(--dark-text-color);
+          }
+        }
+        .btn-main {
+          background-color: var(--dark-primary-color);
+          color: var(--dark-text-color);
+
+          &:hover {
+            box-shadow: 0 2px 0 var(--dark-text-color);
+          }
+        }
+      }
+    }
+  }
+
   .sidebar-open {
     background-color: var(--dark-sidebar-color);
     transition: {
@@ -178,6 +219,9 @@ body {
     }
 
     header {
+      a {
+        color: var(--dark-text-color);
+      }
       .toggle {
         color: var(--dark-text-color);
       }
@@ -186,6 +230,55 @@ body {
 }
 
 .light {
+  background-color: var(--body-color);
+  width: 100%;
+  height: 100vh;
+  transition: {
+    property: all;
+    duration: 0.3s;
+    timing-function: ease;
+    delay: 0s;
+  }
+  .container {
+    .signin {
+      form {
+        h2 {
+          color: var(--title-text-color);
+        }
+        background: var(--sidebar-color);
+
+        .field__item {
+          input {
+            background-color: var(--body-color);
+            &:focus {
+              + span {
+                background: var(--primary-color);
+                color: var(--dark-toggle-color);
+              }
+            }
+            &:valid {
+              + span {
+                background: var(--primary-color);
+                color: var(--dark-toggle-color);
+              }
+            }
+          }
+          span {
+            color: var(--title-text-color);
+          }
+        }
+        .btn-main {
+          background-color: var(--primary-color);
+          color: var(--text-color-light);
+
+          &:hover {
+            box-shadow: 0 2px 0 var(--dark-sidebar-color);
+          }
+        }
+      }
+    }
+  }
+
   .sidebar-open {
     background-color: var(--sidebar-color);
     transition: {
@@ -218,6 +311,9 @@ body {
     }
 
     header {
+      a {
+        color: var(--text-color);
+      }
       .toggle {
         color: var(--sidebar-color);
       }
@@ -267,7 +363,7 @@ body {
             delay: 0s;
           }
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             height: 15px;
             width: 15px;
@@ -296,7 +392,7 @@ body {
           }
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             height: 15px;
             width: 15px;
@@ -378,6 +474,15 @@ body {
   header {
     position: relative;
 
+    a {
+      transition: {
+        property: all;
+        duration: 0.2s;
+        timing-function: ease;
+        delay: 0s;
+      }
+    }
+
     .image-text {
       display: flex;
       align-items: center;
@@ -395,6 +500,12 @@ body {
       align-items: center;
       justify-content: center;
       border-radius: 50%;
+      transition: {
+        property: all;
+        duration: 0.2s;
+        timing-function: ease;
+        delay: 0s;
+      }
 
       font-size: 25px;
       cursor: pointer;

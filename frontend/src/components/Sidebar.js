@@ -1,19 +1,18 @@
-import React from 'react';
-import UserContext from '../context/UserContext';
+import React from "react";
+import UserContext from "../context/UserContext";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const contextType = React.useContext(UserContext);
   const theme = contextType.getThemeMode();
   const user = contextType.getUser();
-  console.log(contextType);
   const logout = () => {
     contextType.userLogout();
   };
 
   React.useEffect(() => {
     contextType.getThemeMode();
-    console.log('Компонент Sidebar обновлён');
-  }, []);
+  }, [contextType]);
 
   const setModeValue = () => {
     const mode = contextType.getThemeMode();
@@ -23,15 +22,17 @@ const Sidebar = () => {
     <div>
       <nav className="sidebar-open">
         <header>
-          <div className="image-text">
-            <span className="image">
-              <img src="/img/logo.png" width={60} height={60} alt="logo" />
-            </span>
+          <Link to="/">
+            <div className="image-text">
+              <span className="image">
+                <img src="/img/logo.png" width={60} height={60} alt="logo" />
+              </span>
 
-            <div className="text header-text">
-              <span className="name">Claim</span>
+              <div className="text header-text">
+                <span className="name">Claim</span>
+              </div>
             </div>
-          </div>
+          </Link>
           <i className="bx bx-chevron-right toggle"></i>
         </header>
 
@@ -39,10 +40,12 @@ const Sidebar = () => {
           <div className="menu">
             <ul className="menu-links">
               <li className="nav-link">
-                <a href="#">
+                <Link to="/profile">
                   <i className="bx bx-user icon"></i>
-                  <span className="text nav-text">Профиль ({user.username})</span>
-                </a>
+                  <span className="text nav-text">
+                    Профиль ({user.username})
+                  </span>
+                </Link>
               </li>
               <li className="nav-link">
                 <a href="#">
@@ -74,11 +77,20 @@ const Sidebar = () => {
             </li>
             <li className="mode">
               <div className="moon-sun">
-                <i className={theme ? 'bx bx-moon icon moon' : 'bx bx-sun icon sun'}></i>
+                <i
+                  className={
+                    theme ? "bx bx-moon icon moon" : "bx bx-sun icon sun"
+                  }
+                ></i>
               </div>
-              <span className="mode-text text">Dark Mode</span>
+              <span className="mode-text text">
+                {theme ? "Dark" : "Light"} Mode
+              </span>
               <div className="toggle-switch">
-                <span className={theme ? 'switch-on' : 'switch-off'} onClick={setModeValue}></span>
+                <span
+                  className={theme ? "switch-on" : "switch-off"}
+                  onClick={setModeValue}
+                ></span>
               </div>
             </li>
           </div>
