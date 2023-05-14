@@ -1,17 +1,24 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
 
 import "./index.scss";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
-import { AuthProvider } from "./context/UserContext";
+import UserContext from "./context/UserContext";
+
 import AdminRoute from "./Routes/AdminRoute";
 import ThemeMode from "./Routes/ThemeMode";
+import Sidebar from "./components/Sidebar";
 
 function App() {
+  const userContext = React.useContext(UserContext);
+  const userValue = userContext.getUser();
   return (
-    <AuthProvider>
-      <ThemeMode>
+    <ThemeMode>
+      {userValue && <Sidebar />}
+
+      <div className="content">
         <Routes>
           <Route
             path="/"
@@ -25,8 +32,8 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
-      </ThemeMode>
-    </AuthProvider>
+      </div>
+    </ThemeMode>
   );
 }
 

@@ -1,10 +1,10 @@
 import React from "react";
 
-import UserContext from "../context/UserContext";
+import ThemeContext from "../context/ThemeContext";
 
 function ThemeMode({ children }) {
-  const contextType = React.useContext(UserContext);
-  const theme = contextType.getThemeMode();
+  const themeContext = React.useContext(ThemeContext);
+  const theme = themeContext.getThemeMode();
   return <div className={theme ? "dark" : "light"}>{children}</div>;
 }
 

@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -311,8 +311,8 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-
   padding: 10px;
+  z-index: 100;
   transition: var(--tran-03);
   .menu-bar {
     height: calc(100% - 80px);
@@ -341,7 +341,7 @@ body {
           border-radius: 25px;
           transition: var(--tran-02);
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             height: 15px;
             width: 15px;
@@ -360,7 +360,7 @@ body {
           transition: var(--tran-03);
 
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             height: 15px;
             width: 15px;
@@ -510,4 +510,37 @@ body {
     opacity: 0;
     transition: opacity 0.2s ease;
   }
+}
+
+.content {
+  position: relative;
+  height: 100vh;
+  left: 250px;
+  padding: 10px 14px;
+  width: calc(100% - 250px);
+  transition: var(--tran-03);
+
+  .profile-page {
+    .title-page {
+      background-color: #fff;
+      align-self: center;
+    }
+    .main-content {
+      background-color: red;
+      height: 100px;
+      width: 170px;
+    }
+
+    .users {
+      background-color: green;
+      height: 100px;
+      width: 170px;
+    }
+  }
+}
+
+.sidebar.close ~ .content {
+  left: 78px;
+
+  width: calc(100% - 78px);
 }

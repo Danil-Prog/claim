@@ -1,15 +1,11 @@
-import { Navigate } from 'react-router-dom';
-import React from 'react';
-
-import UserContext from '../context/UserContext';
-import Sidebar from '../components/Sidebar';
+import React from "react";
 
 const HomePage = () => {
-  const contextType = React.useContext(UserContext);
-
   return (
     <div>
-      <Sidebar />
+      <div className="title-page">
+        <h2>Главная</h2>
+      </div>
     </div>
   );
 };

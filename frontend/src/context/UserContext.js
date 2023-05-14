@@ -1,55 +1,31 @@
-import React from 'react';
+import React from "react";
 
 const UserContext = React.createContext({});
 
 const AuthProvider = ({ children }) => {
-  const [userValue, setUserValue] = React.useState({});
-  const [mode, setMode] = React.useState(true);
-  const [sidebar, setSidebar] = React.useState(true);
-
-  const themeMode = (theme) => {
-    localStorage.setItem('theme', JSON.stringify(theme));
-    setMode(theme);
-  };
-
-  const getThemeMode = () => {
-    return JSON.parse(localStorage.getItem('theme'));
-  };
-
-  const sidebarPosition = (position) => {
-    localStorage.setItem('sidebar', JSON.stringify(position));
-    setSidebar(position);
-  };
-
-  const getSidebarPosition = () => {
-    return JSON.parse(localStorage.getItem('sidebar'));
-  };
+  const [userValue, setUserValue] = React.useState(null);
 
   React.useEffect(() => {
-    const user = localStorage.getItem('user');
+    const user = localStorage.getItem("user");
     setUserValue({ user });
-    const theme = localStorage.getItem('theme');
-    setMode(theme);
-    const sidebar = localStorage.getItem('sidebar');
-    setSidebar(sidebar);
   }, []);
 
   const getUser = () => {
-    return JSON.parse(localStorage.getItem('user'));
+    return JSON.parse(localStorage.getItem("user"));
   };
 
   const userIsAuthenticated = () => {
-    return localStorage.getItem('user') !== null;
+    return localStorage.getItem("user") !== null;
   };
 
   const userLogin = (user) => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
     setUserValue({ user });
   };
 
   const userLogout = () => {
-    localStorage.removeItem('user');
-    setUserValue('');
+    localStorage.removeItem("user");
+    setUserValue("");
   };
 
   return (
@@ -59,14 +35,9 @@ const AuthProvider = ({ children }) => {
         userIsAuthenticated,
         userLogin,
         userLogout,
-        themeMode,
-        getThemeMode,
-        setMode,
-        sidebarPosition,
-        getSidebarPosition,
         userValue,
-        mode,
-      }}>
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

@@ -5,7 +5,7 @@ import axios from "axios";
 import UserContext from "../context/UserContext";
 
 const LoginPage = () => {
-  const contextType = React.useContext(UserContext);
+  const userContext = React.useContext(UserContext);
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -13,10 +13,10 @@ const LoginPage = () => {
   const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
-    const isLogIn = contextType.userIsAuthenticated();
+    const isLogIn = userContext.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
     console.log("Компонент обновлён");
-  }, []);
+  }, [userContext]);
 
   const authenticate = (obj) => {
     axios
@@ -27,7 +27,7 @@ const LoginPage = () => {
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 
-        contextType.userLogin(user);
+        userContext.userLogin(user);
       })
       .catch((error) => {
         console.log(error);
