@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -32,14 +32,15 @@
 
 body {
   margin: 0;
+  padding: 0;
 }
 
 // Цвета тёмной темы
+
 .dark {
   background-color: var(--dark-body-color);
-  width: 100%;
-  height: 100vh;
   transition: var(--tran-03);
+
   .container {
     .signin {
       form {
@@ -112,13 +113,33 @@ body {
       }
     }
   }
+
+  .content {
+    .page {
+      .top {
+        .title-page {
+          color: var(--dark-text-color);
+        }
+      }
+
+      .wrapper {
+        .page-content {
+          background-color: var(--dark-sidebar-color);
+        }
+
+        .users {
+          background-color: var(--dark-sidebar-color);
+        }
+      }
+    }
+  }
 }
 
 // Цвета светлой темы
 .light {
   background-color: var(--body-color);
   width: 100%;
-  height: 100vh;
+
   transition: var(--tran-03);
   .container {
     .signin {
@@ -201,8 +222,29 @@ body {
       }
     }
   }
+
+  .content {
+    .page {
+      .top {
+        .title-page {
+          color: var(--text-color);
+        }
+      }
+
+      .wrapper {
+        .page-content {
+          background-color: var(--sidebar-color);
+        }
+
+        .users {
+          background-color: var(--sidebar-color);
+        }
+      }
+    }
+  }
 }
 
+// страница signin
 .container {
   .signin {
     display: flex;
@@ -341,7 +383,7 @@ body {
           border-radius: 25px;
           transition: var(--tran-02);
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -360,7 +402,7 @@ body {
           transition: var(--tran-03);
 
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -399,6 +441,7 @@ body {
       font-size: 23px;
       min-width: 60px;
     }
+
     .text {
       font-size: 18px;
       font-weight: 400;
@@ -514,33 +557,72 @@ body {
 
 .content {
   position: relative;
-  height: 100vh;
+  height: 100%;
   left: 250px;
-  padding: 10px 14px;
+  padding: 0 50px;
   width: calc(100% - 250px);
   transition: var(--tran-03);
 
-  .profile-page {
-    .title-page {
-      background-color: #fff;
-      align-self: center;
-    }
-    .main-content {
-      background-color: red;
-      height: 100px;
-      width: 170px;
+  .page {
+    .top {
+      display: flex;
+      justify-content: left;
+      top: 0;
+      left: 250px;
+      height: 150px;
+      width: 100%;
+      padding: 0 100px;
+      align-items: end;
+      z-index: 10;
+      margin-bottom: 20px;
+
+      .title-page {
+        color: var(--dark-text-color);
+        font-size: 25px;
+        h2 {
+          transition: var(--tran-03);
+        }
+      }
     }
 
-    .users {
-      background-color: green;
-      height: 100px;
-      width: 170px;
+    .wrapper {
+      display: flex;
+      justify-content: space-around;
+      grid-gap: 50px;
+      @media screen and (max-width: 1200px) {
+        flex-direction: column;
+      }
+      .page-content {
+        transition: var(--tran-03);
+        flex-grow: 3;
+        height: 70vh;
+        max-width: 1250px;
+        padding: 50px;
+        border-radius: 10px;
+        background-color: var(--dark-sidebar-color);
+        @media screen and (max-width: 1200px) {
+          max-width: 100%;
+        }
+      }
+
+      .users {
+        transition: var(--tran-03);
+        flex-grow: 1;
+        max-width: 400px;
+        height: 70vh;
+        padding: 50px;
+        border-radius: 10px;
+        z-index: 10;
+        background-color: var(--dark-sidebar-color);
+        @media screen and (max-width: 1200px) {
+          max-width: 100%;
+        }
+      }
     }
   }
 }
 
 .sidebar.close ~ .content {
   left: 78px;
-
   width: calc(100% - 78px);
 }

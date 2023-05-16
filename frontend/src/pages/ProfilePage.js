@@ -1,17 +1,18 @@
-import React from "react";
+import React from 'react';
 
 const ProfilePage = () => {
   return (
-    <div className="profile-page">
-      <div className="top">
-        <i className="bx bx-menu icon"></i>
+    <div className="page">
+      <section className="top">
         <div className="title-page">
           <h2>Профиль</h2>
         </div>
-      </div>
+      </section>
 
-      <div className="main-content">123</div>
-      <div className="users">123</div>
+      <section className="wrapper profile">
+        <div className="page-content">123</div>
+        <div className="users">123</div>
+      </section>
     </div>
   );
 };
