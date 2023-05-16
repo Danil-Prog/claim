@@ -1,5 +1,6 @@
 package com.claim.api.service;
 
+import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -53,9 +55,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(pageRequest);
     }
 
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->
-                new UserNotFoundException("User with id=" + id + " not found"));
+    public Profile getUserByUsername(Principal principal) {
+        return userRepository.findByUsername(principal.getName()).orElseThrow(() ->
+                new UserNotFoundException("User with id=" + principal.getName() + " not found")).getProfile();
     }
 
     public User removeUserById(Long id) {
