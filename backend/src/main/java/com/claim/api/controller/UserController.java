@@ -2,6 +2,7 @@ package com.claim.api.controller;
 
 
 import com.claim.api.controller.dto.UserDto;
+import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.service.UserService;
@@ -18,8 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "ASC") String sortBy,
@@ -60,9 +61,9 @@ public class UserController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+    @GetMapping
+    public ResponseEntity<Profile> getUserById(Principal principal) {
+        return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
