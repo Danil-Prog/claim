@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import React from "react";
-import axios from "axios";
 
+import { userApi } from "../misc/UserApi";
 import UserContext from "../context/UserContext";
 
 const LoginPage = () => {
@@ -18,9 +18,9 @@ const LoginPage = () => {
     console.log("Компонент обновлён");
   }, [userContext]);
 
-  const authenticate = (obj) => {
-    axios
-      .post("http://localhost:8080/auth", obj)
+  const auth = (username, password) => {
+    userApi
+      .authenticate(username, password)
       .then((response) => {
         const { id, username, role } = response.data;
         const authdata = window.btoa(username + ":" + password);
@@ -37,7 +37,7 @@ const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    authenticate({ username: username, password: password });
+    auth(username, password);
   };
 
   if (isLoggedIn) {
