@@ -1,7 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import UserContext from "../context/UserContext";
-import { userApi } from "../misc/UserApi";
+import UserContext from '../../context/UserContext';
+import { userApi } from '../../misc/UserApi';
+import './styleProfile.scss';
 
 const ProfilePage = () => {
   const userContext = React.useContext(UserContext);
@@ -27,15 +28,20 @@ const ProfilePage = () => {
   };
 
   React.useEffect(() => {
-    userApi
-      .getProfile(user.authdata)
-      .then((response) => {
-        const info = response.data;
-        setUserProfile(info);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (user.authdata) {
+      userApi
+        .getProfile(user.authdata)
+        .then((response) => {
+          const info = response.data;
+          setUserProfile(info);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    return () => {
+      console.log('test');
+    };
   }, [setUserProfile, user.authdata]);
 
   return (
@@ -54,15 +60,15 @@ const ProfilePage = () => {
                   <div className="change-wrap-avatar">
                     <img
                       className={
-                        user.role === "ROLE_SUPER_ADMIN"
-                          ? "avatar border-super-admin"
-                          : user.role === "ROLE_ADMIN"
-                          ? "avatar border-admin"
-                          : user.role === "ROLE_EXEX"
-                          ? "avatar border-exec"
-                          : user.role === "ROLE_USER"
-                          ? "avatar border-user"
-                          : ""
+                        user.role === 'ROLE_SUPER_ADMIN'
+                          ? 'avatar border-super-admin'
+                          : user.role === 'ROLE_ADMIN'
+                          ? 'avatar border-admin'
+                          : user.role === 'ROLE_EXEX'
+                          ? 'avatar border-exec'
+                          : user.role === 'ROLE_USER'
+                          ? 'avatar border-user'
+                          : ''
                       }
                       src="/img/avatar.jpg"
                       width={200}
@@ -75,11 +81,7 @@ const ProfilePage = () => {
                     Назад
                   </button>
                   <button className="btn-main">Изменить пароль</button>
-                  <input
-                    type="submit"
-                    className="btn-submit"
-                    value="Сохранить"
-                  />
+                  <input type="submit" className="btn-submit" value="Сохранить" />
                 </div>
                 <div className="profile-fields">
                   <div className="field__item">
@@ -182,21 +184,26 @@ const ProfilePage = () => {
                 <div className="wrap-avatar">
                   <img
                     className={
-                      user.role === "ROLE_SUPER_ADMIN"
-                        ? "avatar border-super-admin"
-                        : user.role === "ROLE_ADMIN"
-                        ? "avatar border-admin"
-                        : user.role === "ROLE_EXEX"
-                        ? "avatar border-exec"
-                        : user.role === "ROLE_USER"
-                        ? "avatar border-user"
-                        : ""
+                      user.role === 'ROLE_SUPER_ADMIN'
+                        ? 'avatar border-super-admin'
+                        : user.role === 'ROLE_ADMIN'
+                        ? 'avatar border-admin'
+                        : user.role === 'ROLE_EXEX'
+                        ? 'avatar border-exec'
+                        : user.role === 'ROLE_USER'
+                        ? 'avatar border-user'
+                        : ''
                     }
                     src="/img/avatar.jpg"
                     width={200}
                     height={200}
                     alt="avatar"
                   />
+                  {user.role === 'ROLE_SUPER_ADMIN' ? (
+                    <i className="bx bx-crown icon-crown"></i>
+                  ) : (
+                    ''
+                  )}
                   <i className="bx bx-camera icon"></i>
                 </div>
 
@@ -208,33 +215,23 @@ const ProfilePage = () => {
               <div className="profile-fields">
                 <div className="field__item">
                   <label className="text label-field">Имя: </label>
-                  <span className="text">
-                    {userProfile && userProfile.firstname}
-                  </span>
+                  <span className="text">{userProfile && userProfile.firstname}</span>
                 </div>
                 <div className="field__item">
                   <label className="text label-field">Фамилия: </label>
-                  <span className="text">
-                    {userProfile && userProfile.lastname}
-                  </span>
+                  <span className="text">{userProfile && userProfile.lastname}</span>
                 </div>
                 <div className="field__item">
                   <label className="text label-field">Email: </label>
-                  <span className="text">
-                    {userProfile && userProfile.email}
-                  </span>
+                  <span className="text">{userProfile && userProfile.email}</span>
                 </div>
                 <div className="field__item">
                   <label className="text label-field">Телефон: </label>
-                  <span className="text">
-                    {userProfile && userProfile.phone}
-                  </span>
+                  <span className="text">{userProfile && userProfile.phone}</span>
                 </div>
                 <div className="field__item">
                   <label className="text label-field">Кабинет: </label>
-                  <span className="text">
-                    {userProfile && userProfile.cabinet}
-                  </span>
+                  <span className="text">{userProfile && userProfile.cabinet}</span>
                 </div>
                 <div className="field__item">
                   <label className="text label-field">PC: </label>

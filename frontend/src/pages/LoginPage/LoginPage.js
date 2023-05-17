@@ -1,21 +1,23 @@
-import { Navigate } from "react-router-dom";
-import React from "react";
+import { Navigate } from 'react-router-dom';
+import React from 'react';
 
-import { userApi } from "../misc/UserApi";
-import UserContext from "../context/UserContext";
+import { userApi } from '../../misc/UserApi';
+import UserContext from '../../context/UserContext';
+
+import './styleLogin.scss';
 
 const LoginPage = () => {
   const userContext = React.useContext(UserContext);
 
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
     const isLogIn = userContext.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
-    console.log("Компонент обновлён");
+    console.log('Компонент обновлён');
   }, [userContext]);
 
   const auth = (username, password) => {
@@ -23,7 +25,7 @@ const LoginPage = () => {
       .authenticate(username, password)
       .then((response) => {
         const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ":" + password);
+        const authdata = window.btoa(username + ':' + password);
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 

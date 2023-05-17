@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import UserContext from '../context/UserContext';
-import ThemeContext from '../context/ThemeContext';
+import UserContext from '../../context/UserContext';
+import ThemeContext from '../../context/ThemeContext';
+
+import './styleSidebar.scss';
 
 const Sidebar = () => {
   const userContext = React.useContext(UserContext);
@@ -58,21 +60,24 @@ const Sidebar = () => {
             <li className="nav-link">
               <a href="/">
                 <i className="bx bx-task icon"></i>
-
                 <span className="text nav-text">Задачи</span>
               </a>
             </li>
             <li className="nav-link">
               <a href="/">
                 <i className="bx bx-group icon"></i>
-
                 <span className="text nav-text">Пользователи</span>
               </a>
             </li>
             <li className="nav-link">
+              <Link to="/department">
+                <i className="bx bx-sitemap icon"></i>
+                <span className="text nav-text">Отделы</span>
+              </Link>
+            </li>
+            <li className="nav-link">
               <a href="/">
                 <i className="bx bxs-bar-chart-alt-2 icon"></i>
-
                 <span className="text nav-text">Статистика</span>
               </a>
             </li>
@@ -83,7 +88,6 @@ const Sidebar = () => {
           <li className="logout" onClick={logout}>
             <a href="/">
               <i className="bx bx-log-out icon"></i>
-
               <span className="text nav-text">Выход</span>
             </a>
           </li>
