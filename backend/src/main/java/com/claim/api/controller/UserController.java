@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -44,7 +45,7 @@ public class UserController {
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "ASC") String sortBy,
                                                   @RequestParam(defaultValue = "id") String[] sort) {
-        PageRequest pageRequest = PageRequest.of(page, size , Sort.by(Sort.Direction.fromString(sortBy), sort));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
         List<UserDto> users = userService.getUserList(pageRequest).stream()
                 .map(userMapper::toUserDto)
                 .toList();
@@ -62,7 +63,7 @@ public class UserController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
-    public ResponseEntity<Profile> getUserById(Principal principal) {
+    public ResponseEntity<Profile> getAuthorizeUser(Principal principal) {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
@@ -78,5 +79,11 @@ public class UserController {
     @PostMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok(userService.update(id, user));
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @PostMapping("/avatar")
+    public ResponseEntity<String> updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
+        return ResponseEntity.ok(userService.updateUserImage(image, principal));
     }
 }
