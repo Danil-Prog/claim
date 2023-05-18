@@ -13,15 +13,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final Path root = Paths.get("avatars/");
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -72,5 +80,29 @@ public class UserService implements UserDetailsService {
             return userRepository.save(user);
         } else
             throw new BadRequestException("User id:" + id + " not found!");
+    }
+
+    public String updateUserImage(MultipartFile image, Principal principal) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            String filename = UUID.randomUUID() + image.getOriginalFilename();
+            try {
+                if (!Files.exists(root))
+                    Files.createDirectory(root);
+                Path pathToUserImage = root.resolve(user.getProfile().getAvatar());
+                Files.deleteIfExists(pathToUserImage);
+
+                image.transferTo(new File(root.resolve(filename).toUri()));
+            } catch (IOException e) {
+                throw new BadRequestException("Problems to file: " + e);
+            }
+            user.getProfile().setAvatar(filename);
+
+            userRepository.save(user);
+
+            return "Successful upload image";
+        } else
+            throw new BadRequestException("User: " + principal.getName() + " not found!");
     }
 }
