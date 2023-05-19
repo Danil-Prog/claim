@@ -7,6 +7,7 @@ import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.mapper.ProfileMapper;
 import com.claim.api.repository.UserRepository;
+import com.claim.api.utils.FilesStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +27,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final Path root = Paths.get("avatars/");
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
@@ -46,7 +41,6 @@ public class UserService implements UserDetailsService {
 
     public boolean saveUser(User user) {
         Optional<User> userFromDataBase = userRepository.findByUsername(user.getUsername());
-
         if (userFromDataBase.isPresent()) {
             return false;
         }
@@ -65,13 +59,11 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(pageRequest);
     }
 
-    public ProfileDto getUserByUsername(Principal principal) throws IOException {
+    public ProfileDto getUserByUsername(Principal principal) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-
         if (userOptional.isPresent()) {
             Profile userProfile = userOptional.get().getProfile();
-            Path pathToUserImage = root.resolve(userOptional.get().getProfile().getAvatar());
-            byte[] userAvatar = Files.exists(pathToUserImage) ? Files.readAllBytes(pathToUserImage) : new byte[0];
+            byte[] userAvatar = FilesStorageUtil.getUserAvatar(userProfile);
             return new ProfileMapper().toProfileDto(userProfile, userAvatar);
         } else
             throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
@@ -96,21 +88,12 @@ public class UserService implements UserDetailsService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String filename = UUID.randomUUID() + image.getOriginalFilename();
-            try {
-                if (!Files.exists(root))
-                    Files.createDirectory(root);
-                Path pathToUserImage = root.resolve(user.getProfile().getAvatar());
-                Files.deleteIfExists(pathToUserImage);
-
-                image.transferTo(new File(root.resolve(filename).toUri()));
-            } catch (IOException e) {
-                throw new BadRequestException("Problems to file: " + e);
-            }
-            user.getProfile().setAvatar(filename);
-
-            userRepository.save(user);
-
-            return "Successful upload image";
+            if (FilesStorageUtil.uploadAvatar(user.getProfile(), image, filename)) {
+                user.getProfile().setAvatar(filename);
+                userRepository.save(user);
+                return "Successful upload image";
+            } else
+                return "An error occurred while uploading the file";
         } else
             throw new BadRequestException("User: " + principal.getName() + " not found!");
     }
