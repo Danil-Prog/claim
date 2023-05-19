@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 @Service
 public final class FilesStorageUtil {
@@ -42,16 +41,13 @@ public final class FilesStorageUtil {
 
         if (profile.getAvatar() != null) {
             if (!profile.getAvatar().isEmpty()) {
-                byte[] array;
                 try {
-                    array = Files.exists(pathToUserAvatar) ? Files.readAllBytes(pathToUserAvatar) : new byte[0];
+                    userAvatar = Files.exists(pathToUserAvatar) ? Files.readAllBytes(pathToUserAvatar) : new byte[0];
                 } catch (IOException e) {
                     throw new BadRequestException("There were errors while getting the file: " + e);
                 }
-                userAvatar = Base64.getEncoder().encode(array);
             }
         }
-
         return userAvatar;
     }
 }
