@@ -1,8 +1,8 @@
 package com.claim.api.controller;
 
 
+import com.claim.api.controller.dto.ProfileDto;
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.service.UserService;
@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -63,7 +64,7 @@ public class UserController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
-    public ResponseEntity<Profile> getAuthorizeUser(Principal principal) {
+    public ResponseEntity<ProfileDto> getAuthorizeUserProfile(Principal principal) throws IOException {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 

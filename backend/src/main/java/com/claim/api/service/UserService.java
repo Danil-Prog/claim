@@ -1,9 +1,11 @@
 package com.claim.api.service;
 
+import com.claim.api.controller.dto.ProfileDto;
 import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
+import com.claim.api.mapper.ProfileMapper;
 import com.claim.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -63,9 +65,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(pageRequest);
     }
 
-    public Profile getUserByUsername(Principal principal) {
-        return userRepository.findByUsername(principal.getName()).orElseThrow(() ->
-                new UserNotFoundException("User with id=" + principal.getName() + " not found")).getProfile();
+    public ProfileDto getUserByUsername(Principal principal) throws IOException {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+
+        if (userOptional.isPresent()) {
+            Profile userProfile = userOptional.get().getProfile();
+            Path pathToUserImage = root.resolve(userOptional.get().getProfile().getAvatar());
+            byte[] userAvatar = Files.exists(pathToUserImage) ? Files.readAllBytes(pathToUserImage) : new byte[0];
+            return new ProfileMapper().toProfileDto(userProfile, userAvatar);
+        } else
+            throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
     }
 
     public User removeUserById(Long id) {
