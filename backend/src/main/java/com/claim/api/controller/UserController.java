@@ -20,7 +20,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class UserController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
-    public ResponseEntity<ProfileDto> getAuthorizeUserProfile(Principal principal) throws IOException {
+    public ResponseEntity<ProfileDto> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
