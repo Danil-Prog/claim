@@ -35,8 +35,8 @@ public final class FilesStorageUtil {
         }
     }
 
-    public static byte[] getUserAvatar(Profile profile) {
-        Path pathToUserAvatar = root.resolve(profile.getId() + "/avatar/" + profile.getAvatar());
+    public static byte[] getUserAvatar(String filename, Profile profile) {
+        Path pathToUserAvatar = root.resolve(profile.getId() + "/avatar/" + filename);
         byte[] userAvatar = new byte[0];
 
         if (profile.getAvatar() != null) {

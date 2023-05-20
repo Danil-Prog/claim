@@ -1,8 +1,8 @@
 package com.claim.api.controller;
 
 
-import com.claim.api.controller.dto.ProfileDto;
 import com.claim.api.controller.dto.UserDto;
+import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.service.UserService;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -63,8 +64,16 @@ public class UserController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
-    public ResponseEntity<ProfileDto> getAuthorizeUserProfile(Principal principal) {
+    public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @GetMapping("/avatar/{filename}")
+    public ResponseEntity<byte[]> getUserAvatar(@PathVariable String filename, Principal principal) {
+        return ResponseEntity.ok()
+                .contentType(MediaType.valueOf(MediaType.IMAGE_GIF_VALUE))
+                .body(userService.getUserAvatar(filename, principal));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})

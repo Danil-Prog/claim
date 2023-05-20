@@ -1,11 +1,9 @@
 package com.claim.api.service;
 
-import com.claim.api.controller.dto.ProfileDto;
 import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
-import com.claim.api.mapper.ProfileMapper;
 import com.claim.api.repository.UserRepository;
 import com.claim.api.utils.FilesStorageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,12 +57,19 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll(pageRequest);
     }
 
-    public ProfileDto getUserByUsername(Principal principal) {
+    public Profile getUserByUsername(Principal principal) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+        if (userOptional.isPresent()) {
+            return userOptional.get().getProfile();
+        } else
+            throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
+    }
+
+    public byte[] getUserAvatar(String filename, Principal principal) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             Profile userProfile = userOptional.get().getProfile();
-            byte[] userAvatar = FilesStorageUtil.getUserAvatar(userProfile);
-            return new ProfileMapper().toProfileDto(userProfile, userAvatar);
+            return FilesStorageUtil.getUserAvatar(filename, userProfile);
         } else
             throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
     }
