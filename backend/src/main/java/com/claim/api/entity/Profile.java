@@ -1,6 +1,5 @@
 package com.claim.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -29,7 +28,6 @@ public class Profile {
     @Column(name = "email")
     private String email;
     @Column(name = "avatar")
-    @JsonIgnore
     private String avatar;
     @Size(min = 3, max = 11)
     @Column(name = "phone")
