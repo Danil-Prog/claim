@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+* {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+:root {
+  --body-color: #e4e9f7;
+  --sidebar-color: #fff;
+  --primary-color: #695cfe;
+  --primary-color-light: #7f74f5;
+  --toggle-color: #ddd;
+  --text-color-light: #fff;
+  --text-color: #000;
+  --title-text-color: #707070;
+
+  --dark-body-color: #18191a;
+  --dark-sidebar-color: #242526;
+  --dark-primary-color: #3a3b3c;
+  --dark-primary-color-light: #48494b;
+  --dark-toggle-color: #fff;
+  --dark-text-color: #ccc;
+
+  --border: linear-gradient(45deg, purple, orange);
+
+  --tran-02: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
+}
+
+.alert-enter {
+  opacity: 0;
+}
+.alert-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  position: relative;
+  height: 100%;
+  left: 250px;
+  padding: 0 50px;
+  width: calc(100% - 250px);
+  transition: var(--tran-03);
+
+  .page {
+    .top {
+      display: flex;
+      justify-content: start;
+      top: 0;
+      left: 250px;
+      height: 150px;
+      width: 100%;
+      padding: 0 100px;
+      align-items: end;
+      z-index: 10;
+      margin-bottom: 20px;
+
+      .title-page {
+        color: var(--dark-text-color);
+        font-size: 25px;
+        h2 {
+          transition: var(--tran-03);
+        }
+        a {
+          text-decoration: none;
+          .bx-left-arrow-alt {
+            position: absolute;
+            left: 5%;
+            top: 11%;
+            padding: 2px;
+            font-size: 30px;
+            border-radius: 50%;
+            color: var(--dark-text-color);
+            background: var(--dark-primary-color);
+            transition: var(--tran-03);
+            cursor: pointer;
+            &:hover {
+              background: var(--dark-primary-color-light);
+            }
+          }
+        }
+      }
+    }
+
+    .wrapper {
+      display: flex;
+      justify-content: space-around;
+      grid-gap: 50px;
+      padding-bottom: 7%;
+      @media screen and (max-width: 1400px) {
+        flex-direction: column;
+      }
+
+      .page-content {
+        display: flex;
+        justify-content: space-between;
+        transition: var(--tran-03);
+        flex-grow: 3;
+        min-height: 740px;
+        max-width: 1150px;
+        padding: 50px;
+        border-radius: 10px;
+        background-color: var(--dark-sidebar-color);
+        @media screen and (max-width: 1400px) {
+          max-width: 100%;
+          flex-direction: column;
+        }
+
+        .text {
+          color: var(--dark-text-color);
+        }
+      }
+
+      .users {
+        transition: var(--tran-03);
+        flex-grow: 1;
+        min-height: 740px;
+        min-width: 350px;
+        max-width: 500px;
+        height: 70vh;
+        padding: 50px;
+        border-radius: 10px;
+        z-index: 10;
+        background-color: var(--dark-sidebar-color);
+        @media screen and (max-width: 1400px) {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.btn-main {
+  background-color: var(--dark-primary-color);
+  border: none;
+  border-radius: 5px;
+  padding: 9px;
+  max-width: 200px;
+  margin: 0 auto;
+  width: 200px;
+  color: var(--dark-text-color);
+  font-size: 15px;
+  transition: var(--tran-03);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--dark-primary-color-light);
+  }
+}
+
+.btn-submit {
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 5px;
+  padding: 9px;
+  max-width: 200px;
+  margin: 0 auto;
+  width: 200px;
+  color: var(--dark-text-color);
+  font-size: 15px;
+  transition: var(--tran-03);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--primary-color-light);
+    color: var(--dark-body-color);
+  }
+}
