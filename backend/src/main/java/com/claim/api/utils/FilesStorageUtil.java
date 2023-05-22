@@ -19,15 +19,16 @@ public final class FilesStorageUtil {
     }
 
     public static boolean uploadAvatar(Profile profile, MultipartFile file, String filename) {
-        Path pathToUserAvatar = root.resolve(profile.getId() + "/avatar/");
+        Path pathToAvatar = root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(filename);
+
         try {
             if (!Files.exists(root.resolve(profile.getId() + "/avatar")))
                 Files.createDirectories(root.resolve(profile.getId() + "/avatar"));
 
             if (profile.getAvatar() != null) {
-                Files.deleteIfExists(pathToUserAvatar.resolve(profile.getAvatar()));
+                Files.deleteIfExists(root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(profile.getAvatar()));
             }
-            file.transferTo(new File(pathToUserAvatar.resolve(filename).toUri()));
+            file.transferTo(new File(pathToAvatar.toUri()));
 
             return true;
         } catch (IOException e) {
@@ -35,19 +36,16 @@ public final class FilesStorageUtil {
         }
     }
 
-    public static byte[] getUserAvatar(String filename, Profile profile) {
-        Path pathToUserAvatar = root.resolve(profile.getId() + "/avatar/" + filename);
-        byte[] userAvatar = new byte[0];
+    public static byte[] getUserAvatar(Long id, String filename) {
+        byte[] userAvatar;
+        Path pathToAvatar = root.resolve(String.valueOf(id)).resolve("avatar").resolve(filename);
 
-        if (profile.getAvatar() != null) {
-            if (!profile.getAvatar().isEmpty()) {
-                try {
-                    userAvatar = Files.exists(pathToUserAvatar) ? Files.readAllBytes(pathToUserAvatar) : new byte[0];
-                } catch (IOException e) {
-                    throw new BadRequestException("There were errors while getting the file: " + e);
-                }
-            }
+        try {
+            userAvatar = Files.exists(pathToAvatar) ? Files.readAllBytes(pathToAvatar) : new byte[0];
+        } catch (IOException e) {
+            throw new BadRequestException("There were errors while getting the file: " + e);
         }
+
         return userAvatar;
     }
 }
