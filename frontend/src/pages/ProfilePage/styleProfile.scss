@@ -1,0 +1,166 @@
+.content {
+  .page {
+    .wrapper {
+      display: flex;
+      justify-content: space-around;
+      grid-gap: 50px;
+      padding-bottom: 7%;
+      @media screen and (max-width: 1200px) {
+        flex-direction: column;
+      }
+
+      .page-content {
+        .profile-navigation {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          grid-gap: 20px;
+          max-width: 300px;
+          @media screen and (max-width: 1200px) {
+            margin: 0 auto;
+            width: 100%;
+          }
+          .change-wrap-avatar {
+            position: relative;
+            margin: 0 auto;
+            label {
+              &:hover .icon-camera {
+                opacity: 1;
+              }
+              .icon-camera {
+                z-index: 11;
+                color: #fff;
+                position: absolute;
+                left: 41%;
+                top: 42%;
+                font-size: 40px;
+                opacity: 0;
+                transition: var(--tran-03);
+                pointer-events: none;
+              }
+
+              .avatar {
+                z-index: 101;
+                margin: 0 auto;
+                border-radius: 50%;
+                transition: var(--tran-03);
+                cursor: pointer;
+                &:hover {
+                  filter: blur(2px);
+                }
+              }
+              .icon-crown {
+                z-index: 11;
+                color: #fff;
+                position: absolute;
+                left: 41%;
+                top: -24%;
+                font-size: 40px;
+                transition: var(--tran-03);
+                pointer-events: none;
+              }
+
+              .border-super-admin {
+                box-shadow: 0 0 0 6px var(--dark-sidebar-color), 0 0 0 10px #a518c2;
+              }
+              .border-admin {
+                box-shadow: 0 0 0 6px var(--dark-sidebar-color), 0 0 0 10px #8b0101;
+              }
+            }
+          }
+
+          .wrap-avatar {
+            position: relative;
+            margin: 0 auto;
+            .icon {
+              z-index: 11;
+              color: #fff;
+              position: absolute;
+              left: 41%;
+              top: 42%;
+              font-size: 40px;
+              opacity: 0;
+              transition: var(--tran-03);
+              pointer-events: none;
+            }
+            .avatar {
+              z-index: 101;
+              margin: 0 auto;
+              border-radius: 50%;
+              transition: var(--tran-03);
+            }
+            .icon-crown {
+              z-index: 11;
+              color: #fff;
+              position: absolute;
+              left: 41%;
+              top: -24%;
+              font-size: 40px;
+              transition: var(--tran-03);
+              pointer-events: none;
+            }
+            .border-super-admin {
+              box-shadow: 0 0 0 6px var(--dark-sidebar-color), 0 0 0 10px #a518c2;
+            }
+            .border-admin {
+              box-shadow: 0 0 0 6px var(--dark-sidebar-color), 0 0 0 10px #8b0101;
+            }
+          }
+
+          .btn-submit {
+            margin-top: 50px;
+          }
+        }
+
+        .profile-fields {
+          display: flex;
+          flex-direction: column;
+          align-items: space-around;
+          justify-content: space-between;
+          flex-grow: 3;
+          max-width: 600px;
+          @media screen and (max-width: 1200px) {
+            width: 100%;
+            margin: 0 auto;
+          }
+
+          .field__item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--dark-primary-color);
+
+            .label-field {
+              font-size: 18px;
+              padding: 9px;
+              width: 100%;
+              max-width: 170px;
+              min-width: 100px;
+              flex-grow: 1;
+            }
+
+            span {
+              display: flex;
+              align-items: center;
+              justify-content: end;
+              font-size: 20px;
+              flex-grow: 4;
+              input {
+                background-color: var(--dark-primary-color);
+                color: var(--dark-text-color);
+                border: none;
+                font-size: 20px;
+                text-align: right;
+                border-radius: 2px;
+              }
+            }
+          }
+        }
+
+        .text {
+          color: var(--dark-text-color);
+        }
+      }
+    }
+  }
+}
