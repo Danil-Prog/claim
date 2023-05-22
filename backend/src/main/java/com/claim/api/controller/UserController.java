@@ -41,6 +41,12 @@ public class UserController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/all")
     public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
@@ -69,11 +75,12 @@ public class UserController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping("/avatar/{filename}")
-    public ResponseEntity<byte[]> getUserAvatar(@PathVariable String filename, Principal principal) {
+    @GetMapping("/{id}/avatar/{filename}")
+    public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long id,
+                                                @PathVariable String filename) {
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(MediaType.IMAGE_GIF_VALUE))
-                .body(userService.getUserAvatar(filename, principal));
+                .body(userService.getUserAvatar(id, filename));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
