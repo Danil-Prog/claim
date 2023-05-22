@@ -30,10 +30,12 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "username")
+    @NotNull
     @Size(min = 5, max = 25)
     private String username;
 
     @Column(name = "password")
+    @NotNull
     @JsonIgnore
     private String password;
 
