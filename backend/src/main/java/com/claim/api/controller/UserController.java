@@ -92,9 +92,15 @@ public class UserController {
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @PostMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok(userService.update(id, user));
+    }
+
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @PutMapping
+    public ResponseEntity<String> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
+        return ResponseEntity.ok(userService.updateAuthorizeUserProfile(principal, profile));
     }
 
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
