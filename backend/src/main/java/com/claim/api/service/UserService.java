@@ -108,4 +108,17 @@ public class UserService implements UserDetailsService {
         } else
             throw new BadRequestException("User: " + principal.getName() + " not found!");
     }
+
+    public String updateAuthorizeUserProfile(Principal principal, Profile profile) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+        if (userOptional.isPresent() && profile != null) {
+            User user = userOptional.get();
+            profile.setId(user.getProfile().getId());
+            user.setProfile(profile);
+            userRepository.save(user);
+
+            return "User profile updated successfully";
+        } else
+            throw new BadRequestException("Errors occurred while updating the user profile.");
+    }
 }
