@@ -8,8 +8,10 @@ const ProfilePage = () => {
   const userContext = React.useContext(UserContext);
   const user = userContext.getUser();
 
+  const [selectedFile, setSelectedFile] = React.useState(null);
   const [userProfile, setUserProfile] = React.useState({});
   const [editProfile, setEditProfile] = React.useState(false);
+  const [preview, setPreview] = React.useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,10 +23,19 @@ const ProfilePage = () => {
 
   const toggleEditProfile = () => {
     setEditProfile(!editProfile);
+    setPreview(null);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('image', selectedFile);
+    try {
+      await userApi.setAvatar(user.authdata, formData);
+      setEditProfile(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   React.useEffect(() => {
@@ -39,11 +50,18 @@ const ProfilePage = () => {
           console.log(error);
         });
     }
-    return () => {
-      console.log('test');
-    };
+    return () => {};
   }, [setUserProfile, user.authdata]);
 
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+      setPreview(reader.result);
+    };
+    reader.readAsDataURL(e.target.files[0]);
+  };
   return (
     <div>
       {editProfile ? (
@@ -58,24 +76,38 @@ const ProfilePage = () => {
               <div className="page-content">
                 <div className="profile-navigation">
                   <div className="change-wrap-avatar">
-                    <img
-                      className={
-                        user.role === 'ROLE_SUPER_ADMIN'
-                          ? 'avatar border-super-admin'
-                          : user.role === 'ROLE_ADMIN'
-                          ? 'avatar border-admin'
-                          : user.role === 'ROLE_EXEX'
-                          ? 'avatar border-exec'
-                          : user.role === 'ROLE_USER'
-                          ? 'avatar border-user'
-                          : ''
-                      }
-                      src="/img/avatar.jpg"
-                      width={200}
-                      height={200}
-                      alt="avatar"
-                    />
-                    <i className="bx bx-camera icon"></i>
+                    <label>
+                      <input type="file" hidden onChange={handleFileSelect} />
+                      {userProfile.avatar != null && (
+                        <img
+                          className={
+                            user.role === 'ROLE_SUPER_ADMIN'
+                              ? 'avatar border-super-admin'
+                              : user.role === 'ROLE_ADMIN'
+                              ? 'avatar border-admin'
+                              : user.role === 'ROLE_EXEC'
+                              ? 'avatar border-exec'
+                              : user.role === 'ROLE_USER'
+                              ? 'avatar border-user'
+                              : ''
+                          }
+                          src={
+                            preview
+                              ? preview
+                              : `http://localhost:8080/api/v1/user/avatar/${userProfile.avatar}`
+                          }
+                          width={200}
+                          height={200}
+                          alt="avatar"
+                        />
+                      )}
+                      {user.role === 'ROLE_SUPER_ADMIN' ? (
+                        <i className="bx bx-crown icon-crown"></i>
+                      ) : (
+                        ''
+                      )}
+                      <i className="bx bx-camera icon-camera"></i>
+                    </label>
                   </div>
                   <button className="btn-main" onClick={toggleEditProfile}>
                     Назад
@@ -182,29 +214,31 @@ const ProfilePage = () => {
             <div className="page-content">
               <div className="profile-navigation">
                 <div className="wrap-avatar">
-                  <img
-                    className={
-                      user.role === 'ROLE_SUPER_ADMIN'
-                        ? 'avatar border-super-admin'
-                        : user.role === 'ROLE_ADMIN'
-                        ? 'avatar border-admin'
-                        : user.role === 'ROLE_EXEX'
-                        ? 'avatar border-exec'
-                        : user.role === 'ROLE_USER'
-                        ? 'avatar border-user'
-                        : ''
-                    }
-                    src="/img/avatar.jpg"
-                    width={200}
-                    height={200}
-                    alt="avatar"
-                  />
+                  {userProfile.avatar != null && (
+                    <img
+                      className={
+                        user.role === 'ROLE_SUPER_ADMIN'
+                          ? 'avatar border-super-admin'
+                          : user.role === 'ROLE_ADMIN'
+                          ? 'avatar border-admin'
+                          : user.role === 'ROLE_EXEC'
+                          ? 'avatar border-exec'
+                          : user.role === 'ROLE_USER'
+                          ? 'avatar border-user'
+                          : ''
+                      }
+                      src={`http://localhost:8080/api/v1/user/${user.id}/avatar/${userProfile.avatar}`}
+                      width={200}
+                      height={200}
+                      alt="avatar"
+                    />
+                  )}
+
                   {user.role === 'ROLE_SUPER_ADMIN' ? (
                     <i className="bx bx-crown icon-crown"></i>
                   ) : (
                     ''
                   )}
-                  <i className="bx bx-camera icon"></i>
                 </div>
 
                 <button className="btn-main" onClick={toggleEditProfile}>

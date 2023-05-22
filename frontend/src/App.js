@@ -7,10 +7,11 @@ import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import DepartPage from './pages/DepartPage/DepartPage';
+import DepartUsersPage from './pages/DepartUsersPage';
 
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
-import Sidebar from './components/Sidebar/Sidebar';
+import Sidebar from './components/Sidebar';
 
 import UserContext from './context/UserContext';
 
@@ -32,9 +33,14 @@ function App() {
             }
           />
           <Route exact path="/login" element={<LoginPage />} />
-          <Route exact path="/department" element={<DepartPage />} />
+          <Route
+            exact
+            path="/department/users?/:userId"
+            element={<DepartUsersPage userContext={userContext} />}
+          />
+          <Route exact path="/department" element={<DepartPage userContext={userContext} />} />
           <Route path="*" element={<Navigate to="/" />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route exact path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
     </ThemeMode>

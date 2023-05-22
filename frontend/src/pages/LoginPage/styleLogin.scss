@@ -39,25 +39,14 @@
           position: absolute;
           bottom: 0;
 
-          &:focus {
-            + span {
-              top: -7px;
-              left: 10px;
-              background: var(--primary-color);
-              font-size: 12px;
-              padding: 0 7px;
-              border-radius: 10px;
-            }
-          }
-          &:valid {
-            + span {
-              top: -7px;
-              left: 10px;
-              background: var(--primary-color);
-              font-size: 12px;
-              padding: 0 7px;
-              border-radius: 10px;
-            }
+          &:focus + span,
+          &:valid + span {
+            top: -7px;
+            left: 10px;
+            background: var(--primary-color);
+            font-size: 12px;
+            padding: 0 7px;
+            border-radius: 10px;
           }
         }
 

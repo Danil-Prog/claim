@@ -33,6 +33,7 @@ const LoginPage = () => {
       })
       .catch((error) => {
         console.log(error);
+        console.log(isError);
         setIsError(true);
       });
   };

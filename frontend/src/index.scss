@@ -32,6 +32,21 @@
   --tran-05: all 0.5s ease;
 }
 
+.alert-enter {
+  opacity: 0;
+}
+.alert-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -48,7 +63,7 @@ body {
   .page {
     .top {
       display: flex;
-      justify-content: left;
+      justify-content: start;
       top: 0;
       left: 250px;
       height: 150px;
@@ -64,6 +79,24 @@ body {
         h2 {
           transition: var(--tran-03);
         }
+        a {
+          text-decoration: none;
+          .bx-left-arrow-alt {
+            position: absolute;
+            left: 5%;
+            top: 11%;
+            padding: 2px;
+            font-size: 30px;
+            border-radius: 50%;
+            color: var(--dark-text-color);
+            background: var(--dark-primary-color);
+            transition: var(--tran-03);
+            cursor: pointer;
+            &:hover {
+              background: var(--dark-primary-color-light);
+            }
+          }
+        }
       }
     }
 
@@ -72,7 +105,7 @@ body {
       justify-content: space-around;
       grid-gap: 50px;
       padding-bottom: 7%;
-      @media screen and (max-width: 1200px) {
+      @media screen and (max-width: 1400px) {
         flex-direction: column;
       }
 
@@ -81,11 +114,12 @@ body {
         justify-content: space-between;
         transition: var(--tran-03);
         flex-grow: 3;
+        min-height: 740px;
         max-width: 1150px;
         padding: 50px;
         border-radius: 10px;
         background-color: var(--dark-sidebar-color);
-        @media screen and (max-width: 1200px) {
+        @media screen and (max-width: 1400px) {
           max-width: 100%;
           flex-direction: column;
         }
@@ -98,6 +132,7 @@ body {
       .users {
         transition: var(--tran-03);
         flex-grow: 1;
+        min-height: 740px;
         min-width: 350px;
         max-width: 500px;
         height: 70vh;
@@ -105,7 +140,7 @@ body {
         border-radius: 10px;
         z-index: 10;
         background-color: var(--dark-sidebar-color);
-        @media screen and (max-width: 1200px) {
+        @media screen and (max-width: 1400px) {
           max-width: 100%;
         }
       }
