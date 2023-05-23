@@ -5,6 +5,8 @@ export const userApi = {
   signup,
   getProfile,
   setAvatar,
+  getSelfInfo,
+  getUsersAll,
 };
 
 function authenticate(username, password) {
@@ -37,6 +39,24 @@ function setAvatar(authdata, formData) {
     headers: {
       Authorization: `Basic ${authdata}`,
       'Content-type': 'multipart/form-data',
+    },
+  });
+}
+
+function getSelfInfo(authdata) {
+  return instance.get('/api/v1/user', {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function getUsersAll(authdata) {
+  return instance.get('/api/v1/user/all', {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
     },
   });
 }

@@ -11,7 +11,7 @@
           display: flex;
           justify-content: space-between;
           grid-gap: 40px;
-          @media screen and (max-width: 1100px) {
+          @media screen and (max-width: 1300px) {
             flex-direction: column;
             align-items: center;
           }
@@ -135,66 +135,6 @@
           justify-content: space-around;
           flex-wrap: wrap;
           grid-gap: 20px;
-          .user-card {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: var(--dark-primary-color);
-            min-width: 300px;
-            grid-gap: 20px;
-            transition: var(--tran-03);
-            cursor: pointer;
-            &:hover {
-              background-color: var(--dark-primary-color-light);
-            }
-
-            .mini-avatar {
-              .null-avatar {
-                background-color: var(--dark-primary-color-light);
-                height: 60px;
-                width: 60px;
-                border-radius: 50%;
-              }
-              .border-super-admin {
-                box-shadow: 0 0 0 3px var(--dark-primary-color), 0 0 0 5px #a518c2;
-              }
-              .border-admin {
-                box-shadow: 0 0 0 3px var(--dark-primary-color), 0 0 0 5px #8b0101;
-              }
-              img {
-                height: 60px;
-                width: 60px;
-                border-radius: 50%;
-              }
-            }
-            .info {
-              display: flex;
-              flex-direction: column;
-              .name {
-                color: var(--dark-text-color);
-              }
-              .super-admin {
-                color: #ff000071;
-              }
-
-              .admin {
-                color: #2c9af371;
-              }
-
-              .exec {
-                color: #dce92a71;
-              }
-
-              .user {
-                color: #bebebe71;
-              }
-
-              .username {
-                color: var(--dark-text-color);
-              }
-            }
-          }
         }
       }
     }
