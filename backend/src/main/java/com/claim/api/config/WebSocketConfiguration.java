@@ -1,6 +1,10 @@
 package com.claim.api.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
+import org.springframework.boot.autoconfigure.amqp.RabbitConnectionFactoryBeanConfigurer;
+import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,15 +15,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer  {
 
-    @Value("${rabbit.configure.user}")
-    private String RABBIT_USER;
-    @Value("${rabbit.configure.password}")
-    private String RABBIT_PASSWORD;
-
-    @Value("${rabbit.configure.host}")
-    private String RABBIT_HOST;
-    @Value("${rabbit.configure.port}")
-    private int RABBIT_PORT;
+    @Autowired
+    private RabbitProperties rabbitProperties;
 
 
     @Override
@@ -30,12 +27,13 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/topic", "/queue")
-                .setRelayHost(RABBIT_HOST)
-                .setRelayPort(RABBIT_PORT)
-                .setClientLogin(RABBIT_USER)
-                .setClientPasscode(RABBIT_PASSWORD)
-                .setSystemLogin(RABBIT_USER)
-                .setSystemPasscode(RABBIT_PASSWORD);
+        config.enableStompBrokerRelay("/topic")
+                .setRelayHost(rabbitProperties.getHost())
+                .setRelayPort(rabbitProperties.getPort())
+                .setClientLogin(rabbitProperties.getUsername())
+                .setClientPasscode(rabbitProperties.getPassword())
+                .setSystemLogin(rabbitProperties.getUsername())
+                .setSystemPasscode(rabbitProperties.getPassword());
+        config.setApplicationDestinationPrefixes("/app");
     }
 }

@@ -33,6 +33,20 @@ services:
       - mysql
     restart: unless-stopped
 
+  rabbitmq:
+    image: pcloud/rabbitmq-stomp
+    hostname: rabbit
+    container_name: rabbitmq
+    restart: always
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "Mannul84"
+    ports:
+      - "15672:15672"
+      - "61613:61613"
+    networks:
+      - mysql
+
   backend:
     container_name: backend
     build: .
@@ -41,11 +55,17 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_container:3306/claim?autoReconnect=true&failOverReadOnly=false&maxReconnects=10
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_USER: "admin"
+      SPRING_RABBITMQ_PASSWORD: "Mannul84"
+      SPRING_RABBITMQ_PORT: 61613
     ports:
       - "8080:8080"
     depends_on:
       - mysql_db
+      - rabbitmq
     links:
+      - "rabbitmq"
       - "mysql_db"
     networks:
       - mysql
