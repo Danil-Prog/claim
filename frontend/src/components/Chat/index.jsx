@@ -93,12 +93,59 @@ const Chat = ({ userContext }) => {
             </div>
           </div>
           <div className="user-list">
-            {/* {!!listUsers &&
-              Object.entries(listUsers).map(([index, item]) => {
-                const user = item;
-                console.log(list);
-                <UserCard user={user} />;
-              })} */}
+            {listUsers.map((item) => (
+              <div key={item.id} className="user-card">
+                <div className="mini-avatar">
+                  {item.profile.avatar ? (
+                    <img
+                      className={
+                        item.role === 'ROLE_SUPER_ADMIN'
+                          ? 'mini-avatar border-super-admin'
+                          : item.role === 'ROLE_ADMIN'
+                          ? 'mini-avatar border-admin'
+                          : item.role === 'ROLE_EXEC'
+                          ? 'mini-avatar border-exec'
+                          : item.role === 'ROLE_USER'
+                          ? 'mini-avatar border-user'
+                          : 'mini-avatar null-avatar'
+                      }
+                      src={`http://localhost:8080/api/v1/user/${item.profile.id}/avatar/${item.profile.avatar}`}
+                      alt="avatar"
+                    />
+                  ) : (
+                    <div className="null-avatar"></div>
+                  )}
+                </div>
+                <div className="user-card-info">
+                  <span className="name">
+                    {item.profile.firstname} {item.profile.lastname}
+                  </span>
+                  <span className="username">{item.username}</span>
+                  <span
+                    className={
+                      item.role === 'ROLE_SUPER_ADMIN'
+                        ? 'role super-admin'
+                        : item.role === 'ROLE_ADMIN'
+                        ? 'role admin'
+                        : item.role === 'ROLE_EXEC'
+                        ? 'role exec'
+                        : item.role === 'ROLE_USER'
+                        ? 'role user'
+                        : 'Ошибка'
+                    }>
+                    {item.role === 'ROLE_SUPER_ADMIN'
+                      ? 'Super Admin'
+                      : item.role === 'ROLE_ADMIN'
+                      ? 'Admin'
+                      : item.role === 'ROLE_EXEC'
+                      ? 'Исполнитель'
+                      : item.role === 'ROLE_USER'
+                      ? 'Пользователь'
+                      : 'Ошибка'}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
           <div className="message">
             <i className="bx bx-paperclip clip"></i>

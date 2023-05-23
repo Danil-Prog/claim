@@ -2,12 +2,12 @@ import React from 'react';
 
 import './styleUserCard.scss';
 
-function UserCard({ user, item }) {
+function UserCard({ user }) {
   return (
     <>
       <div key={user.id} className="user-card">
         <div className="mini-avatar">
-          {item.profile.avatar ? (
+          {user.profile.avatar ? (
             <img
               className={
                 user.role === 'ROLE_SUPER_ADMIN'
@@ -20,7 +20,7 @@ function UserCard({ user, item }) {
                   ? 'mini-avatar border-user'
                   : 'mini-avatar null-avatar'
               }
-              src={`http://localhost:8080/api/v1/user/${item.profile.id}/avatar/${item.profile.avatar}`}
+              src={`http://localhost:8080/api/v1/user/${user.profile.id}/avatar/${user.profile.avatar}`}
               alt="avatar"
             />
           ) : (
@@ -29,7 +29,7 @@ function UserCard({ user, item }) {
         </div>
         <div className="user-card-info">
           <span className="name">
-            {item.profile.firstname} {item.profile.lastname}
+            {user.profile.firstname} {user.profile.lastname}
           </span>
           <span className="username">{user.username}</span>
           <span

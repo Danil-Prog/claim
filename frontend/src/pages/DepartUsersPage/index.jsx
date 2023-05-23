@@ -93,13 +93,13 @@ const DepartUsersPage = ({ userContext }) => {
                       {item.profile.avatar ? (
                         <img
                           className={
-                            user.role === 'ROLE_SUPER_ADMIN'
+                            item.role === 'ROLE_SUPER_ADMIN'
                               ? 'mini-avatar border-super-admin'
-                              : user.role === 'ROLE_ADMIN'
+                              : item.role === 'ROLE_ADMIN'
                               ? 'mini-avatar border-admin'
-                              : user.role === 'ROLE_EXEC'
+                              : item.role === 'ROLE_EXEC'
                               ? 'mini-avatar border-exec'
-                              : user.role === 'ROLE_USER'
+                              : item.role === 'ROLE_USER'
                               ? 'mini-avatar border-user'
                               : 'mini-avatar null-avatar'
                           }
