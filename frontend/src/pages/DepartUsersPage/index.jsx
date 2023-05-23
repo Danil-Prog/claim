@@ -2,11 +2,11 @@ import React from 'react';
 
 import './styleDepartUsers.scss';
 
-import { Link } from 'react-router-dom';
 import { departApi } from '../../misc/DepartApi';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
-import Sort from '../../components/Sort/Sort';
+import Sort from '../../components/Sort';
+import Header from '../../components/Header';
 
 const DepartUsersPage = ({ userContext }) => {
   const user = userContext.getUser();
@@ -15,7 +15,7 @@ const DepartUsersPage = ({ userContext }) => {
 
   const [listUsers, setListUsers] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(0);
-  const [totalPages, setTotalPages] = React.useState(null);
+  const [totalPages, setTotalPages] = React.useState(1);
   const [sizeItems, setSizeItems] = React.useState(12);
   const [selectedSortBy, setSelectedSortBy] = React.useState('asc');
   const [selectedSortField, setSelectedSortField] = React.useState('profile.lastname');
@@ -45,16 +45,8 @@ const DepartUsersPage = ({ userContext }) => {
   }, [currentPage, selectedSortBy, selectedSortField, sizeItems]);
   return (
     <>
+      <Header title={'Сотрудники отдела'} />
       <div className="page">
-        <section className="top">
-          <div className="title-page">
-            <Link to="/department">
-              <i className="bx bx-left-arrow-alt"></i>
-            </Link>
-            <h2>Работники отдела</h2>
-          </div>
-        </section>
-
         <section className="wrapper depart-users">
           <div className="page-content">
             <div className="page-content-top">
@@ -64,6 +56,7 @@ const DepartUsersPage = ({ userContext }) => {
                 list={list}
                 sortName0={'asc'}
                 sortName1={'desc'}
+                sortName2={''}
               />
               <Sort
                 selectedSort={selectedSortField}
@@ -117,7 +110,7 @@ const DepartUsersPage = ({ userContext }) => {
                         <div className="null-avatar"></div>
                       )}
                     </div>
-                    <div className="info">
+                    <div className="user-card-info">
                       <span className="name">
                         {item.profile.firstname} {item.profile.lastname}
                       </span>
@@ -150,7 +143,6 @@ const DepartUsersPage = ({ userContext }) => {
             </div>
             <Pagination totalPages={totalPages} onChangePage={(number) => setCurrentPage(number)} />
           </div>
-          <div className="users">123</div>
         </section>
       </div>
     </>

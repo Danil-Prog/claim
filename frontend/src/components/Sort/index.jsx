@@ -1,13 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 
-import './Sort.scss';
+import './styleSort.scss';
 
 function Sort({ setSelectedSort, list, sortName0, sortName1, sortName2 }) {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState(0);
 
-  const sortName = list[selected];
+  const listItems = list;
+
+  const sortName = listItems[selected];
 
   const onClickListItem = (i) => {
     setSelected(i);
@@ -30,7 +32,7 @@ function Sort({ setSelectedSort, list, sortName0, sortName1, sortName2 }) {
       {open && (
         <div className="sort_popup">
           <ul>
-            {list.map((name, i) => (
+            {listItems.map((name, i) => (
               <li
                 key={i}
                 onClick={() => onClickListItem(i)}

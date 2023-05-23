@@ -1,14 +1,6 @@
 .content {
   .page {
     .wrapper {
-      display: flex;
-      justify-content: space-around;
-      grid-gap: 50px;
-      padding-bottom: 7%;
-      @media screen and (max-width: 1200px) {
-        flex-direction: column;
-      }
-
       .page-content {
         .profile-navigation {
           display: flex;
@@ -16,7 +8,7 @@
           flex-grow: 1;
           grid-gap: 20px;
           max-width: 300px;
-          @media screen and (max-width: 1200px) {
+          @media screen and (max-width: 1401px) {
             margin: 0 auto;
             width: 100%;
           }
@@ -119,7 +111,7 @@
           justify-content: space-between;
           flex-grow: 3;
           max-width: 600px;
-          @media screen and (max-width: 1200px) {
+          @media screen and (max-width: 1401px) {
             width: 100%;
             margin: 0 auto;
           }
