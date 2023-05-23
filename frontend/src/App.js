@@ -1,16 +1,49 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+
 import './index.scss';
+import './styles/themeMode.scss';
+import HomePage from './pages/HomePage/HomePage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import DepartPage from './pages/DepartPage/DepartPage';
+import DepartUsersPage from './pages/DepartUsersPage';
+
+import AdminRoute from './Routes/AdminRoute';
+import ThemeMode from './Routes/ThemeMode';
+import Sidebar from './components/Sidebar';
+
+import UserContext from './context/UserContext';
 
 function App() {
+  const userContext = React.useContext(UserContext);
+  const userValue = userContext.getUser();
   return (
-    <div className="container">
-      <div className="wrapper">
-        <form id="signin" method="post">
-          <input type="text" id="user" name="user" placeholder="username" />
-          <input type="password" id="pass" name="pass" placeholder="password" />
-          <button type="submit">&#xf0da;</button>
-        </form>
+    <ThemeMode>
+      {userValue && <Sidebar />}
+
+      <div className="content">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <AdminRoute>
+                <HomePage />
+              </AdminRoute>
+            }
+          />
+          <Route exact path="/login" element={<LoginPage />} />
+          <Route
+            exact
+            path="/department/users?/:userId"
+            element={<DepartUsersPage userContext={userContext} />}
+          />
+          <Route exact path="/department" element={<DepartPage userContext={userContext} />} />
+          <Route path="*" element={<Navigate to="/" />} />
+          <Route exact path="/profile" element={<ProfilePage />} />
+        </Routes>
       </div>
-    </div>
+    </ThemeMode>
   );
 }
 
