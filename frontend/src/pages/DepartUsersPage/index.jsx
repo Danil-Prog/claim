@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import Sort from '../../components/Sort';
 import Header from '../../components/Header';
+import UserCard from '../../components/UserCard';
 
 const DepartUsersPage = ({ userContext }) => {
   const user = userContext.getUser();
@@ -37,8 +38,6 @@ const DepartUsersPage = ({ userContext }) => {
         setListUsers(response.data.content);
         setTotalPages(response.data.totalPages);
         setSizeItems(response.data.size);
-
-        console.log(selectedSortField);
       })
       .catch((error) => console.log(error));
     return () => {};
@@ -67,7 +66,7 @@ const DepartUsersPage = ({ userContext }) => {
                 sortName2={'role'}
               />
               <select
-                style={{ 'border-radius': '10px' }}
+                style={{ borderRadius: '10px' }}
                 name="select-page-items"
                 value={sizeItems}
                 onChange={(e) => setSizeItems(e.target.value)}>
@@ -86,60 +85,7 @@ const DepartUsersPage = ({ userContext }) => {
             </div>
 
             <div className="list-depart-users">
-              {!!listUsers &&
-                listUsers.map((item) => (
-                  <div key={item.id} className="user-card">
-                    <div className="mini-avatar">
-                      {item.profile.avatar ? (
-                        <img
-                          className={
-                            item.role === 'ROLE_SUPER_ADMIN'
-                              ? 'mini-avatar border-super-admin'
-                              : item.role === 'ROLE_ADMIN'
-                              ? 'mini-avatar border-admin'
-                              : item.role === 'ROLE_EXEC'
-                              ? 'mini-avatar border-exec'
-                              : item.role === 'ROLE_USER'
-                              ? 'mini-avatar border-user'
-                              : 'mini-avatar null-avatar'
-                          }
-                          src={`http://localhost:8080/api/v1/user/${item.profile.id}/avatar/${item.profile.avatar}`}
-                          alt="avatar"
-                        />
-                      ) : (
-                        <div className="null-avatar"></div>
-                      )}
-                    </div>
-                    <div className="user-card-info">
-                      <span className="name">
-                        {item.profile.firstname} {item.profile.lastname}
-                      </span>
-                      <span className="username">{item.username}</span>
-                      <span
-                        className={
-                          item.role === 'ROLE_SUPER_ADMIN'
-                            ? 'role super-admin'
-                            : item.role === 'ROLE_ADMIN'
-                            ? 'role admin'
-                            : item.role === 'ROLE_EXEC'
-                            ? 'role exec'
-                            : item.role === 'ROLE_USER'
-                            ? 'role user'
-                            : 'Ошибка'
-                        }>
-                        {item.role === 'ROLE_SUPER_ADMIN'
-                          ? 'Super Admin'
-                          : item.role === 'ROLE_ADMIN'
-                          ? 'Admin'
-                          : item.role === 'ROLE_EXEC'
-                          ? 'Исполнитель'
-                          : item.role === 'ROLE_USER'
-                          ? 'Пользователь'
-                          : 'Ошибка'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              {!!listUsers && listUsers.map((item) => <UserCard key={item.id} user={item} />)}
             </div>
             <Pagination totalPages={totalPages} onChangePage={(number) => setCurrentPage(number)} />
           </div>

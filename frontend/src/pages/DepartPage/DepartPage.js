@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 
-import { Link } from "react-router-dom";
-import { toast } from "wc-toast";
+import { Link } from 'react-router-dom';
+import { toast } from 'wc-toast';
 
-import "./styleDepart.scss";
+import './styleDepart.scss';
 
-import { departApi } from "../../misc/DepartApi";
-import Pagination from "../../components/Pagination";
-import Sort from "../../components/Sort";
-import Header from "../../components/Header";
+import { departApi } from '../../misc/DepartApi';
+import Pagination from '../../components/Pagination';
+import Sort from '../../components/Sort';
+import Header from '../../components/Header';
 
 const DepartPage = ({ userContext }) => {
   const user = userContext.getUser();
 
-  const [valueDepartment, setValueDepartment] = React.useState({ name: "" });
+  const [valueDepartment, setValueDepartment] = React.useState({ name: '' });
   const [listDepartment, setListDepartment] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(null);
   const [sizeItems, setSizeItems] = React.useState(10);
-  const [selectedSort, setSelectedSort] = React.useState("asc");
-  const list = ["возрастанию", "убыванию"];
+  const [selectedSort, setSelectedSort] = React.useState('asc');
+  const list = ['возрастанию', 'убыванию'];
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValueDepartment({
@@ -29,13 +29,13 @@ const DepartPage = ({ userContext }) => {
   };
 
   const handleCustomToast = () => {
-    toast("Отдел успешно создан!", {
-      icon: { type: "success" },
+    toast('Отдел успешно создан!', {
+      icon: { type: 'success' },
       theme: {
-        type: "custom",
+        type: 'custom',
         style: {
-          background: "var(--dark-primary-color)",
-          color: "var(--dark-text-color)",
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
         },
       },
     });
@@ -45,7 +45,7 @@ const DepartPage = ({ userContext }) => {
     e.preventDefault();
     try {
       await departApi.newDepartment(user.authdata, valueDepartment);
-      setValueDepartment({ name: "" });
+      setValueDepartment({ name: '' });
       handleCustomToast();
     } catch (error) {
       console.log(error);
@@ -68,7 +68,7 @@ const DepartPage = ({ userContext }) => {
     <>
       {user.authdata && listDepartment && (
         <>
-          <Header title={"Отделы"} />
+          <Header title={'Отделы'} />
           <div className="page">
             <section className="wrapper depart">
               <div className="page-content">
@@ -84,11 +84,7 @@ const DepartPage = ({ userContext }) => {
                           onChange={handleInputChange}
                         />
                         <span>Создание отдела: </span>
-                        <input
-                          className="btn-input"
-                          type="submit"
-                          value="Создать"
-                        />
+                        <input className="btn-input" type="submit" value="Создать" />
                       </form>
                     </label>
                   </div>
@@ -96,18 +92,14 @@ const DepartPage = ({ userContext }) => {
                     selectedSort={selectedSort}
                     setSelectedSort={setSelectedSort}
                     list={list}
-                    sortName0={"asc"}
-                    sortName1={"desc"}
-                    sortName2={"1"}
+                    sortName0={'asc'}
+                    sortName1={'desc'}
+                    sortName2={'1'}
                   />
 
                   <div className="search-depart">
                     <label className="label-field" htmlFor="search">
-                      <input
-                        className="input-search-depart"
-                        type="text"
-                        name="search"
-                      />
+                      <input className="input-search-depart" type="text" name="search" />
                       <span>Поиск: </span>
                     </label>
                     <i className="bx bx-search icon"></i>

@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import { userApi } from "../../misc/UserApi";
-import UserCard from "../UserCard";
+import { userApi } from '../../misc/UserApi';
+import UserCard from '../UserCard';
 
-import "./Chat.scss";
+import './Chat.scss';
 
 const Chat = ({ userContext }) => {
   const [userSelfData, setUserSelfData] = React.useState({});
@@ -45,15 +45,15 @@ const Chat = ({ userContext }) => {
                 {userSelfData.avatar ? (
                   <img
                     className={
-                      user.role === "ROLE_SUPER_ADMIN"
-                        ? "mini-avatar border-super-admin"
-                        : user.role === "ROLE_ADMIN"
-                        ? "mini-avatar border-admin"
-                        : user.role === "ROLE_EXEC"
-                        ? "mini-avatar border-exec"
-                        : user.role === "ROLE_USER"
-                        ? "mini-avatar border-user"
-                        : "mini-avatar null-avatar"
+                      user.role === 'ROLE_SUPER_ADMIN'
+                        ? 'mini-avatar border-super-admin'
+                        : user.role === 'ROLE_ADMIN'
+                        ? 'mini-avatar border-admin'
+                        : user.role === 'ROLE_EXEC'
+                        ? 'mini-avatar border-exec'
+                        : user.role === 'ROLE_USER'
+                        ? 'mini-avatar border-user'
+                        : 'mini-avatar null-avatar'
                     }
                     src={`http://localhost:8080/api/v1/user/${userSelfData.id}/avatar/${userSelfData.avatar}`}
                     alt="avatar"
@@ -63,30 +63,31 @@ const Chat = ({ userContext }) => {
                 )}
               </div>
               <div className="user-card-info">
-                <span className="name">{userSelfData.lastname}</span>
+                <span className="name">
+                  {userSelfData.firstname} {userSelfData.lastname}
+                </span>
                 <span className="username">{userSelfData.username}</span>
                 <span
                   className={
-                    user.role === "ROLE_SUPER_ADMIN"
-                      ? "role super-admin"
-                      : user.role === "ROLE_ADMIN"
-                      ? "role admin"
-                      : user.role === "ROLE_EXEC"
-                      ? "role exec"
-                      : user.role === "ROLE_USER"
-                      ? "role user"
-                      : "Ошибка"
-                  }
-                >
-                  {user.role === "ROLE_SUPER_ADMIN"
-                    ? "Super Admin"
-                    : user.role === "ROLE_ADMIN"
-                    ? "Admin"
-                    : user.role === "ROLE_EXEC"
-                    ? "Исполнитель"
-                    : user.role === "ROLE_USER"
-                    ? "Пользователь"
-                    : "Ошибка"}
+                    user.role === 'ROLE_SUPER_ADMIN'
+                      ? 'role super-admin'
+                      : user.role === 'ROLE_ADMIN'
+                      ? 'role admin'
+                      : user.role === 'ROLE_EXEC'
+                      ? 'role exec'
+                      : user.role === 'ROLE_USER'
+                      ? 'role user'
+                      : 'Ошибка'
+                  }>
+                  {user.role === 'ROLE_SUPER_ADMIN'
+                    ? 'Super Admin'
+                    : user.role === 'ROLE_ADMIN'
+                    ? 'Admin'
+                    : user.role === 'ROLE_EXEC'
+                    ? 'Исполнитель'
+                    : user.role === 'ROLE_USER'
+                    ? 'Пользователь'
+                    : 'Ошибка'}
                 </span>
               </div>
             </div>
@@ -99,13 +100,13 @@ const Chat = ({ userContext }) => {
           <div className="message">
             <i className="bx bx-paperclip clip"></i>
             <form>
-              <input type="text" name="text_message" className="text_message" />
               <input
-                type="button"
-                name="send_message"
-                className="send_message"
-                value=">"
+                type="text"
+                name="text_message"
+                className="text_message"
+                placeholder="Сообщение"
               />
+              <input type="button" name="send_message" className="send_message" value=">" />
             </form>
           </div>
         </div>

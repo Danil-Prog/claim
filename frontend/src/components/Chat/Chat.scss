@@ -31,13 +31,8 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
-    grid-gap: 10px;
-    .test {
-      width: 100%;
-      height: 100px;
-      border: 2px solid;
-      margin: 20px 0;
-    }
+    grid-gap: 13px;
+    padding-bottom: 13px;
   }
 
   .message {
@@ -48,12 +43,14 @@
     padding: 20px;
     border-radius: 0 0 10px 10px;
     grid-gap: 20px;
+    transition: var(--tran-03);
     background-color: var(--content-color-light);
     form {
       display: flex;
       justify-content: space-between;
       width: 100%;
       grid-gap: 20px;
+      transition: var(--tran-03);
       .text_message {
         min-width: 100px;
         flex-grow: 3;
@@ -64,6 +61,7 @@
         font-size: 18px;
         border-radius: 10px;
         background-color: var(--input-color);
+        transition: var(--tran-03);
         &:focus + span {
           background-color: var(--primary-color);
         }

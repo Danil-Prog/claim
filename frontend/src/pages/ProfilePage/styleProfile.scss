@@ -92,10 +92,16 @@
               pointer-events: none;
             }
             .border-super-admin {
-              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px #a518c2;
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--super-admin-color);
             }
             .border-admin {
-              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px #8b0101;
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--admin-color);
+            }
+            .border-exec {
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--exec-color);
+            }
+            .border-user {
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--user-color);
             }
           }
 

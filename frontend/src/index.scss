@@ -1,30 +1,58 @@
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
 }
+.test {
+  color: #6078ff;
+  color: #ffffff;
+  color: #ff8360;
+  color: #60ff80;
 
+  color: #6078ff;
+  color: #ffffff;
+  color: #80ff60;
+  color: #ff6080;
+
+  color: #6078ff;
+  color: #7d8aff;
+  color: #9caaff;
+  color: #b9c9ff;
+  color: #d6e8ff;
+
+  color: #fed6bc;
+  color: #fffadd;
+  color: #def7fe;
+  color: #e7ecff;
+}
 :root {
-  --body-color: #e4e9f7;
+  --body-color: #d6e8ff;
   --sidebar-color: #fff;
-  --content-color: #ffffff;
+  --content-color: #fff;
   --content-color-light: #d8d8e0;
-  --input-color: #fff;
+  --input-color: #eee8e8;
   --primary-color: #6078ff;
-  --primary-color-light: #a29af5;
+  --primary-color-light: #7d8aff;
   --toggle-color: #ddd;
   --text-color-light: #fff;
   --text-color: #000;
   --title-text-color: #353535;
+  --dark: #3a3a3a;
 
   --super-admin-color: #ff0000;
   --admin-color: #2c99f3;
   --exec-color: #1b8506;
   --user-color: #525252;
+
+  --rand-color-1: #fed6bc;
+  --rand-color-2: #fffadd;
+  --rand-color-3: #def7fe;
+  --rand-color-4: #e7ecff;
+  --rand-color-5: #9caaff;
 
   --border: linear-gradient(45deg, purple, orange);
 
@@ -34,7 +62,7 @@
   --tran-05: all 0.5s ease;
 }
 
-[data-theme="dark"] {
+[data-theme='dark'] {
   --body-color: #18191a;
   --sidebar-color: #242526;
   --content-color: #242526;
@@ -46,6 +74,7 @@
   --text-color-light: #fff;
   --text-color: #ccc;
   --title-text-color: #d4caca;
+  --dark: #2b2b2b;
 
   --super-admin-color: #ff000071;
   --admin-color: #2c9af371;

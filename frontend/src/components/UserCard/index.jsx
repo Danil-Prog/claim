@@ -3,6 +3,7 @@ import React from 'react';
 import './styleUserCard.scss';
 
 function UserCard({ user }) {
+  const rand = (min, max) => Math.floor(Math.random() * max) + min;
   return (
     <>
       <div key={user.id} className="user-card">
@@ -24,7 +25,23 @@ function UserCard({ user }) {
               alt="avatar"
             />
           ) : (
-            <div className="null-avatar"></div>
+            <div
+              className={
+                user.role === 'ROLE_SUPER_ADMIN'
+                  ? `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_ADMIN'
+                  ? `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_EXEC'
+                  ? `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_USER'
+                  ? `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
+                  : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
+              }>
+              <span className="null-avatar-title">
+                {!!user.profile.firstname && user.profile.firstname[0]}
+                {!!user.profile.lastname && user.profile.lastname[0]}
+              </span>
+            </div>
           )}
         </div>
         <div className="user-card-info">

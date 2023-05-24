@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import Header from "../../components/Header";
-import { userApi } from "../../misc/UserApi";
-import "./styleProfile.scss";
+import Header from '../../components/Header';
+import { userApi } from '../../misc/UserApi';
+import './styleProfile.scss';
 
 const ProfilePage = ({ userContext }) => {
   const user = userContext.getUser({ userContext });
@@ -28,7 +28,7 @@ const ProfilePage = ({ userContext }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("image", selectedFile);
+    formData.append('image', selectedFile);
     try {
       await userApi.setAvatar(user.authdata, formData);
       setEditProfile(false);
@@ -48,9 +48,10 @@ const ProfilePage = ({ userContext }) => {
         .catch((error) => {
           console.log(error);
         });
+      console.log(userProfile);
     }
     return () => {};
-  }, [setUserProfile, user.authdata]);
+  }, [setUserProfile, user.authdata, editProfile]);
 
   const handleFileSelect = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -65,7 +66,7 @@ const ProfilePage = ({ userContext }) => {
     <>
       {editProfile ? (
         <>
-          <Header title={"Редактировать профиль"} />
+          <Header title={'Редактировать профиль'} />
 
           <div className="page">
             <section className="wrapper profile">
@@ -78,20 +79,20 @@ const ProfilePage = ({ userContext }) => {
                         {userProfile.avatar != null ? (
                           <img
                             className={
-                              user.role === "ROLE_SUPER_ADMIN"
-                                ? "avatar border-super-admin"
-                                : user.role === "ROLE_ADMIN"
-                                ? "avatar border-admin"
-                                : user.role === "ROLE_EXEC"
-                                ? "avatar border-exec"
-                                : user.role === "ROLE_USER"
-                                ? "avatar border-user"
-                                : "avatar"
+                              user.role === 'ROLE_SUPER_ADMIN'
+                                ? 'avatar border-super-admin'
+                                : user.role === 'ROLE_ADMIN'
+                                ? 'avatar border-admin'
+                                : user.role === 'ROLE_EXEC'
+                                ? 'avatar border-exec'
+                                : user.role === 'ROLE_USER'
+                                ? 'avatar border-user'
+                                : 'avatar'
                             }
                             src={
                               preview
                                 ? preview
-                                : `http://localhost:8080/api/v1/user/avatar/${userProfile.avatar}`
+                                : `http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`
                             }
                             width={200}
                             height={200}
@@ -100,10 +101,10 @@ const ProfilePage = ({ userContext }) => {
                         ) : (
                           <div>avatar null</div>
                         )}
-                        {user.role === "ROLE_SUPER_ADMIN" ? (
+                        {user.role === 'ROLE_SUPER_ADMIN' ? (
                           <i className="bx bx-crown icon-crown"></i>
                         ) : (
-                          ""
+                          ''
                         )}
                         <i className="bx bx-camera icon-camera"></i>
                       </label>
@@ -112,11 +113,7 @@ const ProfilePage = ({ userContext }) => {
                       Назад
                     </button>
                     <button className="btn-main">Изменить пароль</button>
-                    <input
-                      type="submit"
-                      className="btn-submit"
-                      value="Сохранить"
-                    />
+                    <input type="submit" className="btn-submit" value="Сохранить" />
                   </div>
                   <div className="profile-fields">
                     <div className="field__item">
@@ -125,7 +122,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="firstname"
-                          value={userProfile.firstname}
+                          value={userProfile.firstname || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -136,7 +133,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="lastname"
-                          value={userProfile.lastname}
+                          value={userProfile.lastname || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -147,7 +144,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="email"
-                          value={userProfile.email}
+                          value={userProfile.email || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -158,7 +155,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="phone"
-                          value={userProfile.phone}
+                          value={userProfile.phone || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -169,7 +166,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="cabinet"
-                          value={userProfile.cabinet}
+                          value={userProfile.cabinet || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -180,7 +177,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="pc"
-                          value={userProfile.pc}
+                          value={userProfile.pc || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -191,7 +188,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="department"
-                          value={userProfile.department.name}
+                          value={userProfile.department.name || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -207,7 +204,7 @@ const ProfilePage = ({ userContext }) => {
         </>
       ) : (
         <>
-          <Header title={"Профиль"} />
+          <Header title={'Профиль'} />
           <div className="page">
             <section className="wrapper profile">
               <div className="page-content">
@@ -216,27 +213,27 @@ const ProfilePage = ({ userContext }) => {
                     {userProfile.avatar != null && (
                       <img
                         className={
-                          user.role === "ROLE_SUPER_ADMIN"
-                            ? "avatar border-super-admin"
-                            : user.role === "ROLE_ADMIN"
-                            ? "avatar border-admin"
-                            : user.role === "ROLE_EXEC"
-                            ? "avatar border-exec"
-                            : user.role === "ROLE_USER"
-                            ? "avatar border-user"
-                            : ""
+                          user.role === 'ROLE_SUPER_ADMIN'
+                            ? 'avatar border-super-admin'
+                            : user.role === 'ROLE_ADMIN'
+                            ? 'avatar border-admin'
+                            : user.role === 'ROLE_EXEC'
+                            ? 'avatar border-exec'
+                            : user.role === 'ROLE_USER'
+                            ? 'avatar border-user'
+                            : ''
                         }
-                        src={`http://localhost:8080/api/v1/user/${user.id}/avatar/${userProfile.avatar}`}
+                        src={`http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`}
                         width={200}
                         height={200}
                         alt="avatar"
                       />
                     )}
 
-                    {user.role === "ROLE_SUPER_ADMIN" ? (
+                    {user.role === 'ROLE_SUPER_ADMIN' ? (
                       <i className="bx bx-crown icon-crown"></i>
                     ) : (
-                      ""
+                      ''
                     )}
                   </div>
 
@@ -248,39 +245,27 @@ const ProfilePage = ({ userContext }) => {
                 <div className="profile-fields">
                   <div className="field__item">
                     <label className="text label-field">Имя: </label>
-                    <span className="text">
-                      {userProfile && userProfile.firstname}
-                    </span>
+                    <span className="text">{userProfile && userProfile.firstname}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Фамилия: </label>
-                    <span className="text">
-                      {userProfile && userProfile.lastname}
-                    </span>
+                    <span className="text">{userProfile && userProfile.lastname}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Email: </label>
-                    <span className="text">
-                      {userProfile && userProfile.email}
-                    </span>
+                    <span className="text">{userProfile && userProfile.email}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Телефон: </label>
-                    <span className="text">
-                      {userProfile && userProfile.phone}
-                    </span>
+                    <span className="text">{userProfile && userProfile.phone}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Кабинет: </label>
-                    <span className="text">
-                      {userProfile && userProfile.cabinet}
-                    </span>
+                    <span className="text">{userProfile && userProfile.cabinet}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">PC: </label>
-                    <span className="text">
-                      {userProfile && userProfile.pc}
-                    </span>
+                    <span className="text">{userProfile && userProfile.pc}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Отдел: </label>
