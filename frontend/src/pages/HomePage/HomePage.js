@@ -1,19 +1,27 @@
-import React from 'react';
+import React from "react";
+import Header from "../../components/Header";
+import SockJS from "sockjs-client";
+import { io } from "socket.io-client";
 
 const HomePage = () => {
+  const socket = new WebSocket("ws://localhost:8080/ws");
+  socket.onopen = (e) => {
+    console.log("ok: ", e);
+  };
+  socket.addEventListener("message", (event) => {
+    console.log("Message from server ", event.data);
+  });
   return (
-    <div className="page">
-      <section className="top">
-        <div className="title-page">
-          <h2>Главная</h2>
-        </div>
-      </section>
-
-      <section className="wrapper profile">
-        <div className="page-content">123</div>
-        <div className="users">123</div>
-      </section>
-    </div>
+    <>
+      <Header title={"Главная"} />
+      <div className="page">
+        <section className="wrapper">
+          <div className="page-content">
+            <div className="test">123</div>
+          </div>
+        </section>
+      </div>
+    </>
   );
 };
 

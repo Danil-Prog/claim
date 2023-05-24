@@ -12,6 +12,7 @@ import DepartUsersPage from './pages/DepartUsersPage';
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
 import Sidebar from './components/Sidebar';
+import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
 
@@ -40,8 +41,9 @@ function App() {
           />
           <Route exact path="/department" element={<DepartPage userContext={userContext} />} />
           <Route path="*" element={<Navigate to="/" />} />
-          <Route exact path="/profile" element={<ProfilePage />} />
+          <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
         </Routes>
+        {userValue && <Chat userContext={userContext} />}
       </div>
     </ThemeMode>
   );
