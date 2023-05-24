@@ -1,0 +1,71 @@
+.user-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--content-color-light);
+  min-width: 300px;
+  grid-gap: 20px;
+  transition: var(--tran-03);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--primary-color-light);
+  }
+
+  .mini-avatar {
+    .null-avatar {
+      background-color: var(--primary-color-light);
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+    }
+    .border-super-admin {
+      box-shadow: 0 0 0 3px var(--content-color-light),
+        0 0 0 5px var(--super-admin-color);
+    }
+    .border-admin {
+      box-shadow: 0 0 0 3px var(--content-color-light),
+        0 0 0 5px var(--admin-color);
+    }
+    .border-exec {
+      box-shadow: 0 0 0 3px var(--content-color-light),
+        0 0 0 5px var(--exec-color);
+    }
+    .border-user {
+      box-shadow: 0 0 0 3px var(--content-color-light),
+        0 0 0 5px var(--user-color);
+    }
+    img {
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+    }
+  }
+  .user-card-info {
+    display: flex;
+    flex-direction: column;
+    transition: var(--tran-03);
+    .name {
+      color: var(--text-color);
+    }
+    .super-admin {
+      color: var(--super-admin-color);
+    }
+
+    .admin {
+      color: var(--admin-color);
+    }
+
+    .exec {
+      color: var(--exec-color);
+    }
+
+    .user {
+      color: var(--user-color);
+    }
+
+    .username {
+      color: var(--text-color);
+    }
+  }
+}

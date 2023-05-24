@@ -1,28 +1,30 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css');
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css");
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
 }
+
 :root {
   --body-color: #e4e9f7;
   --sidebar-color: #fff;
-  --primary-color: #695cfe;
-  --primary-color-light: #7f74f5;
+  --content-color: #ffffff;
+  --content-color-light: #d8d8e0;
+  --input-color: #fff;
+  --primary-color: #6078ff;
+  --primary-color-light: #a29af5;
   --toggle-color: #ddd;
   --text-color-light: #fff;
   --text-color: #000;
-  --title-text-color: #707070;
+  --title-text-color: #353535;
 
-  --dark-body-color: #18191a;
-  --dark-sidebar-color: #242526;
-  --dark-primary-color: #3a3b3c;
-  --dark-primary-color-light: #48494b;
-  --dark-toggle-color: #fff;
-  --dark-text-color: #ccc;
+  --super-admin-color: #ff0000;
+  --admin-color: #2c99f3;
+  --exec-color: #1b8506;
+  --user-color: #525252;
 
   --border: linear-gradient(45deg, purple, orange);
 
@@ -30,6 +32,25 @@
   --tran-03: all 0.3s ease;
   --tran-04: all 0.4s ease;
   --tran-05: all 0.5s ease;
+}
+
+[data-theme="dark"] {
+  --body-color: #18191a;
+  --sidebar-color: #242526;
+  --content-color: #242526;
+  --content-color-light: #2f3031;
+  --input-color: #3c3e3f;
+  --primary-color: #695cfe;
+  --primary-color-light: #7f74f5;
+  --toggle-color: #fff;
+  --text-color-light: #fff;
+  --text-color: #ccc;
+  --title-text-color: #d4caca;
+
+  --super-admin-color: #ff000071;
+  --admin-color: #2c9af371;
+  --exec-color: #07c700b4;
+  --user-color: #8c917b;
 }
 
 .alert-enter {
@@ -50,6 +71,7 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--body-color);
 }
 
 .content {
@@ -68,6 +90,13 @@ body {
   .page {
     width: 1100px;
     margin-bottom: 20px;
+
+    .top {
+      .title-page {
+        color: var(--title-text-color);
+      }
+    }
+
     .wrapper {
       display: flex;
       justify-content: space-around;
@@ -83,14 +112,18 @@ body {
         max-width: 1150px;
         padding: 50px;
         border-radius: 10px;
-        background-color: var(--dark-sidebar-color);
+        background-color: var(--content-color);
         @media screen and (max-width: 1400px) {
           max-width: 100%;
           flex-direction: column;
         }
 
+        .test {
+          background-color: var(--primary-color);
+        }
+
         .text {
-          color: var(--dark-text-color);
+          color: var(--text-color);
         }
       }
     }
@@ -98,19 +131,19 @@ body {
 }
 
 .btn-main {
-  background-color: var(--dark-primary-color);
+  background-color: var(--primary-color);
   border: none;
   border-radius: 5px;
   padding: 9px;
   max-width: 200px;
   margin: 0 auto;
   width: 200px;
-  color: var(--dark-text-color);
+  color: var(--text-color);
   font-size: 15px;
   transition: var(--tran-03);
   cursor: pointer;
   &:hover {
-    background-color: var(--dark-primary-color-light);
+    background-color: var(--primary-color-light);
   }
 }
 
@@ -122,73 +155,12 @@ body {
   max-width: 200px;
   margin: 0 auto;
   width: 200px;
-  color: var(--dark-text-color);
+  color: var(--text-color);
   font-size: 15px;
   transition: var(--tran-03);
   cursor: pointer;
   &:hover {
     background-color: var(--primary-color-light);
-    color: var(--dark-body-color);
-  }
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: var(--dark-primary-color);
-  min-width: 300px;
-  grid-gap: 20px;
-  transition: var(--tran-03);
-  cursor: pointer;
-  &:hover {
-    background-color: var(--dark-primary-color-light);
-  }
-
-  .mini-avatar {
-    .null-avatar {
-      background-color: var(--dark-primary-color-light);
-      height: 60px;
-      width: 60px;
-      border-radius: 50%;
-    }
-    .border-super-admin {
-      box-shadow: 0 0 0 3px var(--dark-primary-color), 0 0 0 5px #a518c2;
-    }
-    .border-admin {
-      box-shadow: 0 0 0 3px var(--dark-primary-color), 0 0 0 5px #8b0101;
-    }
-    img {
-      height: 60px;
-      width: 60px;
-      border-radius: 50%;
-    }
-  }
-  .user-card-info {
-    display: flex;
-    flex-direction: column;
-    .name {
-      color: var(--dark-text-color);
-    }
-    .super-admin {
-      color: #ff000071;
-    }
-
-    .admin {
-      color: #2c9af371;
-    }
-
-    .exec {
-      color: #dce92a71;
-    }
-
-    .user {
-      color: #bebebe71;
-    }
-
-    .username {
-      color: var(--dark-text-color);
-    }
+    color: var(--body-color);
   }
 }

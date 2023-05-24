@@ -11,12 +11,13 @@
   height: 740px;
   z-index: 1;
 
-  background-color: var(--dark-sidebar-color);
+  background-color: var(--sidebar-color);
   @media screen and (max-width: 1400px) {
     max-width: 100%;
   }
   .top {
     z-index: 2;
+    margin-bottom: 20px;
     .user-card {
       width: 100%;
       padding: 20px 30px 10px 30px;
@@ -28,7 +29,9 @@
     height: 100%;
     width: 100%;
     overflow-y: scroll;
-
+    display: flex;
+    flex-direction: column;
+    grid-gap: 10px;
     .test {
       width: 100%;
       height: 100px;
@@ -44,21 +47,23 @@
     position: relative;
     padding: 20px;
     border-radius: 0 0 10px 10px;
-    background-color: var(--dark-primary-color-light);
+    grid-gap: 20px;
+    background-color: var(--content-color-light);
     form {
       display: flex;
       justify-content: space-between;
+      width: 100%;
       grid-gap: 20px;
       .text_message {
         min-width: 100px;
-        width: 285px;
+        flex-grow: 3;
         padding: 13px;
         height: 50px;
         border: none;
         outline: none;
         font-size: 18px;
         border-radius: 10px;
-        background-color: var(--dark-primary-color);
+        background-color: var(--input-color);
         &:focus + span {
           background-color: var(--primary-color);
         }
@@ -70,16 +75,16 @@
 
       .send_message {
         border-radius: 50%;
-        background-color: var(--dark-primary-color);
+        background-color: var(--primary-color);
         border: none;
         height: 50px;
         width: 50px;
         font-size: 22px;
-        color: var(--dark-text-color);
+        color: var(--text-color);
         transition: var(--tran-03);
         cursor: pointer;
         &:hover {
-          background-color: var(--dark-primary-color-light);
+          background-color: var(--primary-color-light);
         }
       }
     }
@@ -87,12 +92,12 @@
     .clip {
       font-size: 22px;
       transform: rotateZ(-45deg);
-      color: var(--dark-text-color);
+      color: var(--text-color);
 
       transition: var(--tran-02);
       cursor: pointer;
       &:hover {
-        color: var(--dark-primary-color-light);
+        color: var(--primary-color-light);
       }
     }
   }
@@ -103,10 +108,10 @@
 }
 
 .user-list::-webkit-scrollbar-track {
-  background: var(--dark-primary-color); /* цвет зоны отслеживания */
+  background: var(--content-color); /* цвет зоны отслеживания */
 }
 
 .user-list::-webkit-scrollbar-thumb {
-  background-color: var(--dark-text-color); //* цвет бегунка */
+  background-color: var(--content-color-light); //* цвет бегунка */
   border-radius: 20px; /* округлось бегунка */
 }

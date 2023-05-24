@@ -38,7 +38,7 @@
                 border: none;
                 outline: none;
                 font-size: 18px;
-                background-color: var(--dark-primary-color);
+                background-color: var(--primary-color);
                 &:focus + span {
                   background-color: var(--primary-color);
                 }
@@ -51,8 +51,8 @@
                 position: absolute;
                 top: -27px;
                 left: 0;
-                color: var(--dark-text-color);
-                background: var(--dark-primary-color);
+                color: var(--text-color);
+                background: var(--primary-color);
                 font-size: 16px;
                 padding: 0 7px;
                 border-radius: 7px;
@@ -68,15 +68,15 @@
               height: 50px;
               width: 50px;
               font-size: 22px;
-              color: var(--dark-text-color);
+              color: var(--text-color);
               border-radius: 0 10px 10px 0;
-              background-color: var(--dark-primary-color);
+              background-color: var(--primary-color);
               border: none;
-              border-left: 2px solid var(--dark-sidebar-color);
+              border-left: 2px solid var(--sidebar-color);
               transition: var(--tran-02);
               cursor: pointer;
               &:hover {
-                background-color: var(--dark-primary-color-light);
+                background-color: var(--primary-color-light);
               }
             }
           }
@@ -97,7 +97,7 @@
                   border: none;
                   outline: none;
                   font-size: 18px;
-                  background-color: var(--dark-primary-color);
+                  background-color: var(--primary-color);
                   &:focus + span {
                     background-color: var(--primary-color);
                   }
@@ -110,8 +110,8 @@
                   position: absolute;
                   top: -27px;
                   left: 0;
-                  color: var(--dark-text-color);
-                  background: var(--dark-primary-color);
+                  color: var(--text-color);
+                  background: var(--primary-color);
                   font-size: 16px;
                   padding: 0 7px;
                   border-radius: 7px;
@@ -124,14 +124,14 @@
                   border-radius: 0 10px 10px 0;
 
                   border: none;
-                  color: var(--dark-text-color);
-                  background-color: var(--dark-primary-color);
-                  border-left: 2px solid var(--dark-sidebar-color);
+                  color: var(--text-color);
+                  background-color: var(--primary-color);
+                  border-left: 2px solid var(--sidebar-color);
                   transition: var(--tran-02);
                   cursor: pointer;
 
                   &:hover {
-                    background-color: var(--dark-primary-color-light);
+                    background-color: var(--primary-color-light);
                   }
                 }
               }
@@ -145,12 +145,12 @@
               text-decoration: none;
               list-style-type: none;
               padding: 10px;
-              border-bottom: 2px solid var(--dark-primary-color);
-              color: var(--dark-text-color);
+              border-bottom: 2px solid var(--primary-color);
+              color: var(--text-color);
               transition: var(--tran-03);
               cursor: pointer;
               &:hover {
-                background-color: var(--dark-primary-color-light);
+                background-color: var(--primary-color-light);
               }
             }
           }

@@ -9,8 +9,8 @@
     a {
       display: inline-block;
       text-align: center;
-      color: var(--dark-text-color);
-      background-color: var(--dark-primary-color);
+      color: var(--text-color);
+      background-color: var(--primary-color);
       line-height: 38px;
       width: 40px;
       height: 40px;
@@ -21,7 +21,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: var(--dark-primary-color-light);
+        background-color: var(--primary-color-light);
         border-radius: 50%;
       }
     }
@@ -30,7 +30,7 @@
   :global {
     .selected {
       a {
-        background-color: var(--dark-body-color);
+        background-color: var(--body-color);
         border-radius: 50%;
       }
     }

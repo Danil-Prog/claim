@@ -11,7 +11,7 @@
   z-index: 10;
   margin-bottom: 20px;
   .title-page {
-    color: var(--dark-text-color);
+    color: var(--title-text-color);
     font-size: 25px;
     h2 {
       transition: var(--tran-03);
@@ -25,12 +25,12 @@
         padding: 2px;
         font-size: 30px;
         border-radius: 50%;
-        color: var(--dark-text-color);
-        background: var(--dark-primary-color);
+        color: var(--text-color);
+        background: var(--primary-color);
         transition: var(--tran-03);
         cursor: pointer;
         &:hover {
-          background: var(--dark-primary-color-light);
+          background: var(--primary-color-light);
         }
       }
     }
