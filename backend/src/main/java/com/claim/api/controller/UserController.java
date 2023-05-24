@@ -40,14 +40,14 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/{id}")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/all")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "ASC") String sortBy,
@@ -59,23 +59,24 @@ public class UserController {
         return ResponseEntity.ok(new PageImpl<>(users));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (userService.saveUser(user))
             return new ResponseEntity<>("User created", HttpStatus.OK);
         return new ResponseEntity<>("User with the same name already exists", HttpStatus.FOUND);
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/{id}/avatar/{filename}")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long id,
                                                 @PathVariable String filename) {
         return ResponseEntity.ok()
@@ -83,28 +84,29 @@ public class UserController {
                 .body(userService.getUserAvatar(id, filename));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<User> removeUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.removeUserById(id));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok(userService.update(id, user));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PutMapping
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<String> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
         return ResponseEntity.ok(userService.updateAuthorizeUserProfile(principal, profile));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("/avatar")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<String> updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
         return ResponseEntity.ok(userService.updateUserImage(image, principal));
     }
