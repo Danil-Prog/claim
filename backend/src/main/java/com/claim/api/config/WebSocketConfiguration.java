@@ -1,9 +1,6 @@
 package com.claim.api.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionFactoryBeanConfigurer;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -26,13 +23,12 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/topic")
+        config.enableStompBrokerRelay("/topic", "/app")
                 .setRelayHost(rabbitProperties.getHost())
                 .setRelayPort(rabbitProperties.getPort())
                 .setClientLogin(rabbitProperties.getUsername())
                 .setClientPasscode(rabbitProperties.getPassword())
                 .setSystemLogin(rabbitProperties.getUsername())
                 .setSystemPasscode(rabbitProperties.getPassword());
-        config.setApplicationDestinationPrefixes("/app");
     }
 }
