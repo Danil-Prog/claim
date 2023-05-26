@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.List;
 
 import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
@@ -53,10 +51,8 @@ public class UserController {
                                                   @RequestParam(defaultValue = "ASC") String sortBy,
                                                   @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        List<UserDto> users = userService.getUserList(pageRequest).stream()
-                .map(userMapper::toUserDto)
-                .toList();
-        return ResponseEntity.ok(new PageImpl<>(users));
+        Page<UserDto> users = userService.getUserList(pageRequest).map(userMapper::toUserDto);
+        return ResponseEntity.ok(users);
     }
 
 
