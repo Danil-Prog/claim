@@ -39,6 +39,7 @@
                 outline: none;
                 font-size: 18px;
                 background-color: var(--input-color);
+                transition: var(--tran-03);
                 &:focus + span {
                   background-color: var(--primary-color);
                 }
@@ -56,7 +57,7 @@
                 font-size: 16px;
                 padding: 0 7px;
                 border-radius: 7px;
-                transition: var(--tran-02);
+                transition: var(--tran-03);
                 cursor: text;
               }
             }
@@ -73,7 +74,7 @@
               background-color: var(--input-color);
               border: none;
               border-left: 2px solid var(--sidebar-color);
-              transition: var(--tran-02);
+              transition: var(--tran-03);
               cursor: pointer;
               &:hover {
                 background-color: var(--primary-color-light);
@@ -98,6 +99,7 @@
                   outline: none;
                   font-size: 18px;
                   background-color: var(--input-color);
+                  transition: var(--tran-03);
                   &:focus + span {
                     background-color: var(--primary-color);
                   }
@@ -111,7 +113,7 @@
                   font-size: 16px;
                   padding: 0 7px;
                   border-radius: 7px;
-                  transition: var(--tran-02);
+                  transition: var(--tran-03);
                   cursor: text;
                 }
                 .btn-input {
@@ -123,7 +125,7 @@
                   color: var(--text-color);
                   background-color: var(--input-color);
                   border-left: 2px solid var(--sidebar-color);
-                  transition: var(--tran-02);
+                  transition: var(--tran-03);
                   cursor: pointer;
 
                   &:hover {

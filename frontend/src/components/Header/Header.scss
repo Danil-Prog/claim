@@ -1,13 +1,13 @@
 .header {
   width: 100%;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   top: 0;
   left: 250px;
   height: 150px;
   width: 100%;
   padding: 0 100px;
-  align-items: end;
+  align-items: flex-end;
   z-index: 10;
   margin-bottom: 20px;
   .title-page {

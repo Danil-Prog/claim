@@ -1,28 +1,49 @@
-.sort {
+.dropdown {
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   min-width: 240px;
   border-radius: 10px;
+  padding: 10px;
+
   color: var(--text-color);
   background-color: var(--input-color);
-  .sort_label {
+  transition: var(--tran-03);
+  .dropdown_label {
     display: flex;
     justify-content: space-around;
+
+    cursor: pointer;
     span {
       color: var(--primary-color-light);
-      text-decoration: dashed underline;
-      cursor: pointer;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    p {
+      position: absolute;
+      top: -27px;
+      left: 0;
+      color: var(--text-color);
+      background: var(--input-color);
+      font-size: 16px;
+      padding: 0 7px;
+      border-radius: 7px;
+      transition: var(--tran-03);
+      cursor: text;
     }
   }
-  .sort_popup {
+  .dropdown_popup {
     position: absolute;
     top: 110%;
+    left: 0;
     right: 0;
+    text-align: center;
     border-radius: 10px;
     color: var(--text-color);
     background-color: var(--input-color);
+
+    z-index: 10;
 
     ul {
       .active {

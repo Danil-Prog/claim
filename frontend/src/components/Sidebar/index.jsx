@@ -67,16 +67,16 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <Link to="/task">
                 <i className="bx bx-task icon"></i>
                 <span className="text nav-text">Задачи</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <Link to="/users">
                 <i className="bx bx-group icon"></i>
                 <span className="text nav-text">Пользователи</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-link">
               <Link to="department">
@@ -85,10 +85,10 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <Link to="statistic">
                 <i className="bx bxs-bar-chart-alt-2 icon"></i>
                 <span className="text nav-text">Статистика</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

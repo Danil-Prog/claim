@@ -1,28 +1,41 @@
-import React from 'react';
+import React from "react";
 
-import './styleDepartUsers.scss';
+import "./styleDepartUsers.scss";
 
-import { departApi } from '../../misc/DepartApi';
-import { useSearchParams } from 'react-router-dom';
-import Pagination from '../../components/Pagination';
-import Sort from '../../components/Sort';
-import Header from '../../components/Header';
-import UserCard from '../../components/UserCard';
+import { departApi } from "../../misc/DepartApi";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "../../components/Pagination";
+import Dropdown from "../../components/Dropdown";
+import Header from "../../components/Header";
+import UserCard from "../../components/UserCard";
 
 const DepartUsersPage = ({ userContext }) => {
   const user = userContext.getUser();
   const [searchParams] = useSearchParams();
-  const departId = searchParams.get('id');
+  const departId = searchParams.get("id");
 
   const [listUsers, setListUsers] = React.useState([]);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(1);
   const [sizeItems, setSizeItems] = React.useState(12);
-  const [selectedSortBy, setSelectedSortBy] = React.useState('asc');
-  const [selectedSortField, setSelectedSortField] = React.useState('profile.lastname');
+  const [selectedSort, setSelectedSort] = React.useState("asc");
+  const [selectedSortField, setSelectedSortField] =
+    React.useState("profile.lastname");
 
-  const list = ['возрастанию', 'убыванию'];
-  const listSort = ['фамилии', 'логину', 'роли'];
+  const listAscDesc = [
+    ["возрастанию", "asc"],
+    ["убыванию", "desc"],
+  ];
+  const listSortField = [
+    ["фамилии", "profile.lastname"],
+    ["логину", "username"],
+    ["роли", "role"],
+  ];
+  const listPageSize = [
+    ["5", "5"],
+    ["по-умолчанию", "12"],
+    ["25", "25"],
+  ];
 
   React.useEffect(() => {
     departApi
@@ -31,8 +44,8 @@ const DepartUsersPage = ({ userContext }) => {
         departId,
         currentPage,
         sizeItems,
-        selectedSortBy,
-        selectedSortField,
+        selectedSort,
+        selectedSortField
       )
       .then((response) => {
         setListUsers(response.data.content);
@@ -41,43 +54,38 @@ const DepartUsersPage = ({ userContext }) => {
       })
       .catch((error) => console.log(error));
     return () => {};
-  }, [currentPage, selectedSortBy, selectedSortField, sizeItems]);
+  }, [
+    currentPage,
+    departId,
+    selectedSort,
+    selectedSortField,
+    sizeItems,
+    user.authdata,
+  ]);
   return (
     <>
-      <Header title={'Сотрудники отдела'} />
+      <Header title={"Сотрудники отдела"} />
       <div className="page">
         <section className="wrapper depart-users">
           <div className="page-content">
             <div className="page-content-top">
-              <Sort
-                selectedSort={selectedSortBy}
-                setSelectedSort={setSelectedSortBy}
-                list={list}
-                sortName0={'asc'}
-                sortName1={'desc'}
-                sortName2={''}
+              <Dropdown setSelected={setSelectedSort} list={listAscDesc} />
+              <Dropdown
+                setSelected={setSelectedSortField}
+                list={listSortField}
               />
-              <Sort
-                selectedSort={selectedSortField}
-                setSelectedSort={setSelectedSortField}
-                list={listSort}
-                sortName0={'profile.lastname'}
-                sortName1={'username'}
-                sortName2={'role'}
+              <Dropdown
+                titleDropdown={"Элементов на странице"}
+                setSelected={setSizeItems}
+                list={listPageSize}
               />
-              <select
-                style={{ borderRadius: '10px' }}
-                name="select-page-items"
-                value={sizeItems}
-                onChange={(e) => setSizeItems(e.target.value)}>
-                <option value="5">5</option>
-                <option value="12">По умолчанию</option>
-                <option value="25">25</option>
-              </select>
-
               <div className="search-depart">
                 <label className="label-field" htmlFor="search">
-                  <input className="input-search-depart" type="text" name="search" />
+                  <input
+                    className="input-search-depart"
+                    type="text"
+                    name="search"
+                  />
                   <span>Поиск: </span>
                 </label>
                 <i className="bx bx-search icon"></i>
@@ -85,9 +93,13 @@ const DepartUsersPage = ({ userContext }) => {
             </div>
 
             <div className="list-depart-users">
-              {!!listUsers && listUsers.map((item) => <UserCard key={item.id} user={item} />)}
+              {!!listUsers &&
+                listUsers.map((item) => <UserCard key={item.id} user={item} />)}
             </div>
-            <Pagination totalPages={totalPages} onChangePage={(number) => setCurrentPage(number)} />
+            <Pagination
+              totalPages={totalPages}
+              onChangePage={(number) => setCurrentPage(number)}
+            />
           </div>
         </section>
       </div>
