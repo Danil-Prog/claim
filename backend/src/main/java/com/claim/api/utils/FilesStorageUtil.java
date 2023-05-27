@@ -22,12 +22,20 @@ public final class FilesStorageUtil {
         Path pathToAvatar = root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(filename);
 
         try {
-            if (!Files.exists(root.resolve(profile.getId() + "/avatar")))
+            if (!Files.exists(root.resolve(profile.getId() + "/avatar"))) {
+                System.out.println("26:FileStorageUtil: file exist: " + root.resolve(profile.getId() + "/avatar"));
                 Files.createDirectories(root.resolve(profile.getId() + "/avatar"));
-
+            }
             if (profile.getAvatar() != null) {
+                System.out.println("30:FileStorageUtil: get avatar not null: " + root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(profile.getAvatar()));
                 Files.deleteIfExists(root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(profile.getAvatar()));
             }
+            System.out.println();
+            System.out.println("File: " + file);
+            System.out.println("OrigFileName: " + file.getOriginalFilename());
+            System.out.println("ContentType: " + file.getContentType());
+            System.out.println("Size file: " + file.getSize());
+            System.out.println();
             file.transferTo(new File(pathToAvatar.toUri()));
 
             return true;
