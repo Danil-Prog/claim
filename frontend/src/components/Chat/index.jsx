@@ -93,9 +93,9 @@ const Chat = ({ userContext }) => {
             </div>
           </div>
           <div className="user-list">
-            {listUsers.map((item) => (
-              <UserCard key={item.id} user={item} />
-            ))}
+            {listUsers.map((item) =>
+              user.id === item.id ? '' : <UserCard key={item.id} user={item} />,
+            )}
           </div>
           <div className="message">
             <i className="bx bx-paperclip clip"></i>

@@ -1,7 +1,9 @@
 .content {
   .page {
-    .wrapper {
+    .profile {
       .page-content {
+        display: flex;
+
         .profile-navigation {
           display: flex;
           flex-direction: column;
@@ -53,20 +55,16 @@
               }
 
               .border-super-admin {
-                box-shadow: 0 0 0 6px var(--sidebar-color),
-                  0 0 0 10px var(--super-admin-color);
+                box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--super-admin-color);
               }
               .border-admin {
-                box-shadow: 0 0 0 6px var(--sidebar-color),
-                  0 0 0 10px var(--admin-color);
+                box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--admin-color);
               }
               .border-exec {
-                box-shadow: 0 0 0 6px var(--sidebar-color),
-                  0 0 0 10px var(--exec-color);
+                box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--exec-color);
               }
               .border-user {
-                box-shadow: 0 0 0 6px var(--sidebar-color),
-                  0 0 0 10px var(--user-color);
+                box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--user-color);
               }
             }
           }
@@ -102,20 +100,16 @@
               pointer-events: none;
             }
             .border-super-admin {
-              box-shadow: 0 0 0 6px var(--sidebar-color),
-                0 0 0 10px var(--super-admin-color);
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--super-admin-color);
             }
             .border-admin {
-              box-shadow: 0 0 0 6px var(--sidebar-color),
-                0 0 0 10px var(--admin-color);
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--admin-color);
             }
             .border-exec {
-              box-shadow: 0 0 0 6px var(--sidebar-color),
-                0 0 0 10px var(--exec-color);
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--exec-color);
             }
             .border-user {
-              box-shadow: 0 0 0 6px var(--sidebar-color),
-                0 0 0 10px var(--user-color);
+              box-shadow: 0 0 0 6px var(--sidebar-color), 0 0 0 10px var(--user-color);
             }
           }
 

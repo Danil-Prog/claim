@@ -1,27 +1,17 @@
-import React from "react";
+import React from 'react';
+import { Formik, Field, Form } from 'formik';
 
-import Header from "../../components/Header";
-import Dropdown from "../../components/Dropdown";
+import Header from '../../components/Header';
+import Dropdown from '../../components/Dropdown';
+import { userApi } from '../../misc/UserApi';
 
-const HomePage = () => {
-  const [selected, setSelected] = React.useState("asc");
-  const list = [
-    ["возрастанию", "asc"],
-    ["убыванию", "desc"],
-  ];
-  console.log(selected);
+const HomePage = ({ userContext }) => {
+  const user = userContext.getUser({ userContext });
+
   return (
     <>
-      <Header title={"Главная"} />
-      <div className="page">
-        <section className="wrapper">
-          <div className="page-content">
-            <div className="test">
-              <Dropdown setSelected={setSelected} list={list} />
-            </div>
-          </div>
-        </section>
-      </div>
+      <Header title={'Главная'} />
+      <div>test</div>
     </>
   );
 };

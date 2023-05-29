@@ -1,79 +1,76 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
-import './styleProfile.scss';
+import './styleProfileUser.scss';
 
 const ProfilePage = ({ userContext }) => {
   const user = userContext.getUser({ userContext });
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get('id');
 
-  const [selectedFile, setSelectedFile] = React.useState(null);
+  const [userData, setUserData] = React.useState({});
   const [userProfile, setUserProfile] = React.useState({});
   const [editProfile, setEditProfile] = React.useState(false);
-  const [preview, setPreview] = React.useState(null);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUserProfile({
-      ...userProfile,
-      [name]: value,
-    });
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      profile: {
+        ...prevUserData.profile,
+        [name]: value,
+      },
+    }));
   };
 
   const toggleEditProfile = () => {
     setEditProfile(!editProfile);
-    setPreview(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-      try {
-        await userApi.setAvatar(user.authdata, formData);
-      } catch (error) {
-        console.log(error);
-      }
-    }
 
     try {
-      await userApi.changeSelfInfo(user.authdata, userProfile);
+      await userApi.changeUserData(user.authdata, userData, userId);
+      setEditProfile(false);
     } catch (error) {
       console.log(error);
     }
-    setEditProfile(false);
   };
 
   React.useEffect(() => {
     if (user.authdata) {
       userApi
-        .getProfile(user.authdata)
+        .getUserProfile(user.authdata, userId)
         .then((response) => {
-          const info = response.data;
-          setUserProfile(info);
+          setUserData(response.data);
+          setUserProfile(response.data.profile);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
     return () => {};
-  }, [setUserProfile, user.authdata, editProfile]);
+  }, []);
 
-  const handleFileSelect = (e) => {
-    setSelectedFile(e.target.files[0]);
-    const reader = new FileReader();
+  React.useEffect(() => {
+    return () => {};
+  }, [userData]);
 
-    reader.onloadend = function () {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
   return (
     <>
-      {editProfile ? (
+      {editProfile && user.role === 'ROLE_SUPER_ADMIN' ? (
         <>
-          <Header title={'Редактировать профиль'} />
+          <Header
+            title={'Редактировать профиль пользователя'}
+            subTitle={
+              userData.profile &&
+              `${userData.profile.username} (${userData.profile.firstname} ${userData.profile.lastname})`
+            }
+          />
 
           <div className="page">
             <section className="wrapper profile">
@@ -82,33 +79,26 @@ const ProfilePage = ({ userContext }) => {
                   <div className="profile-navigation">
                     <div className="change-wrap-avatar">
                       <label>
-                        <input type="file" hidden onChange={handleFileSelect} />
-                        {userProfile.avatar != null ? (
+                        {userData.profile.avatar != null && (
                           <img
                             className={
-                              user.role === 'ROLE_SUPER_ADMIN'
+                              userData.role === 'ROLE_SUPER_ADMIN'
                                 ? 'avatar border-super-admin'
-                                : user.role === 'ROLE_ADMIN'
+                                : userData.role === 'ROLE_ADMIN'
                                 ? 'avatar border-admin'
-                                : user.role === 'ROLE_EXEC'
+                                : userData.role === 'ROLE_EXEC'
                                 ? 'avatar border-exec'
-                                : user.role === 'ROLE_USER'
+                                : userData.role === 'ROLE_USER'
                                 ? 'avatar border-user'
-                                : 'avatar'
+                                : ''
                             }
-                            src={
-                              preview
-                                ? preview
-                                : `http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`
-                            }
+                            src={`http://localhost:8080/api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
                             width={200}
                             height={200}
                             alt="avatar"
                           />
-                        ) : (
-                          <div>avatar null</div>
                         )}
-                        {user.role === 'ROLE_SUPER_ADMIN' ? (
+                        {userData.role === 'ROLE_SUPER_ADMIN' ? (
                           <i className="bx bx-crown icon-crown"></i>
                         ) : (
                           ''
@@ -129,7 +119,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="firstname"
-                          value={userProfile.firstname || ''}
+                          value={userData.profile && userData.profile.firstname}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -140,7 +130,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="lastname"
-                          value={userProfile.lastname || ''}
+                          value={userData.profile && userData.profile.lastname}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -151,7 +141,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="email"
-                          value={userProfile.email || ''}
+                          value={userData.profile && userData.profile.email}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -162,7 +152,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="phone"
-                          value={userProfile.phone || ''}
+                          value={userData.profile && userData.profile.phone}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -173,7 +163,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="cabinet"
-                          value={userProfile.cabinet || ''}
+                          value={userData.profile && userData.profile.cabinet}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -184,7 +174,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="pc"
-                          value={userProfile.pc || ''}
+                          value={userData.profile && userData.profile.pc}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -195,14 +185,11 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="department"
-                          value={userProfile.department && userProfile.department.name}
+                          value={userData.profile.department && userData.profile.department.name}
                           onChange={handleInputChange}
                         />
                       </span>
                     </div>
-                    {/* <div className="btn__item">
-                    
-                  </div> */}
                   </div>
                 </div>
               </form>
@@ -211,73 +198,80 @@ const ProfilePage = ({ userContext }) => {
         </>
       ) : (
         <>
-          <Header title={'Профиль'} />
+          <Header
+            title={'Профиль пользователя'}
+            subTitle={
+              userData.profile &&
+              `${userData.profile.username} (${userData.profile.firstname} ${userData.profile.lastname})`
+            }
+          />
           <div className="page">
             <section className="wrapper profile">
               <div className="page-content">
                 <div className="profile-navigation">
                   <div className="wrap-avatar">
-                    {userProfile.avatar != null && (
+                    {userData.profile != null && (
                       <img
                         className={
-                          user.role === 'ROLE_SUPER_ADMIN'
+                          userData.role === 'ROLE_SUPER_ADMIN'
                             ? 'avatar border-super-admin'
-                            : user.role === 'ROLE_ADMIN'
+                            : userData.role === 'ROLE_ADMIN'
                             ? 'avatar border-admin'
-                            : user.role === 'ROLE_EXEC'
+                            : userData.role === 'ROLE_EXEC'
                             ? 'avatar border-exec'
-                            : user.role === 'ROLE_USER'
+                            : userData.role === 'ROLE_USER'
                             ? 'avatar border-user'
                             : ''
                         }
-                        src={`http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`}
+                        src={`http://localhost:8080/api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
                         width={200}
                         height={200}
                         alt="avatar"
                       />
                     )}
 
-                    {user.role === 'ROLE_SUPER_ADMIN' ? (
+                    {userData.role === 'ROLE_SUPER_ADMIN' && (
                       <i className="bx bx-crown icon-crown"></i>
-                    ) : (
-                      ''
                     )}
                   </div>
-
-                  <button className="btn-main" onClick={toggleEditProfile}>
-                    Редактировать профиль
-                  </button>
-                  <button className="btn-main">Изменить пароль</button>
+                  {user.role === 'ROLE_SUPER_ADMIN' && (
+                    <>
+                      <button className="btn-main" onClick={toggleEditProfile}>
+                        Редактировать профиль
+                      </button>
+                      <button className="btn-main">Изменить пароль</button>
+                    </>
+                  )}
                 </div>
                 <div className="profile-fields">
                   <div className="field__item">
                     <label className="text label-field">Имя: </label>
-                    <span className="text">{userProfile && userProfile.firstname}</span>
+                    <span className="text">{userData.profile && userData.profile.firstname}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Фамилия: </label>
-                    <span className="text">{userProfile && userProfile.lastname}</span>
+                    <span className="text">{userData.profile && userData.profile.lastname}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Email: </label>
-                    <span className="text">{userProfile && userProfile.email}</span>
+                    <span className="text">{userData.profile && userData.profile.email}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Телефон: </label>
-                    <span className="text">{userProfile && userProfile.phone}</span>
+                    <span className="text">{userData.profile && userData.profile.phone}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Кабинет: </label>
-                    <span className="text">{userProfile && userProfile.cabinet}</span>
+                    <span className="text">{userData.profile && userData.profile.cabinet}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">PC: </label>
-                    <span className="text">{userProfile && userProfile.pc}</span>
+                    <span className="text">{userData.profile && userData.profile.pc}</span>
                   </div>
                   <div className="field__item">
                     <label className="text label-field">Отдел: </label>
                     <span className="text">
-                      {userProfile.department && userProfile.department.name}
+                      {userData.profile && userData.profile.department.name}
                     </span>
                   </div>
                 </div>

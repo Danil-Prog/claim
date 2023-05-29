@@ -7,6 +7,9 @@ export const userApi = {
   setAvatar,
   getSelfInfo,
   getUsersAll,
+  getUserProfile,
+  changeUserData,
+  changeSelfInfo,
 };
 
 function authenticate(username, password) {
@@ -34,6 +37,24 @@ function getProfile(authdata) {
   });
 }
 
+function getUserProfile(authdata, id) {
+  return instance.get(`/api/v1/user/${id}`, {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function changeUserData(authdata, user, id) {
+  return instance.put(`/api/v1/user/${id}`, user, {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
 function setAvatar(authdata, formData) {
   return instance.post('/api/v1/user/avatar', formData, {
     headers: {
@@ -45,6 +66,15 @@ function setAvatar(authdata, formData) {
 
 function getSelfInfo(authdata) {
   return instance.get('/api/v1/user', {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function changeSelfInfo(authdata, data) {
+  return instance.put('/api/v1/user', data, {
     headers: {
       Authorization: `Basic ${authdata}`,
       'Content-type': 'application/json',

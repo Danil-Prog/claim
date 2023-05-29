@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import UserContext from "../../context/UserContext";
-import ThemeContext from "../../context/ThemeContext";
+import UserContext from '../../context/UserContext';
+import ThemeContext from '../../context/ThemeContext';
 
-import "./styleSidebar.scss";
+import './styleSidebar.scss';
 
 const Sidebar = () => {
   const userContext = React.useContext(UserContext);
@@ -21,12 +21,13 @@ const Sidebar = () => {
   React.useEffect(() => {
     const theme = themeContext.getThemeMode();
     if (theme) {
-      document.body.setAttribute("data-theme", "dark");
+      document.body.setAttribute('data-theme', 'dark');
     } else {
-      document.body.setAttribute("data-theme", "light");
+      document.body.setAttribute('data-theme', 'light');
     }
+
     return () => {};
-  }, [themeContext]);
+  }, [themeContext, userContext.userValue]);
 
   const setModeValue = () => {
     themeContext.themeMode(!theme);
@@ -38,7 +39,7 @@ const Sidebar = () => {
   };
 
   return (
-    <nav className={sidebar ? "sidebar open" : "sidebar close"}>
+    <nav className={sidebar ? 'sidebar open' : 'sidebar close'}>
       <header>
         <Link to="">
           <div className="image-text">
@@ -51,10 +52,7 @@ const Sidebar = () => {
             </div>
           </div>
         </Link>
-        <i
-          className="bx bx-chevron-right toggle"
-          onClick={setSidebarPosition}
-        ></i>
+        <i className="bx bx-chevron-right toggle" onClick={setSidebarPosition}></i>
       </header>
 
       <div className="menu-bar">
@@ -102,22 +100,15 @@ const Sidebar = () => {
           </li>
           <li className="mode">
             <div className="moon-sun">
-              <i
-                className={
-                  theme ? "bx bx-moon icon moon" : "bx bx-sun icon sun"
-                }
-              ></i>
+              <i className={theme ? 'bx bx-moon icon moon' : 'bx bx-sun icon sun'}></i>
             </div>
-            <span className="mode-text text">
-              {theme ? "Dark" : "Light"} Mode
-            </span>
+            <span className="mode-text text">{theme ? 'Dark' : 'Light'} Mode</span>
 
             <div className="toggle-switch">
               <span
                 id="toggle"
-                className={theme ? "switch-on" : "switch-off"}
-                onClick={setModeValue}
-              ></span>
+                className={theme ? 'switch-on' : 'switch-off'}
+                onClick={setModeValue}></span>
             </div>
           </li>
         </div>

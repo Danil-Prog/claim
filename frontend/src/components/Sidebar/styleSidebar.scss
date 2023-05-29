@@ -36,7 +36,7 @@
           transition: var(--tran-02);
           background: var(--content-color);
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -56,7 +56,7 @@
           transition: var(--tran-03);
           background: var(--content-color);
           &::before {
-            content: "";
+            content: '';
             position: absolute;
             height: 15px;
             width: 15px;
@@ -217,7 +217,7 @@
   }
 }
 
-.sidebar.close ~ .content {
+.content:has(.sidebar.close) {
   left: 78px;
   width: calc(100% - 78px);
 }
