@@ -83,7 +83,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    public ResponseEntity<User> removeUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> removeUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.removeUserById(id));
     }
 

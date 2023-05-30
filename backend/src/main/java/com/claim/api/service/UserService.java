@@ -80,9 +80,15 @@ public class UserService implements UserDetailsService {
         return FilesStorageUtil.getUserAvatar(id, filename);
     }
 
-    public User removeUserById(Long id) {
-        return userRepository.deleteUserById(id).orElseThrow(() ->
-                new UserNotFoundException("User with id=" + id + " not found"));
+    public UserDto removeUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+            User user = userOptional.get();
+            return new UserMapper().toUserDto(user);
+        }else
+            throw new UserNotFoundException("User with id = " + id + " not found");
+
     }
 
     public UserDto update(Long id, UserDto userDto) throws BadRequestException {
