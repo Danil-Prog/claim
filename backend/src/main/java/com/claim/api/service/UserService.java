@@ -85,11 +85,18 @@ public class UserService implements UserDetailsService {
                 new UserNotFoundException("User with id=" + id + " not found"));
     }
 
-    public User update(Long id, User user) throws BadRequestException {
+    public UserDto update(Long id, UserDto userDto) throws BadRequestException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            return userRepository.save(user);
+            User user = userOptional.get();
+            Long profileId = user.getProfile().getId();
+            userDto.profile().setId(profileId);
+            user.setUsername(userDto.username());
+            user.setRole(userDto.role());
+            user.setProfile(userDto.profile());
+
+            User updatedUser = userRepository.save(user);
+            return new UserMapper().toUserDto(updatedUser);
         } else
             throw new BadRequestException("User id:" + id + " not found!");
     }
@@ -98,12 +105,9 @@ public class UserService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            System.out.println("101:UserService: oldUserAvatar-" + user.getProfile().getAvatar());
             String filename = UUID.randomUUID() + image.getOriginalFilename();
             if (FilesStorageUtil.uploadAvatar(user.getProfile(), image, filename)) {
-                System.out.println("104:UserService: filename-" + filename);
                 user.getProfile().setAvatar(filename);
-                System.out.println("106:UserService: updateUserAvatar-" + user.getProfile().getAvatar());
                 userRepository.save(user);
                 return "Successful upload image";
             } else
