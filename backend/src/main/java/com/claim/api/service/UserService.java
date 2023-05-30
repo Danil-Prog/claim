@@ -98,12 +98,9 @@ public class UserService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            System.out.println("101:UserService: oldUserAvatar-" + user.getProfile().getAvatar());
             String filename = UUID.randomUUID() + image.getOriginalFilename();
             if (FilesStorageUtil.uploadAvatar(user.getProfile(), image, filename)) {
-                System.out.println("104:UserService: filename-" + filename);
                 user.getProfile().setAvatar(filename);
-                System.out.println("106:UserService: updateUserAvatar-" + user.getProfile().getAvatar());
                 userRepository.save(user);
                 return "Successful upload image";
             } else
