@@ -85,11 +85,18 @@ public class UserService implements UserDetailsService {
                 new UserNotFoundException("User with id=" + id + " not found"));
     }
 
-    public User update(Long id, User user) throws BadRequestException {
+    public UserDto update(Long id, UserDto userDto) throws BadRequestException {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            return userRepository.save(user);
+            User user = userOptional.get();
+            Long profileId = user.getProfile().getId();
+            userDto.profile().setId(profileId);
+            user.setUsername(userDto.username());
+            user.setRole(userDto.role());
+            user.setProfile(userDto.profile());
+
+            User updatedUser = userRepository.save(user);
+            return new UserMapper().toUserDto(updatedUser);
         } else
             throw new BadRequestException("User id:" + id + " not found!");
     }
