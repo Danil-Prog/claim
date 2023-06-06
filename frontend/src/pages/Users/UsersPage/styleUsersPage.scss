@@ -7,6 +7,7 @@
         justify-content: space-between;
         grid-gap: 40px;
         position: relative;
+
         .page-content-top {
           display: flex;
           justify-content: space-between;
@@ -112,19 +113,10 @@
                   border-bottom: 1px solid var(--input-color);
                 }
                 .wrapper-link {
-                  .arrow-link {
-                    transition: var(--tran-03);
-                    background-color: var(--primary-color);
+                  .user-popup-menu {
+                    font-size: 30px;
                     color: var(--text-color);
-                    padding: 8px;
-                    border-radius: 20px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    &:hover {
-                      background-color: var(--primary-color-light);
-                    }
+                    transition: var(--tran-03);
                   }
                 }
                 .col-avatar {

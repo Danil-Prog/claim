@@ -101,6 +101,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--body-color);
+  transition: var(--tran-03);
 }
 
 .content {
@@ -137,7 +138,7 @@ body {
         transition: var(--tran-03);
         min-height: 740px;
         width: 100%;
-        min-width: 600px;
+        min-width: 500px;
         max-width: 1150px;
         padding: 50px;
         border-radius: 10px;

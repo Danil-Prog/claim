@@ -8,10 +8,11 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import DepartPage from './pages/DepartPage/DepartPage';
 import DepartUsersPage from './pages/DepartUsersPage';
-import UsersPage from './pages/UsersPage';
+import UsersPage from './pages/Users/UsersPage';
 import TaskPage from './pages/TaskPage';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
+import CreateUserPage from './pages/Users/CreateUserPage';
 
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
@@ -50,6 +51,7 @@ function App() {
           <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
           <Route exact path="/task" element={<TaskPage userContext={userContext} />} />
           <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
+          <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
           <Route
             exact
             path="/user?/:userId"

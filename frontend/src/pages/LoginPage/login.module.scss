@@ -1,17 +1,19 @@
 // страница signin
-.page-login {
+.page {
   .signin {
     display: flex;
     justify-content: center;
     align-items: center;
+    align-content: center;
     height: 100vh;
 
     form {
+      flex: 1;
       padding: 20px 40px 30px;
       border-radius: 15px;
       width: 100%;
-      max-width: 500px;
-      margin-right: 250px;
+      max-width: 540px;
+      background-color: var(--content-color);
 
       h2 {
         text-align: center;
@@ -38,7 +40,7 @@
           font-size: 18px;
           position: absolute;
           bottom: 0;
-
+          background: var(--input-color);
           &:focus + span,
           &:valid + span {
             top: -7px;
@@ -66,8 +68,8 @@
         }
       }
 
-      .btn-main {
-        background-color: var(--body-color-light);
+      .btn {
+        background-color: var(--content-color-light);
         color: var(--text-color);
         border: none;
         outline: none;
@@ -85,7 +87,7 @@
         border-radius: 10px;
         &:hover {
           transform: translateY(3px);
-          box-shadow: 0 2px 0 var(--body-color);
+          box-shadow: 0 2px 0 var(--primary-color);
         }
       }
     }

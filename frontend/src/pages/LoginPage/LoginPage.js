@@ -1,23 +1,23 @@
-import { Navigate } from "react-router-dom";
-import React from "react";
+import { Navigate } from 'react-router-dom';
+import React from 'react';
 
-import { userApi } from "../../misc/UserApi";
-import UserContext from "../../context/UserContext";
+import { userApi } from '../../misc/UserApi';
+import UserContext from '../../context/UserContext';
 
-import "./styleLogin.scss";
+import s from './login.module.scss';
 
 const LoginPage = () => {
   const userContext = React.useContext(UserContext);
 
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
     const isLogIn = userContext.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
-    console.log("Компонент обновлён");
+    console.log('Компонент обновлён');
   }, [userContext]);
 
   const auth = (username, password) => {
@@ -25,7 +25,7 @@ const LoginPage = () => {
       .authenticate(username, password)
       .then((response) => {
         const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ":" + password);
+        const authdata = window.btoa(username + ':' + password);
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 
@@ -52,12 +52,12 @@ const LoginPage = () => {
       {isLoggedIn ? (
         <Navigate to="/" />
       ) : (
-        <div className="page-login">
-          <div className="signin">
+        <div className={s.page}>
+          <div className={s.signin}>
             <form id="form-login" onSubmit={handleSubmit}>
               <h2>Вход</h2>
 
-              <label htmlFor="username" className="field__item">
+              <label htmlFor="username" className={s.field__item}>
                 <input
                   required
                   id="username"
@@ -71,7 +71,7 @@ const LoginPage = () => {
                 <div className="line"></div>
               </label>
 
-              <label htmlFor="password" className="field__item">
+              <label htmlFor="password" className={s.field__item}>
                 <input
                   required
                   id="password"
@@ -85,7 +85,7 @@ const LoginPage = () => {
                 <div className="line"></div>
               </label>
 
-              <input className="btn-main" type="submit" value="Вход" />
+              <input className={s.btn} type="submit" value="Вход" />
             </form>
           </div>
         </div>

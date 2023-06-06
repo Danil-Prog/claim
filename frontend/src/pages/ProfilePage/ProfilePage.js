@@ -27,6 +27,11 @@ const ProfilePage = ({ userContext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await userApi.changeSelfInfo(user.authdata, userProfile);
+    } catch (error) {
+      console.log(error);
+    }
     if (selectedFile) {
       const formData = new FormData();
       formData.append('image', selectedFile);
@@ -37,11 +42,6 @@ const ProfilePage = ({ userContext }) => {
       }
     }
 
-    try {
-      await userApi.changeSelfInfo(user.authdata, userProfile);
-    } catch (error) {
-      console.log(error);
-    }
     setEditProfile(false);
   };
 

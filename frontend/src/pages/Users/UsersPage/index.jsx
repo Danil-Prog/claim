@@ -5,11 +5,11 @@ import { toast } from 'wc-toast';
 
 import './styleUsersPage.scss';
 
-import { userApi } from '../../misc/UserApi';
-import Pagination from '../../components/Pagination';
+import { userApi } from '../../../misc/UserApi';
+import Pagination from '../../../components/Pagination';
 
-import Header from '../../components/Header';
-import Dropdown from '../../components/Dropdown';
+import Header from '../../../components/Header';
+import Dropdown from '../../../components/Dropdown';
 
 const UsersPage = ({ userContext }) => {
   const user = userContext.getUser();
@@ -46,6 +46,13 @@ const UsersPage = ({ userContext }) => {
             <section className="wrapper users">
               <div className="page-content">
                 <div className="page-content-top">
+                  <Link to={'/create/user'}>
+                    <div className="btn-create-user btn-main">
+                      <i class="bx bx-user">
+                        <span>Создать пользователя</span>
+                      </i>
+                    </div>
+                  </Link>
                   <Dropdown setSelected={setSelectedSort} list={listAscDesc} />
 
                   <div className="search-users">
@@ -132,8 +139,8 @@ const UsersPage = ({ userContext }) => {
                             <td>{item.profile.phone}</td>
                             <td className="wrapper-link">
                               <Link to={`/user?id=${item.id}`} key={item.id}>
-                                <div className="arrow-link">
-                                  <span>Открыть профиль</span>
+                                <div className="user-popup-menu">
+                                  <i class="bx bx-dots-horizontal-rounded"></i>
                                 </div>
                               </Link>
                             </td>
