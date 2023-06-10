@@ -3,7 +3,7 @@ import React from 'react';
 
 import './index.scss';
 import './styles/themeMode.scss';
-import HomePage from './pages/HomePage/HomePage';
+import Index from './pages/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import DepartPage from './pages/DepartPage/DepartPage';
@@ -44,7 +44,7 @@ function App() {
             path="/"
             element={
               <AdminRoute>
-                <HomePage userContext={userContext} />
+                <Index userContext={userContext} />
               </AdminRoute>
             }
           />

@@ -16,7 +16,6 @@ const DepartPage = ({ userContext }) => {
 
   const [valueDepartment, setValueDepartment] = React.useState({ name: '' });
   const [listDepartment, setListDepartment] = React.useState([]);
-  const [createdDep, setCreatedDep] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(null);
   const [sizeItems, setSizeItems] = React.useState(10);
@@ -65,11 +64,10 @@ const DepartPage = ({ userContext }) => {
         setListDepartment(response.data.content);
         setTotalPages(response.data.totalPages);
         setSizeItems(response.data.size);
-        setCreatedDep(!createdDep);
       })
       .catch((error) => console.log(error));
     return () => {};
-  }, [currentPage, selectedSort, sizeItems, user.authdata, createdDep]);
+  }, [currentPage, selectedSort]);
 
   return (
     <>

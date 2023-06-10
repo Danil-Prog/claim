@@ -90,7 +90,7 @@ const UsersPage = ({ userContext }) => {
         })
         .catch((error) => console.log(error));
     return () => {};
-  }, []);
+  }, [user.authdata]);
 
   return (
     <>

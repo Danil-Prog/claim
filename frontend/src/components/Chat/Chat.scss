@@ -1,4 +1,4 @@
-.chat {
+.chat.open {
   display: flex;
   flex-direction: column;
   justify-content: stretch;
@@ -117,32 +117,119 @@
 
 
 .chat.close {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--tran-03);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  min-height: 740px;
+  max-width: 100px;
+  height: 740px;
+  z-index: 1;
+  background-color: var(--sidebar-color);
 
-  width: 100px;
-
+  @media screen and (max-width: 1200px) {
+    max-width: 100%;
+  }
   .top {
-    .user-card {
+    z-index: 2;
+    margin-bottom: 20px;
 
+    .user-card {
+      min-width: 100px;
+      width: 100px;
+      border-radius: 10px 10px 0 0;
+      background-color: var(--sidebar-color);
+      .user-card-info {
+        opacity: 0;
+      }
     }
   }
 
   .user-list {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 13px;
+    .user-card {
+      min-width: 100px;
+      width: 100%;
 
+
+      border-radius: 10px 10px 0 0;
+      background-color: var(--sidebar-color);
+      .user-card-info {
+        opacity: 0;
+      }
+    }
   }
 
   .message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    grid-gap: 20px;
+    transition: var(--tran-03);
+    background-color: var(--content-color-light);
     form {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      grid-gap: 20px;
+      transition: var(--tran-03);
       .text_message {
-
+        min-width: 100px;
+        flex-grow: 3;
+        padding: 13px;
+        height: 50px;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        border-radius: 10px;
+        background-color: var(--input-color);
+        transition: var(--tran-03);
+        &:focus + span {
+          background-color: var(--primary-color);
+        }
+        &:invalid + span {
+          color: red;
+          background-color: #000;
+        }
       }
 
       .send_message {
-
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        border: none;
+        height: 50px;
+        width: 50px;
+        font-size: 22px;
+        color: var(--text-color);
+        transition: var(--tran-03);
+        cursor: pointer;
+        &:hover {
+          background-color: var(--primary-color-light);
+        }
       }
     }
 
     .clip {
+      font-size: 22px;
+      transform: rotateZ(-45deg);
+      color: var(--text-color);
 
+      transition: var(--tran-02);
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color-light);
+      }
     }
   }
 }
