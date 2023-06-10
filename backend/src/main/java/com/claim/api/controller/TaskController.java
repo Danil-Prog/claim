@@ -34,7 +34,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<Task> createTask(@RequestBody Task task, Principal principal) {
+    public ResponseEntity<String> createTask(@RequestBody Task task, Principal principal) {
         return ResponseEntity.ok(taskService.createTask(principal, task));
     }
 

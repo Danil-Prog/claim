@@ -29,6 +29,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/api/v1/message/**").permitAll()
                 .requestMatchers("/api/v1/user/{id}/avatar/**").permitAll()
                 .requestMatchers("/api/v1/admin", "/api/v1/admin/**").hasRole("SUPER_ADMIN")
+                .requestMatchers("/monitoring", "/monitoring/**").hasRole("SUPER_ADMIN")
                 .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
