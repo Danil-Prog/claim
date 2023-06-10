@@ -8,6 +8,8 @@ import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.repository.UserRepository;
 import com.claim.api.utils.FilesStorageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,6 +27,7 @@ import java.util.UUID;
 @Service
 public class UserService implements UserDetailsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -42,11 +45,13 @@ public class UserService implements UserDetailsService {
     public boolean saveUser(User user) {
         Optional<User> userFromDataBase = userRepository.findByUsername(user.getUsername());
         if (userFromDataBase.isPresent()) {
+            logger.warn("Error creating user. User named '{}' already exists", userFromDataBase.get().getUsername());
             return false;
         }
         user.setRole(user.getRole());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        logger.info("user named '{}' successfully created", user.getUsername());
         return true;
     }
 
@@ -62,9 +67,13 @@ public class UserService implements UserDetailsService {
     public Profile getUserByUsername(Principal principal) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
+            logger.info("The user with the name '{}' got his profile", userOptional.get().getUsername());
             return userOptional.get().getProfile();
-        } else
+        } else {
+            logger.warn("Unable to get user profile '{}'. Username '{}' does not exist", principal.getName(),
+                                                                                         principal.getName());
             throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
+        }
     }
 
     public UserDto getUserById(Long id) {
@@ -85,9 +94,12 @@ public class UserService implements UserDetailsService {
         if (userOptional.isPresent()) {
             userRepository.delete(userOptional.get());
             User user = userOptional.get();
+            logger.info("User id '{}' deleted successfully", id);
             return new UserMapper().toUserDto(user);
-        }else
+        }else {
+            logger.warn("Error while deleting user with id '{}'. User with this id does not exist", id);
             throw new UserNotFoundException("User with id = " + id + " not found");
+        }
 
     }
 
@@ -100,7 +112,7 @@ public class UserService implements UserDetailsService {
             user.setUsername(userDto.username());
             user.setRole(userDto.role());
             user.setProfile(userDto.profile());
-
+            logger.info("Updated user named '{}' profile", user.getUsername());
             User updatedUser = userRepository.save(user);
             return new UserMapper().toUserDto(updatedUser);
         } else
@@ -115,9 +127,12 @@ public class UserService implements UserDetailsService {
             if (FilesStorageUtil.uploadAvatar(user.getProfile(), image, filename)) {
                 user.getProfile().setAvatar(filename);
                 userRepository.save(user);
+                logger.info("User named '{}' successfully updated avatar", principal.getName());
                 return "Successful upload image";
-            } else
+            } else {
+                logger.error("An error occurred while updating the avatar for a user named '{}'", principal.getName());
                 return "An error occurred while uploading the file";
+            }
         } else
             throw new BadRequestException("User: " + principal.getName() + " not found!");
     }
@@ -129,9 +144,11 @@ public class UserService implements UserDetailsService {
             profile.setId(user.getProfile().getId());
             user.setProfile(profile);
             userRepository.save(user);
-
+            logger.info("User named '{}' updated my profile", principal.getName());
             return "User profile updated successfully";
-        } else
+        } else {
+            logger.error("Error updating user named '{}'", principal.getName());
             throw new BadRequestException("Errors occurred while updating the user profile.");
+        }
     }
 }

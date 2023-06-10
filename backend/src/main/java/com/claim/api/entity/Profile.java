@@ -45,6 +45,7 @@ public class Profile {
     @NotNull
     @Column(name = "pc")
     private String pc;
+    @NotNull
     @OneToOne
     private Department department;
 }
