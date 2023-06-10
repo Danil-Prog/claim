@@ -100,6 +100,7 @@
 body {
   margin: 0;
   padding: 0;
+
   background-color: var(--body-color);
   transition: var(--tran-03);
 }
@@ -118,6 +119,7 @@ body {
   transition: var(--tran-03);
 
   .page {
+    flex: 1;
     width: 1100px;
     margin-bottom: 20px;
 

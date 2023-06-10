@@ -1,18 +1,31 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
+
 
 import Header from '../../components/Header';
-import Dropdown from '../../components/Dropdown';
-import { userApi } from '../../misc/UserApi';
+
 
 const HomePage = ({ userContext }) => {
   const user = userContext.getUser({ userContext });
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+    };
+
   return (
     <>
       <Header title={'Главная'} />
-      <div>test</div>
+        <div className="page">
+            <section className="wrapper">
+                <form onSubmit={handleSubmit}>
+                    <div className="page-content">
+
+                    </div>
+                </form>
+            </section>
+        </div>
     </>
+
   );
 };
 

@@ -8,7 +8,7 @@
   border-radius: 10px;
   margin-bottom: 20px;
   min-height: 740px;
-  max-width: 500px;
+  max-width: 430px;
   height: 740px;
   z-index: 1;
 
@@ -113,4 +113,36 @@
 .user-list::-webkit-scrollbar-thumb {
   background-color: var(--content-color-light); //* цвет бегунка */
   border-radius: 20px; /* округлось бегунка */
+}
+
+
+.chat.close {
+
+  width: 100px;
+
+  .top {
+    .user-card {
+
+    }
+  }
+
+  .user-list {
+
+  }
+
+  .message {
+    form {
+      .text_message {
+
+      }
+
+      .send_message {
+
+      }
+    }
+
+    .clip {
+
+    }
+  }
 }

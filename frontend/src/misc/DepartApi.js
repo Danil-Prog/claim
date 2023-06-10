@@ -15,7 +15,7 @@ function newDepartment(authdata, department) {
   });
 }
 
-function getDepartments(authdata, page, size, sortBy) {
+function getDepartments(authdata, page = 0, size = 10, sortBy = 'ASC') {
   return instance.get(`/api/v1/department?page=${page}&size=${size}&sortBy=${sortBy}`, {
     headers: {
       Authorization: `Basic ${authdata}`,

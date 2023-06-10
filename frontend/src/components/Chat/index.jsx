@@ -38,7 +38,7 @@ const Chat = ({ userContext }) => {
   return (
     <>
       {user.authdata && (
-        <div className="chat">
+        <div className="chat close">
           <div className="top">
             <div className="user-card">
               <div className="mini-avatar">

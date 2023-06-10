@@ -10,6 +10,7 @@ export const userApi = {
   getUserProfile,
   changeUserData,
   changeSelfInfo,
+  createUser,
 };
 
 function authenticate(username, password) {
@@ -84,6 +85,14 @@ function changeSelfInfo(authdata, data) {
 
 function getUsersAll(authdata) {
   return instance.get('/api/v1/user/all', {
+    headers: {
+      Authorization: `Basic ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+function createUser(authdata, data) {
+  return instance.post('/api/v1/user', data, {
     headers: {
       Authorization: `Basic ${authdata}`,
       'Content-type': 'application/json',
