@@ -6,6 +6,8 @@ import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.TaskRepository;
 import com.claim.api.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Service
 public class TaskService {
 
+    private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
@@ -35,6 +38,7 @@ public class TaskService {
         if (taskOptional.isPresent()) {
             return taskOptional.get();
         }
+        logger.error("Error getting task. Tasks with ID= '{}' does not exist", id);
         throw new BadRequestException("Task id=" + id + " not exist");
     }
 
@@ -65,8 +69,10 @@ public class TaskService {
     public Task updateTask(Task task) {
         Optional<Task> taskOptional = taskRepository.findById(task.getId());
         if (taskOptional.isPresent()) {
+            logger.info("Task with id= '{}' successfully updated", taskOptional.get().getId());
             return taskRepository.save(task);
         }
+        logger.info("Error while updating task. Tasks with ID= '{}' does not exist", taskOptional.get().getId());
         throw new BadRequestException("Task id: " + task.getId() + " not exist");
     }
 }
