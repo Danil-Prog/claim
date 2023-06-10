@@ -54,9 +54,10 @@ public class TaskService {
     public String createTask(Principal principal, Task task) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
-            Optional<User> executorOption = userRepository.findById(task.getExecutor().getId());
-            executorOption.ifPresent(task::setExecutor);
-
+            if (task.getExecutor() != null) {
+                Optional<User> executorOption = userRepository.findById(task.getExecutor().getId());
+                executorOption.ifPresent(task::setExecutor);
+            }
             User user = userOptional.get();
             task.setCustomer(user);
             user.setTask(task);
