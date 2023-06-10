@@ -51,7 +51,7 @@ public class TaskService {
         throw new UserNotFoundException("User id=" + userOptional.get().getId() + " not exist");
     }
 
-    public Task createTask(Principal principal, Task task) {
+    public String createTask(Principal principal, Task task) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             Optional<User> executorOption = userRepository.findById(task.getExecutor().getId());
@@ -61,7 +61,7 @@ public class TaskService {
             task.setCustomer(user);
             user.setTask(task);
             taskRepository.save(task);
-            return task;
+            return "Task successfully created";
         }
         throw new UserNotFoundException("User id: " + userOptional.get().getId() + " not exist");
     }
