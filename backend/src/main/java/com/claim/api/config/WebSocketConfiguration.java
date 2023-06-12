@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer  {
+public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
     private RabbitProperties rabbitProperties;
@@ -23,7 +23,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/queue")
+        config.enableStompBrokerRelay("/topic", "/queue")
                 .setRelayHost(rabbitProperties.getHost())
                 .setRelayPort(rabbitProperties.getPort())
                 .setClientLogin(rabbitProperties.getUsername())
