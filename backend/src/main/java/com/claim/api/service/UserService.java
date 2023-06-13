@@ -13,9 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
@@ -35,11 +32,6 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow();
     }
 
     public boolean saveUser(User user) {
@@ -55,11 +47,6 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public Optional<User> validUsernameAndPassword(String username, String password) {
-        return userRepository.findByUsername(username)
-                .filter(user -> bCryptPasswordEncoder.matches(password, user.getPassword()));
-    }
-
     public Page<User> getUserList(PageRequest pageRequest) {
         return userRepository.findAll(pageRequest);
     }
@@ -71,7 +58,7 @@ public class UserService implements UserDetailsService {
             return userOptional.get().getProfile();
         } else {
             logger.warn("Unable to get user profile '{}'. Username '{}' does not exist", principal.getName(),
-                                                                                         principal.getName());
+                    principal.getName());
             throw new UserNotFoundException("User with username: " + principal.getName() + " not found!");
         }
     }
@@ -96,7 +83,7 @@ public class UserService implements UserDetailsService {
             User user = userOptional.get();
             logger.info("User id '{}' deleted successfully", id);
             return new UserMapper().toUserDto(user);
-        }else {
+        } else {
             logger.warn("Error while deleting user with id '{}'. User with this id does not exist", id);
             throw new UserNotFoundException("User with id = " + id + " not found");
         }
