@@ -33,6 +33,16 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getUserTasks(principal, pageRequest));
     }
 
+    @GetMapping("/department")
+    public ResponseEntity<Page<Task>> getTaskDepartment(Principal principal,
+                                                   @RequestParam(defaultValue = "0") int page,
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(defaultValue = "ASC") String sortBy,
+                                                   @RequestParam(defaultValue = "id") String[] sort) {
+        PageRequest pageRequest = PageRequest.of(page, size , Sort.by(Sort.Direction.fromString(sortBy), sort));
+        return ResponseEntity.ok(taskService.getTaskForDepartment(principal, pageRequest));
+    }
+
     @PostMapping
     public ResponseEntity<String> createTask(@RequestBody Task task, Principal principal) {
         return ResponseEntity.ok(taskService.createTask(principal, task));

@@ -33,6 +33,17 @@ public class TaskService {
         return taskRepository.findAll(pageRequest);
     }
 
+    public Page<Task> getTaskForDepartment(Principal principal, PageRequest pageRequest) {
+        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Long departmentId = user.getProfile().getDepartment().getId();
+            logger.info("User: {} got a list of department tasks", user.getUsername());
+            return taskRepository.getTasksByDepartment_Id(departmentId, pageRequest);
+        }
+        throw new UserNotFoundException("User id=" + userOptional.get().getId() + " not exist");
+    }
+
     public Task getTaskById(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
         if (taskOptional.isPresent()) {
