@@ -67,4 +67,9 @@ public class TaskController {
     public ResponseEntity<Task> getTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskService.getTaskById(id));
     }
+
+    @PutMapping("/{taskId}/department/{departmentId}")
+    public ResponseEntity<String> reassignDepartment(@PathVariable Long taskId, @PathVariable Long departmentId) {
+        return ResponseEntity.ok(taskService.reassignDepartment(taskId, departmentId));
+    }
 }
