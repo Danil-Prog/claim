@@ -1,5 +1,6 @@
 package com.claim.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -40,6 +41,7 @@ public class User implements UserDetails {
     private Profile profile;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer", fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Task> task = new HashSet<>();
 
     boolean isEnable;
