@@ -24,8 +24,9 @@ const LoginPage = () => {
     userApi
       .authenticate(username, password)
       .then((response) => {
-        const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ':' + password);
+        const { id, username } = response.data;
+        const role = response.data.authorities[0].authority;
+        const authdata = response.data.token;
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 

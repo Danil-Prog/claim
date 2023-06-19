@@ -9,7 +9,7 @@ export const departApi = {
 function newDepartment(authdata, department) {
   return instance.post('/api/v1/department', department, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -18,7 +18,7 @@ function newDepartment(authdata, department) {
 function getDepartments(authdata, page = 0, size = 10, sortBy = 'ASC') {
   return instance.get(`/api/v1/department?page=${page}&size=${size}&sortBy=${sortBy}`, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -29,7 +29,7 @@ function getDepartmentUsers(authdata, id, page, size, sortBy, sort) {
     `/api/v1/department/${id}/users?page=${page}&size=${size}&sortBy=${sortBy}&sort=${sort}`,
     {
       headers: {
-        Authorization: `Basic ${authdata}`,
+        Authorization: `Bearer ${authdata}`,
         'Content-type': 'application/json',
       },
     },

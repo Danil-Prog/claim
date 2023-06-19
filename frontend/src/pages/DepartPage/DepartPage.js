@@ -25,6 +25,7 @@ const DepartPage = ({ userContext }) => {
     ['убыванию', 'desc'],
   ];
 
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValueDepartment({

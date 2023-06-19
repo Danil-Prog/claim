@@ -2,14 +2,21 @@ import React from 'react';
 
 import { userApi } from '../../misc/UserApi';
 import UserCard from '../UserCard';
-
+import ThemeContext from "../../context/ThemeContext";
 import './Chat.scss';
 
 const Chat = ({ userContext }) => {
+  const themeContext = React.useContext(ThemeContext);
+  const chatPos = themeContext.getChatPosition();
   const [userSelfData, setUserSelfData] = React.useState({});
   const [user, setUser] = React.useState({});
 
   const [listUsers, setListUsers] = React.useState([]);
+
+  const setChatPosition = () => {
+    const position = themeContext.getChatPosition();
+    themeContext.chatPosition(!position);
+  };
 
   React.useEffect(() => {
     const user = userContext.getUser({ userContext });
@@ -38,8 +45,9 @@ const Chat = ({ userContext }) => {
   return (
     <>
       {user.authdata && (
-        <div className="chat close">
+        <div className={chatPos ? 'chat open' : 'chat close'}>
           <div className="top">
+            <i className="bx bx-chevron-right toggle" onClick={setChatPosition}></i>
             <div className="user-card">
               <div className="mini-avatar">
                 {userSelfData.avatar ? (

@@ -9,7 +9,7 @@ import Header from '../../../components/Header';
 const initialUser = {
     username: "",
     password: "",
-    role: "",
+    role: "ROLE_USER",
     profile: {
         firstname: "",
         lastname: "",
@@ -18,7 +18,7 @@ const initialUser = {
         cabinet: "",
         pc: "",
         department: {
-            id: 0
+            id: 1
         }
     }
 };

@@ -15,7 +15,7 @@ export const userApi = {
 
 function authenticate(username, password) {
   return instance.post(
-    'auth',
+    'authenticate',
     { username, password },
     {
       headers: { 'Content-type': 'application/json' },
@@ -32,7 +32,7 @@ function signup(user) {
 function getProfile(authdata) {
   return instance.get('/api/v1/user', {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -41,7 +41,7 @@ function getProfile(authdata) {
 function getUserProfile(authdata, id) {
   return instance.get(`/api/v1/user/${id}`, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -50,7 +50,7 @@ function getUserProfile(authdata, id) {
 function changeUserData(authdata, user, id) {
   return instance.put(`/api/v1/user/${id}`, user, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -59,7 +59,7 @@ function changeUserData(authdata, user, id) {
 function setAvatar(authdata, formData) {
   return instance.post('/api/v1/user/avatar', formData, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'multipart/form-data',
     },
   });
@@ -68,7 +68,7 @@ function setAvatar(authdata, formData) {
 function getSelfInfo(authdata) {
   return instance.get('/api/v1/user', {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -77,7 +77,7 @@ function getSelfInfo(authdata) {
 function changeSelfInfo(authdata, data) {
   return instance.put('/api/v1/user', data, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -86,7 +86,7 @@ function changeSelfInfo(authdata, data) {
 function getUsersAll(authdata) {
   return instance.get('/api/v1/user/all', {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
@@ -94,7 +94,7 @@ function getUsersAll(authdata) {
 function createUser(authdata, data) {
   return instance.post('/api/v1/user', data, {
     headers: {
-      Authorization: `Basic ${authdata}`,
+      Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
     },
   });
