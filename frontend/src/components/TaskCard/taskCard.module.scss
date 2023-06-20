@@ -1,0 +1,14 @@
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--input-color);
+  transition: var(--tran-03);
+  cursor:pointer;
+  &:hover {
+    background-color: var(--primary-color);
+  }
+  .title {
+
+  }
+}

@@ -4,6 +4,8 @@ import { userApi } from '../../misc/UserApi';
 import UserCard from '../UserCard';
 import ThemeContext from "../../context/ThemeContext";
 import './Chat.scss';
+import { over } from 'stompjs';
+import SockJS from 'sockjs-client';
 
 const Chat = ({ userContext }) => {
   const themeContext = React.useContext(ThemeContext);
@@ -13,12 +15,38 @@ const Chat = ({ userContext }) => {
 
   const [listUsers, setListUsers] = React.useState([]);
 
+  const [online,setOnline ] = React.useState();
+  const Sock = new SockJS('http://localhost:8080/ws');
+  const stompClient = over(Sock);
+  console.log(online);
+
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  function handleBeforeUnload() {
+    stompClient.send("/app/online", { MessageType: "UNSUBSCRIBE"}, user.username);
+  }
+
   const setChatPosition = () => {
     const position = themeContext.getChatPosition();
     themeContext.chatPosition(!position);
   };
 
   React.useEffect(() => {
+
+    const onConnected = () => {
+      stompClient.subscribe("/topic/online", (arr) => {
+        const arrParse = JSON.parse(arr.body);
+
+        setOnline(arrParse.body);
+      });
+      stompClient.send("/app/online", { MessageType: "SUBSCRIBE"}, user.username)
+    }
+    const onError = () => {
+
+    }
+
+
+    stompClient.connect({},onConnected,onError);
+
     const user = userContext.getUser({ userContext });
     setUser(user);
     userApi
@@ -101,9 +129,14 @@ const Chat = ({ userContext }) => {
             </div>
           </div>
           <div className="user-list">
-            {listUsers.map((item) =>
-              user.id === item.id ? '' : <UserCard key={item.id} user={item} />,
-            )}
+            {/*{listUsers.map((item) =>*/}
+            {/*  user.id === item.id ? '' : <UserCard key={item.id} user={item} />,*/}
+            {/*)}*/}
+            <>
+              {online && online.map((item) => (
+                  <UserCard key={item.id} user={item} />
+              ))}
+            </>
           </div>
           <div className="message">
             <i className="bx bx-paperclip clip"></i>
@@ -124,3 +157,5 @@ const Chat = ({ userContext }) => {
 };
 //<UserCard user={user} item={item}
 export default Chat;
+
+

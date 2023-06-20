@@ -9,7 +9,8 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import DepartPage from './pages/DepartPage/DepartPage';
 import DepartUsersPage from './pages/DepartUsersPage';
 import UsersPage from './pages/Users/UsersPage';
-import TaskPage from './pages/TaskPage';
+import TaskPage from './pages/Task/TaskPage';
+import TaskDepart from './pages/Task/TaskDepart'
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
@@ -20,6 +21,7 @@ import Sidebar from './components/Sidebar';
 import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
+import * as PropTypes from "prop-types";
 
 function StaticElements() {
   const userContext = React.useContext(UserContext);
@@ -50,6 +52,7 @@ function App() {
           />
           <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
           <Route exact path="/task" element={<TaskPage userContext={userContext} />} />
+          <Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />
           <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
           <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
           <Route

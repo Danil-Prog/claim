@@ -5,11 +5,11 @@ import { toast } from 'wc-toast';
 
 import style from './taskPage.module.scss';
 
-import { departApi } from '../../misc/DepartApi';
-import Pagination from '../../components/Pagination';
+import { departApi } from '../../../misc/DepartApi';
+import Pagination from '../../../components/Pagination';
 
-import Header from '../../components/Header';
-import Dropdown from '../../components/Dropdown';
+import Header from '../../../components/Header';
+import Dropdown from '../../../components/Dropdown';
 
 const TaskPage = ({ userContext }) => {
     const user = userContext.getUser();
@@ -78,7 +78,10 @@ const TaskPage = ({ userContext }) => {
                         <section className="wrapper depart">
                             <div className="page-content">
                                 <input type="button" className={'btn-main'} value={'Мои задачи'}/>
-                                <input type="button" className={'btn-main'} value={'Задачи отдела'}/>
+                                <Link to={`/task/department`}>
+                                    <input type="button" className={'btn-main'} value={'Задачи отдела'}/>
+                                </Link>
+
                                 <div className="page-content-top">
 
                                     <Dropdown setSelected={setSelectedSort} list={listAscDesc} />
