@@ -2,6 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  height: 200px;
+  border-radius: 10px;
   background-color: var(--input-color);
   transition: var(--tran-03);
   cursor:pointer;
@@ -9,6 +13,26 @@
     background-color: var(--primary-color);
   }
   .title {
+    font-size: 15px;
+  }
+  .info {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    grid-gap: 15px;
+    font-size: 10px;
+    .status {
 
+    }
+    .customer {
+
+    }
+    .executor {
+
+    }
+
+    .startDate {
+
+    }
   }
 }

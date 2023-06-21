@@ -8,8 +8,20 @@ function TaskCard({ task }) {
             {task &&
                 <div className={style.card}>
                     <div className={style.title}>{task.title}</div>
-                    <div className={style.title}>{task.statusTask}</div>
-                    {/*<div dangerouslySetInnerHTML={{ __html: task.description }} />*/}
+                    <div className={style.info}>
+                        <div className={style.customer}>Отправитель: Тестовое Имя</div>
+                        <div className={style.status}>Статус заявки: {task.statusTask}</div>
+                        <div className={style.executor}>
+                            Исполнитель:{` `}
+                            {task.executor ? `${task.executor.profile.firstname} ${task.executor.profile.lastname}` :
+                                `Не назначен`}
+                        </div>
+
+                        <div className={style.startDate}>Дата отправки: {new Date(task.startDate).toLocaleString().slice(0,-10)} </div>
+
+                        {/*<div dangerouslySetInnerHTML={{ __html: task.description }} />*/}
+                    </div>
+
                 </div>
             }
         </>

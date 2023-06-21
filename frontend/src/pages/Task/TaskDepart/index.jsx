@@ -4,8 +4,9 @@ import {Link} from "react-router-dom";
 import Dropdown from "../../../components/Dropdown";
 import Pagination from "../../../components/Pagination";
 import Header from "../../../components/Header";
-import TaskCard from "../../../components/TaskCard"
+import TaskCard from "../../../components/TaskCard";
 import {taskApi} from "../../../misc/TaskApi";
+import style from "./taskDepart.module.scss";
 
 const TaskDepart = ({ userContext }) => {
     const user = userContext.getUser();
@@ -38,10 +39,12 @@ const TaskDepart = ({ userContext }) => {
                             </div>
                         </div>
 
-                        <div className="list-depart">
+                        <div className={style.listTasks}>
                             {taskDepart.map((item) => (
                                 // <p  dangerouslySetInnerHTML={{ __html: item.description }} />
-                                <TaskCard key={item.id} task={item}/>
+                                <div key={item.id} className={style.wrapperCard}>
+                                    <TaskCard task={item}/>
+                                </div>
                             ))}
                         </div>
 
