@@ -11,6 +11,7 @@ import DepartUsersPage from './pages/DepartUsersPage';
 import UsersPage from './pages/Users/UsersPage';
 import TaskPage from './pages/Task/TaskPage';
 import TaskDepart from './pages/Task/TaskDepart'
+import TaskInfo from './pages/Task/TaskInfo';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
@@ -53,6 +54,11 @@ function App() {
           <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
           <Route exact path="/task" element={<TaskPage userContext={userContext} />} />
           <Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />
+          <Route
+              exact
+              path="/task/info?/:taskId"
+              element={<TaskInfo userContext={userContext} />}
+          />
           <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
           <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
           <Route

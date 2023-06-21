@@ -39,14 +39,19 @@ const TaskDepart = ({ userContext }) => {
                             </div>
                         </div>
 
-                        <div className={style.listTasks}>
-                            {taskDepart.map((item) => (
-                                // <p  dangerouslySetInnerHTML={{ __html: item.description }} />
-                                <div key={item.id} className={style.wrapperCard}>
-                                    <TaskCard task={item}/>
-                                </div>
-                            ))}
-                        </div>
+                            <div className={style.listTasks}>
+                                {taskDepart.map((item) => (
+
+
+                                        <div key={item.id} className={style.wrapperCard}>
+                                            <Link to={`/task/info?id=${item.id}`} >
+                                                <TaskCard task={item}/>
+                                            </Link>
+                                        </div>
+
+                                ))}
+                            </div>
+
 
                     </div>
                 </section>

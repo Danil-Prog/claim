@@ -24,7 +24,7 @@ function getDepartments(authdata, page = 0, size = 10, sortBy = 'ASC') {
   });
 }
 
-function getDepartmentUsers(authdata, id, page, size, sortBy, sort) {
+function getDepartmentUsers(authdata, id, page = 0, size = 10, sortBy = 'ASC', sort = 'id') {
   return instance.get(
     `/api/v1/department/${id}/users?page=${page}&size=${size}&sortBy=${sortBy}&sort=${sort}`,
     {

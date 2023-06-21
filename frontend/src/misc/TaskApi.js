@@ -2,7 +2,8 @@ import axios from 'axios';
 
 export const taskApi = {
   createTask,
-  getTaskDepart
+  getTaskDepart,
+  getTaskInfo,
 };
 
 function createTask(authdata, data) {
@@ -16,6 +17,15 @@ function createTask(authdata, data) {
 
 function getTaskDepart(authdata) {
   return instance.get('/api/v1/task/department', {
+    headers: {
+      Authorization: `Bearer ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function getTaskInfo(authdata, id) {
+  return instance.get(`/api/v1/task/${id}`, {
     headers: {
       Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',

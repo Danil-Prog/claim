@@ -18,7 +18,6 @@ const Chat = ({ userContext }) => {
   const [online,setOnline ] = React.useState();
   const Sock = new SockJS('http://localhost:8080/ws');
   const stompClient = over(Sock);
-  console.log(online);
 
   window.addEventListener('beforeunload', handleBeforeUnload);
   function handleBeforeUnload() {
