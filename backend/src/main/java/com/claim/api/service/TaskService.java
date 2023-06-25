@@ -27,7 +27,9 @@ public class TaskService {
     private final DepartmentRepository departmentRepository;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, UserRepository userRepository, DepartmentRepository departmentRepository) {
+    public TaskService(TaskRepository taskRepository,
+                       UserRepository userRepository,
+                       DepartmentRepository departmentRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;

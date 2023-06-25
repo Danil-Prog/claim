@@ -12,9 +12,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private RabbitProperties rabbitProperties;
+    private final RabbitProperties rabbitProperties;
 
+    @Autowired
+    public WebSocketConfiguration(RabbitProperties rabbitProperties) {
+        this.rabbitProperties = rabbitProperties;
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

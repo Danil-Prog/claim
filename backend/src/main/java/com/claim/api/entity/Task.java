@@ -1,6 +1,5 @@
 package com.claim.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -45,7 +44,6 @@ public class Task {
     @Column(name = "end_date")
     private Date endDate;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="customer_id", nullable=false)
-    @JsonIgnore
+    @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 }
