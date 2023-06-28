@@ -1,0 +1,18 @@
+
+  .listTasks {
+    display: flex;
+
+    align-items: start;
+    align-content: flex-start;
+    flex: 1;
+    flex-wrap: wrap;
+    grid-gap: 20px;
+
+      .wrapperCard {
+        width: 23%;
+      }
+
+
+  }
+
+

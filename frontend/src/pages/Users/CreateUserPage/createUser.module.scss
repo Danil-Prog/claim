@@ -1,0 +1,44 @@
+.createUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  width: 100%;
+  form {
+    flex: 1;
+    width: 100%;
+  }
+  .fields {
+    display: flex;
+    flex-direction: column;
+
+    .item {
+
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        color: var(--text-color);
+      }
+
+      .text {
+        input,select {
+          width: 90%;
+          background-color: var(--input-color);
+          border: none;
+          margin: 5px;
+          padding: 10px;
+          border-radius: 10px;
+          color: var(--text-color);
+        }
+      }
+    }
+  }
+}
+
+.page-content {
+
+}
+

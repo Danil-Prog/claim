@@ -10,11 +10,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer  {
+public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
+
+    private final RabbitProperties rabbitProperties;
 
     @Autowired
-    private RabbitProperties rabbitProperties;
-
+    public WebSocketConfiguration(RabbitProperties rabbitProperties) {
+        this.rabbitProperties = rabbitProperties;
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -23,14 +26,13 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableStompBrokerRelay("/topic")
+        config.enableStompBrokerRelay("/topic", "/queue")
                 .setRelayHost(rabbitProperties.getHost())
                 .setRelayPort(rabbitProperties.getPort())
                 .setClientLogin(rabbitProperties.getUsername())
                 .setClientPasscode(rabbitProperties.getPassword())
                 .setSystemLogin(rabbitProperties.getUsername())
                 .setSystemPasscode(rabbitProperties.getPassword());
-
         config.setApplicationDestinationPrefixes("/app");
     }
 }

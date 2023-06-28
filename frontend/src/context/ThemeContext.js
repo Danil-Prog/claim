@@ -5,6 +5,7 @@ const ThemeContext = React.createContext({});
 const ThemeProvider = ({ children }) => {
   const [mode, setMode] = React.useState(true);
   const [sidebar, setSidebar] = React.useState(true);
+  const [chatPos, setChatPos] = React.useState(true);
 
   const themeMode = (theme) => {
     localStorage.setItem("theme", JSON.stringify(theme));
@@ -24,6 +25,15 @@ const ThemeProvider = ({ children }) => {
     return JSON.parse(localStorage.getItem("sidebar"));
   };
 
+    const chatPosition = (position) => {
+        localStorage.setItem("chat-position", JSON.stringify(position));
+        setChatPos(position);
+    };
+
+    const getChatPosition = () => {
+        return JSON.parse(localStorage.getItem("chat-position"));
+    };
+
   React.useEffect(() => {
     const theme = localStorage.getItem("theme");
     setMode(theme);
@@ -41,6 +51,9 @@ const ThemeProvider = ({ children }) => {
         getSidebarPosition,
         mode,
         sidebar,
+        chatPos,
+        chatPosition,
+        getChatPosition,
       }}
     >
       {children}

@@ -22,9 +22,9 @@ public final class FilesStorageUtil {
         Path pathToAvatar = root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(filename);
 
         try {
-            if (!Files.exists(root.resolve(profile.getId() + "/avatar")))
+            if (!Files.exists(root.resolve(profile.getId() + "/avatar"))) {
                 Files.createDirectories(root.resolve(profile.getId() + "/avatar"));
-
+            }
             if (profile.getAvatar() != null) {
                 Files.deleteIfExists(root.resolve(String.valueOf(profile.getId())).resolve("avatar").resolve(profile.getAvatar()));
             }

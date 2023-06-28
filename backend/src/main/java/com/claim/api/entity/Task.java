@@ -1,7 +1,7 @@
 package com.claim.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +23,16 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     @Column(name = "title")
     private String title;
+    @NotNull
     @Column(name = "description")
     private String description;
     @Column(name = "status_task")
+    @Enumerated(EnumType.STRING)
     private StatusTask statusTask = StatusTask.REVIEW;
+    @NotNull
     @OneToOne
     private Department department;
     @OneToOne
@@ -40,7 +44,6 @@ public class Task {
     @Column(name = "end_date")
     private Date endDate;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="customer_id", nullable=false)
-    @JsonIgnore
+    @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 }

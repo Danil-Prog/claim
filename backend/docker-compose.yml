@@ -61,6 +61,8 @@ services:
       SPRING_RABBITMQ_PORT: 61613
     ports:
       - "8080:8080"
+    volumes:
+      - ./storage:/storage
     depends_on:
       - mysql_db
       - rabbitmq
