@@ -80,4 +80,9 @@ public class TaskController {
     public ResponseEntity<String> reassignDepartment(@PathVariable Long taskId, @PathVariable Long departmentId) {
         return ResponseEntity.ok(taskService.reassignDepartment(taskId, departmentId));
     }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<String> removeTaskById(@PathVariable Long taskId) {
+        return ResponseEntity.ok(taskService.removeTaskById(taskId));
+    }
 }
