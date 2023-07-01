@@ -76,7 +76,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/{id}/image")
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     public void updateDepartmentImage(@PathVariable Long id, @RequestParam("image") MultipartFile image, Principal principal) {
         departmentService.updateDepartmentImage(id, image, principal);
