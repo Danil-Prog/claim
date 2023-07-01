@@ -12,6 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.security.Principal;
 
 import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
@@ -71,4 +74,12 @@ public class DepartmentController {
     public ResponseEntity<Department> updateDepartment(@PathVariable Long id, Department department) {
         return ResponseEntity.ok(departmentService.updateDepartment(id, department));
     }
+
+    @PostMapping("/{id}/image")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    public void updateDepartmentImage(@PathVariable Long id, @RequestParam("image") MultipartFile image, Principal principal) {
+        departmentService.updateDepartmentImage(id, image, principal);
+    }
+
 }

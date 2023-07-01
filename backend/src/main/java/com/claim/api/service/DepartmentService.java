@@ -1,5 +1,7 @@
 package com.claim.api.service;
 
+import com.claim.api.entity.Attachment;
+import com.claim.api.entity.AttachmentType;
 import com.claim.api.entity.Department;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
@@ -11,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class DepartmentService {
@@ -20,11 +25,15 @@ public class DepartmentService {
     private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
     private final DepartmentRepository departmentRepository;
     private final UserRepository userRepository;
+    private final AttachmentService attachmentService;
 
     @Autowired
-    public DepartmentService(DepartmentRepository departmentRepository, UserRepository userRepository) {
+    public DepartmentService(DepartmentRepository departmentRepository,
+                             UserRepository userRepository,
+                             AttachmentService attachmentService) {
         this.departmentRepository = departmentRepository;
         this.userRepository = userRepository;
+        this.attachmentService = attachmentService;
     }
 
     public Page<Department> getDepartmentsList(PageRequest pageRequest) {
@@ -69,5 +78,29 @@ public class DepartmentService {
             return userRepository.findUsersByProfile_Department_Id(id, pageRequest);
         }
         throw new BadRequestException("Department with id=" + id + " does not exist");
+    }
+
+    public void updateDepartmentImage(Long id, MultipartFile image, Principal principal) {
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        if (optionalDepartment.isPresent()) {
+            User user = userRepository.findByUsername(principal.getName()).get();
+            Department department = optionalDepartment.get();
+            String filename = UUID.randomUUID() + image.getOriginalFilename();
+
+            Attachment attachment = new Attachment(filename,
+                    image.getOriginalFilename(),
+                    AttachmentType.DEPARTMENT_IMAGE,
+                    department.getId() + "/images",
+                    image.getSize(),
+                    user.getProfile(),
+                    image.getContentType());
+
+            if (attachmentService.save(image, attachment)) {
+                department.setImage(filename);
+                department.getAttachments().add(attachment);
+                departmentRepository.save(department);
+            }
+        } else
+            throw new BadRequestException("Department with id: " + id + " not found");
     }
 }
