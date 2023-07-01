@@ -9,6 +9,7 @@ import com.claim.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -75,14 +76,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
-    @GetMapping("/{id}/avatar/{filename}")
+    @GetMapping("/avatar/{filename}")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Returns the user's photo, the user ID and photo name are passed to the parameters")
-    public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long id,
-                                                @PathVariable String filename) {
+    public ResponseEntity<Resource> getUserAvatar(@PathVariable String filename) {
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(MediaType.IMAGE_GIF_VALUE))
-                .body(userService.getUserAvatar(id, filename));
+                .body(userService.getUserAvatar(filename));
     }
 
     @DeleteMapping("/{id}")
@@ -112,7 +112,7 @@ public class UserController {
     @PostMapping("/avatar")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Updates the profile photo of an authorized user")
-    public ResponseEntity<String> updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
-        return ResponseEntity.ok(userService.updateUserImage(image, principal));
+    public void updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
+       userService.updateUserAvatar(image, principal);
     }
 }

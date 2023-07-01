@@ -1,16 +1,18 @@
 package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
+import com.claim.api.entity.Attachment;
+import com.claim.api.entity.AttachmentType;
 import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.repository.UserRepository;
-import com.claim.api.utils.FilesStorageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,11 +29,13 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AttachmentService attachmentService;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AttachmentService attachmentService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.attachmentService = attachmentService;
     }
 
     public boolean saveUser(User user) {
@@ -72,10 +76,6 @@ public class UserService {
             throw new UserNotFoundException("User with id=" + id + " not found");
     }
 
-    public byte[] getUserAvatar(Long id, String filename) {
-        return FilesStorageUtil.getUserAvatar(id, filename);
-    }
-
     public UserDto removeUserById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
@@ -106,19 +106,30 @@ public class UserService {
             throw new BadRequestException("User id:" + id + " not found!");
     }
 
-    public String updateUserImage(MultipartFile image, Principal principal) {
+    public Resource getUserAvatar(String filename) {
+        return attachmentService.getStorageFileByName(filename);
+    }
+
+    public void updateUserAvatar(MultipartFile image, Principal principal) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String filename = UUID.randomUUID() + image.getOriginalFilename();
-            if (FilesStorageUtil.uploadAvatar(user.getProfile(), image, filename)) {
+
+            Attachment attachment = new Attachment(filename,
+                    image.getOriginalFilename(),
+                    AttachmentType.USER_IMAGE,
+                    user.getProfile().getId() + "/images",
+                    image.getSize(),
+                    user.getProfile(),
+                    image.getContentType());
+
+            if (attachmentService.save(image, attachment)) {
                 user.getProfile().setAvatar(filename);
                 userRepository.save(user);
                 logger.info("User named '{}' successfully updated avatar", principal.getName());
-                return "Successful upload image";
             } else {
                 logger.error("An error occurred while updating the avatar for a user named '{}'", principal.getName());
-                return "An error occurred while uploading the file";
             }
         } else
             throw new BadRequestException("User: " + principal.getName() + " not found!");
