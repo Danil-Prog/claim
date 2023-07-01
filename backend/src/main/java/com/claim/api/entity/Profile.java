@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "profile")
 @Getter
@@ -34,6 +37,8 @@ public class Profile {
     private String email;
     @Column(name = "avatar")
     private String avatar;
+    @OneToMany(mappedBy = "uploaded", fetch = FetchType.EAGER)
+    private Set<Attachment> attachments = new HashSet<>();
     @Size(min = 3, max = 11)
     @NotNull
     @Column(name = "phone")
