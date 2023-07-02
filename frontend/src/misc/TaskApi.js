@@ -4,6 +4,9 @@ export const taskApi = {
   createTask,
   getTaskDepart,
   getTaskInfo,
+  changeStatus,
+  reassign,
+  remove
 };
 
 function createTask(authdata, data) {
@@ -26,6 +29,33 @@ function getTaskDepart(authdata) {
 
 function getTaskInfo(authdata, id) {
   return instance.get(`/api/v1/task/${id}`, {
+    headers: {
+      Authorization: `Bearer ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function changeStatus(authdata, status) {
+  return instance.put('/api/v1/task', status, {
+    headers: {
+      Authorization: `Bearer ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function reassign(authdata, idTask, idDepart) {
+  return instance.put(`/api/v1/task/${idTask}/department/${idDepart}`, idDepart, {
+    headers: {
+      Authorization: `Bearer ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function remove(authdata, idTask) {
+  return instance.delete(`/api/v1/task/${idTask}`, {
     headers: {
       Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',

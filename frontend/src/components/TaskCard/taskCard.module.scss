@@ -1,17 +1,12 @@
 .card {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  padding: 20px;
-  height: 200px;
-  border-radius: 10px;
+  padding: 10px;
   background-color: var(--input-color);
   transition: var(--tran-03);
   cursor:pointer;
   text-decoration: none;
   color: var(--text-color);
-
   &:hover {
     background-color: var(--primary-color);
   }

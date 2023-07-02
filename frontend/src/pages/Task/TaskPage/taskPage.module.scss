@@ -1,5 +1,39 @@
-.test {
-  color: #1b8506;
-  width: 10%;
-  position: absolute;
+.taskContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: var(--tran-03);
+  min-height: 740px;
+  width: 100%;
+  min-width: 500px;
+  max-width: 1700px;
+  padding: 0px;
+  border-radius: 10px;
+  background-color: var(--content-color);
+  @media screen and (max-width: 1400px) {
+    max-width: 100%;
+    flex-direction: column;
+  }
+  .listTasks {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    align-self: center;
+    .list{
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      width: 100%;
+      overflow: scroll;
+      overflow-x: hidden;
+      max-height: 600px;
+      grid-gap: 1px;
+    }
+  }
+  .taskInfoEmpty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 }

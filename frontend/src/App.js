@@ -36,6 +36,16 @@ function StaticElements() {
   );
 }
 
+function StaticListTask() {
+  const userContext = React.useContext(UserContext);
+  const userValue = userContext.getUser();
+  return (
+      <>
+        <TaskPage userContext={userContext}/>
+      </>
+  );
+}
+
 function App() {
   const userContext = React.useContext(UserContext);
   return (
@@ -52,13 +62,15 @@ function App() {
             }
           />
           <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
-          <Route exact path="/task" element={<TaskPage userContext={userContext} />} />
-          <Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />
-          <Route
-              exact
-              path="/task/info?/:taskId"
-              element={<TaskInfo userContext={userContext} />}
-          />
+          <Route exact path="/task" element={<StaticListTask />} >
+            <Route
+                exact
+                path="/task/info?/:taskId"
+                element={<TaskInfo userContext={userContext} />}
+            />
+          </Route>
+          {/*<Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />*/}
+
           <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
           <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
           <Route

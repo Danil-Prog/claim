@@ -90,7 +90,7 @@ const Chat = ({ userContext }) => {
                         ? 'mini-avatar border-user'
                         : 'mini-avatar null-avatar'
                     }
-                    src={`http://localhost:8080/api/v1/user/${userSelfData.id}/avatar/${userSelfData.avatar}`}
+                    src={`http://localhost:8080/api/v1/user/avatar/${userSelfData.avatar}`}
                     alt="avatar"
                   />
                 ) : (

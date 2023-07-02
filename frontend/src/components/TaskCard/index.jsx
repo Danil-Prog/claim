@@ -9,7 +9,10 @@ function TaskCard({ task }) {
                 <div className={style.card}>
                     <div className={style.title}>{task.title}</div>
                     <div className={style.info}>
-                        <div className={style.customer}>Отправитель: Тестовое Имя</div>
+                        <div className={style.customer}>
+                            Отправитель:
+                            {task.customer && `${task.customer.profile.lastname} ${task.customer.profile.firstname}`}
+                        </div>
                         <div className={style.status}>Статус заявки: {task.statusTask}</div>
                         <div className={style.executor}>
                             Исполнитель:{` `}

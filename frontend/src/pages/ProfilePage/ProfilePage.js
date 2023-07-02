@@ -51,6 +51,7 @@ const ProfilePage = ({ userContext }) => {
         .getProfile(user.authdata)
         .then((response) => {
           const info = response.data;
+          console.log(info)
           setUserProfile(info);
         })
         .catch((error) => {
@@ -99,7 +100,7 @@ const ProfilePage = ({ userContext }) => {
                             src={
                               preview
                                 ? preview
-                                : `http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`
+                                : `http://localhost:8080/api/v1/user/avatar/${userProfile.avatar}`
                             }
                             width={200}
                             height={200}
@@ -230,7 +231,7 @@ const ProfilePage = ({ userContext }) => {
                             ? 'avatar border-user'
                             : ''
                         }
-                        src={`http://localhost:8080/api/v1/user/${userProfile.id}/avatar/${userProfile.avatar}`}
+                        src={`http://localhost:8080/api/v1/user/avatar/3ddb50b0-0bf6-4211-a7a9-b9ca770b653c2.png`}
                         width={200}
                         height={200}
                         alt="avatar"

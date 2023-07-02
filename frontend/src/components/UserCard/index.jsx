@@ -21,7 +21,7 @@ function UserCard({ user }) {
                   ? 'mini-avatar border-user'
                   : 'mini-avatar null-avatar'
               }
-              src={`http://localhost:8080/api/v1/user/${user.profile.id}/avatar/${user.profile.avatar}`}
+              src={`http://localhost:8080/api/v1/user/avatar/${user.profile.avatar}`}
               alt="avatar"
             />
           ) : (
