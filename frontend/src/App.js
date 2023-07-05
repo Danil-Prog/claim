@@ -10,7 +10,6 @@ import DepartPage from './pages/DepartPage/DepartPage';
 import DepartUsersPage from './pages/DepartUsersPage';
 import UsersPage from './pages/Users/UsersPage';
 import TaskPage from './pages/Task/TaskPage';
-import TaskDepart from './pages/Task/TaskDepart'
 import TaskInfo from './pages/Task/TaskInfo';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
@@ -69,7 +68,6 @@ function App() {
                 element={<TaskInfo userContext={userContext} />}
             />
           </Route>
-          {/*<Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />*/}
 
           <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
           <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />

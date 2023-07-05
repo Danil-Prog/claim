@@ -46,7 +46,8 @@ const TaskDepart = ({ userContext }) => {
                             </div>
                         </div>
 
-                        <div className={style.taskInfoEmpty}>
+                        <div className={style.pageTask}>
+                            {/*Отображение информации о задаче*/}
                             <Outlet />
                         </div>
                     </div>

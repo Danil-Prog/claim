@@ -1,4 +1,66 @@
-.taskInfo {
-  flex: 1;
+.task {
+
+  display: flex;
+  height: 600px;
+
+  width: 100%;
   color: var(--text-color);
+  padding: 0 30px;
+  position: relative;
+  .messageTask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+    .title {
+      font-size: 1.5em;
+      margin: 0 0 15px 0;
+    }
+    .description {
+      flex: 1;
+    }
+    .messageField {
+      display: flex;
+      justify-self: center;
+      align-self: center;
+      border-top: solid var(--input-color) 2px;
+      padding-top: 20px;
+    }
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    grid-gap: 40px;
+    height: 100%;
+    width: 25%;
+  }
+  .description {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    width: 100%;
+  }
+  .messageField {
+    display: flex;
+    justify-self: flex-end;
+    align-self: flex-end;
+    input {
+      border-radius: 0 20px 20px 0;
+      border: none;
+      background-color: var(--primary-color);
+      color: var(--text-color);
+    }
+  }
+
+  .menu {
+    position: absolute;
+    right: 20px;
+    top: -50px;
+    font-size: 30px;
+    i {
+      cursor: pointer;
+    }
+  }
 }

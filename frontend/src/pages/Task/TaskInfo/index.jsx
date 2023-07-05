@@ -1,5 +1,6 @@
 import React from "react";
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import Dropdown from "../../../components/Dropdown";
 import Pagination from "../../../components/Pagination";
@@ -69,16 +70,37 @@ const TaskInfo = ({ userContext }) => {
 
     return (
         <>
-            {taskInfo && <div className={style.taskInfo}>
-                <div className={style.title}>{taskInfo.title}</div>
-                <div className={style.info}>
-                    <div className={style.customer}>
-                        Отправитель:
-                        {taskInfo.customer && `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}
+            {taskInfo && <div className={style.task}>
+                <div className={style.messageTask}>
+                    <div className={style.title}>{taskInfo.title}</div>
+                    <div className={style.description}>
+                        <p className='label-main'>Описание</p>
+                        <p  dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
                     </div>
-                    <div className={style.status}>Статус заявки: {taskInfo.statusTask}</div>
+                    <div className={style.messageField}>
+                        <ReactQuill className={style.description} theme="snow" />
+                        <input type="button" value={"Отправить"}/>
+                    </div>
+                </div>
+
+                <div className={style.info}>
+
+                    <div className={style.status}>
+                        <p className='label-main'>СТАТУС</p>
+                        <p>{taskInfo &&
+                            taskInfo.statusTask === 'COMPLETED' ? `Выполнена` :
+                            taskInfo.statusTask === 'REVIEW' ? `Новая` :
+                            taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
+                            taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
+                        </p>
+                    </div>
+                    <div className={style.customer}>
+                        <p className='label-main'>ОТПРАВИТЕЛЬ</p>
+                        <p>{taskInfo.customer && `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}</p>
+                    </div>
+
                     <div className={style.executor}>
-                        Исполнитель:
+                        <p className='label-main'>ИСПОЛНИТЕЛЬ</p>
                         <select name="id" id="select_dep">
                             {taskInfo.executor ?
                                 `<option>
@@ -95,18 +117,17 @@ const TaskInfo = ({ userContext }) => {
                         </select>
                     </div>
                     <div className={style.department}>
-                        Отдел: {taskInfo.department && taskInfo.department.name}
+                        <p className='label-main upp'>ОТПРАВЛЕНА В</p>
+                        <p>{taskInfo.department && taskInfo.department.name}</p>
                     </div>
                     <div className={style.startDate}>
-                        Дата отправки: {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
+                        Создана {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
                     </div>
-                    <div className={style.description}>
-                        Описание: <p  dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
-                    </div>
-                    <input type="button" className={'btn-main'} value={'Отменить заявку'}/>
-                    <input type="button" className={'btn-main'} value={'Закрыть заявку'}/>
-                    <input type="button" className={'btn-main'} value={'Отправить в другой отдел'}
-                           onClick={() => setReassignState(!reassignState)}/>
+
+                    {/*<input type="button" className={'btn-main'} value={'Отменить заявку'}/>*/}
+                    {/*<input type="button" className={'btn-main'} value={'Закрыть заявку'}/>*/}
+                    {/*<input type="button" className={'btn-main'} value={'Отправить в другой отдел'}*/}
+                    {/*       onClick={() => setReassignState(!reassignState)}/>*/}
                     {reassignState &&
                         <div>
                             <select onChange={(e) => setIdDepart(e.target.value)}>
@@ -121,8 +142,10 @@ const TaskInfo = ({ userContext }) => {
                         </div>
                     }
                 </div>
-            </div>
-            }
+                <div className={style.menu}>
+                    <i className='bx bx-dots-horizontal-rounded'></i>
+                </div>
+            </div>}
         </>
     )
 }

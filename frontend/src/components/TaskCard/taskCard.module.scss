@@ -34,3 +34,16 @@
     }
   }
 }
+
+.statusReview {
+  border-left: solid #d5b519 2px;
+}
+
+.statusCompleted {
+  border-left: solid #1fa400 3px;
+}
+
+.statusCanceled {
+  border-left: solid #9d0000 3px;
+
+}

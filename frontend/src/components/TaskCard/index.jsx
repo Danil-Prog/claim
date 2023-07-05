@@ -6,14 +6,20 @@ function TaskCard({ task }) {
     return (
         <>
             {task &&
-                <div className={style.card}>
+                <div className={task.statusTask &&
+                    task.statusTask === 'COMPLETED' ? `${style.card} ${style.statusCompleted}` :
+                    task.statusTask === 'REVIEW' ? `${style.card} ${style.statusReview}` :
+                    task.statusTask === 'IN_PROGRESS' ? `${style.card} ${style.statusInProgress}` :
+                    task.statusTask === 'CANCELED' ? `${style.card} ${style.statusCanceled}` : style.card}>
                     <div className={style.title}>{task.title}</div>
                     <div className={style.info}>
                         <div className={style.customer}>
                             Отправитель:
                             {task.customer && `${task.customer.profile.lastname} ${task.customer.profile.firstname}`}
                         </div>
-                        <div className={style.status}>Статус заявки: {task.statusTask}</div>
+                        <div className={style.status}>
+                            Статус заявки: {task.statusTask}
+                        </div>
                         <div className={style.executor}>
                             Исполнитель:{` `}
                             {task.executor ? `${task.executor.profile.firstname} ${task.executor.profile.lastname}` :
