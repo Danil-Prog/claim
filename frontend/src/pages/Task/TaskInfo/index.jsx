@@ -8,14 +8,14 @@ import Header from "../../../components/Header";
 
 import {taskApi} from "../../../misc/TaskApi";
 import style from "./taskInfo.module.scss";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useParams, useSearchParams} from "react-router-dom";
 import {departApi} from "../../../misc/DepartApi";
 import {userApi} from "../../../misc/UserApi";
 
 const TaskInfo = ({ userContext }) => {
     const user = userContext.getUser();
     const [searchParams] = useSearchParams();
-    const taskId = searchParams.get("id");
+    const { taskId } = useParams();
 
     const [reassignState, setReassignState] = React.useState(false);
     const [taskInfo, setTaskInfo] = React.useState({});
@@ -60,7 +60,6 @@ const TaskInfo = ({ userContext }) => {
 
         return () => {};
     }, [taskId]);
-    console.log(departs)
 
     const reassignTask = (idTask, idDepart) => {
         taskApi.reassign(user.authdata, idTask, idDepart)
@@ -96,7 +95,11 @@ const TaskInfo = ({ userContext }) => {
                     </div>
                     <div className={style.customer}>
                         <p className='label-main'>ОТПРАВИТЕЛЬ</p>
-                        <p>{taskInfo.customer && `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}</p>
+                        <p>
+                            {taskInfo.customer &&
+                                `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
+                            }
+                        </p>
                     </div>
 
                     <div className={style.executor}>

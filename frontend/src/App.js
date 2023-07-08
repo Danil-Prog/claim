@@ -64,7 +64,7 @@ function App() {
           <Route exact path="/task" element={<StaticListTask />} >
             <Route
                 exact
-                path="/task/info?/:taskId"
+                path=":taskId"
                 element={<TaskInfo userContext={userContext} />}
             />
           </Route>
