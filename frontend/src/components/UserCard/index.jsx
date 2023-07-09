@@ -23,6 +23,8 @@ function UserCard({ user }) {
               }
               src={`http://localhost:8080/api/v1/user/avatar/${user.profile.avatar}`}
               alt="avatar"
+              width={60}
+              height={60}
             />
           ) : (
             <div

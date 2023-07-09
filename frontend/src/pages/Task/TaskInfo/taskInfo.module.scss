@@ -35,6 +35,68 @@
     grid-gap: 40px;
     height: 100%;
     width: 25%;
+    .customer {
+      display: flex;
+      flex-direction: column;
+      .customerInfo {
+        display: flex;
+        align-items: center;
+        grid-gap: 15px;
+        padding-top: 15px;
+      }
+    }
+    .status {
+      .label {
+        display: flex;
+        grid-gap: 3px;
+        svg {
+          display: flex;
+          align-items: center;
+        }
+        .dotCompleted {
+          fill: var(--task-completed)
+        }
+        .dotReview {
+          fill: var(--task-review)
+        }
+        .dotCanceled {
+          fill: var(--task-canceled)
+        }
+        .dotInProgress {
+          fill: var(--task-in-progress)
+        }
+      }
+      .statusInfo {
+        display: flex;
+        align-items: center;
+        grid-gap: 5px;
+        margin-left: -21px;
+        .dotStatus {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+    .executor {
+      .selectDep {
+        margin-top: 6px;
+        background-color: var(--input-color);
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--tran-03);
+        &:focus,
+        &:active {
+          border: none;
+          outline:none;
+        }
+      }
+    }
+    .startDate {
+      color: var(--label);
+    }
   }
   .description {
     display: flex;

@@ -46,6 +46,7 @@
         border-radius: 5px;
         color: var(--text-color);
         cursor: pointer;
+        transition: var(--tran-03);
         &:focus,
         &:active {
           border: none;
@@ -56,6 +57,7 @@
         font-size: 25px;
         color: var(--text-color);
         cursor: pointer;
+        transition: var(--tran-03);
       }
     }
     .footerListTasks {
@@ -70,6 +72,11 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    .emptyIcon {
+      font-size: 70px;
+      color: var(--input-color);
+      transition: var(--tran-03);
+    }
   }
 }
 

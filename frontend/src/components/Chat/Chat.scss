@@ -120,18 +120,6 @@
   }
 }
 
-*::-webkit-scrollbar {
-  width: 5px; /* ширина всей полосы прокрутки */
-}
-
-*::-webkit-scrollbar-track {
-  background: var(--content-color); /* цвет зоны отслеживания */
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: var(--content-color-light); //* цвет бегунка */
-  border-radius: 20px; /* округлось бегунка */
-}
 
 
 .chat.close {

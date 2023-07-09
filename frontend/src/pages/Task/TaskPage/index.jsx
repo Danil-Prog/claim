@@ -12,7 +12,7 @@ const TaskDepart = ({ userContext }) => {
     const user = userContext.getUser();
     const { taskId } = useParams();
     const location = useLocation();
-    console.log(taskId,'****', location.search)
+
 
     const [totalPages, setTotalPages] = React.useState(null);
     const [currentPage, setCurrentPage] = React.useState(0);
@@ -42,26 +42,23 @@ const TaskDepart = ({ userContext }) => {
                         <div className={style.listTasks}>
                             <div className={style.wrapperList}>
                                 <select name="" id="">
-                                    <option value="">Сортировка</option>
+                                    <option value="">Сортировать</option>
                                     <option value="">По дате</option>
                                     <option value="">До статусу</option>
-
                                 </select>
                                 <i className='bx bx-filter'></i>
                             </div>
                             <div className={style.list}>
                                 {taskDepart.map((item) => (
                                     <NavLink
-
+                                        key={item.id}
                                         to={`/task/${item.id}`}
                                         isActive={() => location.pathname.endsWith(`${taskId}`)}
                                         className={setActive}
                                     >
                                         {({isActive }) => (
-
                                             <TaskCard active={isActive ? "active" : ""} task={item}/>
                                         )}
-
                                     </NavLink>
                                 ))}
                             </div>
@@ -74,7 +71,14 @@ const TaskDepart = ({ userContext }) => {
                         </div>
 
                         <div className={style.pageTask}>
-                            {/*Отображение информации о задаче, вызывается в App*/}
+                            {/*Отображение информации о задаче, вызывается в App, файл taskInfo*/}
+                            {taskId ? '' :
+                                <>
+                                    <div className={style.emptyIcon}>
+                                        <i className='bx bx-spreadsheet'></i>
+                                    </div>
+                                </>
+                            }
                             <Outlet />
                         </div>
                     </div>

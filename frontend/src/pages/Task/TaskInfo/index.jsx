@@ -2,19 +2,14 @@ import React from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-import Dropdown from "../../../components/Dropdown";
-import Pagination from "../../../components/Pagination";
-import Header from "../../../components/Header";
-
 import {taskApi} from "../../../misc/TaskApi";
 import style from "./taskInfo.module.scss";
-import {Link, useParams, useSearchParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {departApi} from "../../../misc/DepartApi";
 import {userApi} from "../../../misc/UserApi";
 
 const TaskInfo = ({ userContext }) => {
     const user = userContext.getUser();
-    const [searchParams] = useSearchParams();
     const { taskId } = useParams();
 
     const [reassignState, setReassignState] = React.useState(false);
@@ -35,7 +30,7 @@ const TaskInfo = ({ userContext }) => {
     //         }
     //     }));
     // };
-
+    console.log(taskInfo)
     React.useEffect(() => {
         taskApi.getTaskInfo(user.authdata, taskId)
             .then((response) => {
@@ -74,7 +69,7 @@ const TaskInfo = ({ userContext }) => {
                     <div className={style.title}>{taskInfo.title}</div>
                     <div className={style.description}>
                         <p className='label-main'>Описание</p>
-                        <p  dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
+                        <p dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
                     </div>
                     <div className={style.messageField}>
                         <ReactQuill className={style.description} theme="snow" />
@@ -85,26 +80,63 @@ const TaskInfo = ({ userContext }) => {
                 <div className={style.info}>
 
                     <div className={style.status}>
-                        <p className='label-main'>СТАТУС</p>
-                        <p>{taskInfo &&
+                        <p className={style.label}>
+                            <p className='label-main'>СТАТУС</p>
+                            <svg
+                                className={taskInfo.statusTask &&
+                                taskInfo.statusTask === 'COMPLETED' ? `${style.dotCompleted}` :
+                                    taskInfo.statusTask === 'REVIEW' ? `${style.dotReview}` :
+                                        taskInfo.statusTask === 'IN_PROGRESS' ? `${style.dotInProgress}` :
+                                            taskInfo.statusTask === 'CANCELED' ? `${style.dotCanceled}` : ''}
+                                width="16" height="16">
+                                <circle r="5" cx="8" cy="8"/>
+                            </svg>
+                        </p>
+                        <p>
+                            {taskInfo &&
                             taskInfo.statusTask === 'COMPLETED' ? `Выполнена` :
-                            taskInfo.statusTask === 'REVIEW' ? `Новая` :
-                            taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
-                            taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
+                                taskInfo.statusTask === 'REVIEW' ? `Новая` :
+                                    taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
+                                        taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
                         </p>
                     </div>
                     <div className={style.customer}>
                         <p className='label-main'>ОТПРАВИТЕЛЬ</p>
-                        <p>
-                            {taskInfo.customer &&
-                                `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
-                            }
+                        <p className={style.customerInfo}>
+                            <p>
+                                {taskInfo.customer && taskInfo.customer.profile.avatar ? (
+                                    <img
+                                        className={
+                                            taskInfo.customer.role === 'ROLE_SUPER_ADMIN'
+                                                ? 'mini-avatar border-super-admin'
+                                                : taskInfo.customer.role === 'ROLE_ADMIN'
+                                                    ? 'mini-avatar border-admin'
+                                                    : taskInfo.customer.role === 'ROLE_EXEC'
+                                                        ? 'mini-avatar border-exec'
+                                                        : taskInfo.customer.role === 'ROLE_USER'
+                                                            ? 'mini-avatar border-user'
+                                                            : 'mini-avatar null-avatar'
+                                        }
+                                        src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.customer.profile.avatar}`}
+                                        alt="avatar"
+                                        width={30}
+                                        height={30}
+                                    />
+                                ) : (
+                                    <div className="null-avatar"></div>
+                                )}
+                            </p>
+                            <p>
+                                {taskInfo.customer &&
+                                    `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
+                                }
+                            </p>
                         </p>
                     </div>
 
                     <div className={style.executor}>
                         <p className='label-main'>ИСПОЛНИТЕЛЬ</p>
-                        <select name="id" id="select_dep">
+                        <select name="id" className={style.selectDep}>
                             {taskInfo.executor ?
                                 `<option>
                                     ${taskInfo.executor.profile.firstname} 
@@ -127,15 +159,11 @@ const TaskInfo = ({ userContext }) => {
                         Создана {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
                     </div>
 
-                    {/*<input type="button" className={'btn-main'} value={'Отменить заявку'}/>*/}
-                    {/*<input type="button" className={'btn-main'} value={'Закрыть заявку'}/>*/}
-                    {/*<input type="button" className={'btn-main'} value={'Отправить в другой отдел'}*/}
-                    {/*       onClick={() => setReassignState(!reassignState)}/>*/}
                     {reassignState &&
                         <div>
                             <select onChange={(e) => setIdDepart(e.target.value)}>
                                 {departs.map((item) => (
-                                    <option value={item.id}>
+                                    <option key={item.id} value={item.id}>
                                         {item.name}
                                     </option>
                                 ))}

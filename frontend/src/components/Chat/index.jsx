@@ -92,6 +92,8 @@ const Chat = ({ userContext }) => {
                     }
                     src={`http://localhost:8080/api/v1/user/avatar/${userSelfData.avatar}`}
                     alt="avatar"
+                    width={60}
+                    height={60}
                   />
                 ) : (
                   <div className="null-avatar"></div>
