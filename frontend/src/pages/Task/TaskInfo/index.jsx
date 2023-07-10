@@ -72,13 +72,9 @@ const TaskInfo = ({ userContext }) => {
             await taskApi.reassign(user.authdata, idTask, idDepart)
             await setIsModal(false);
             await setIsReassignTask(!isReassignTask);
-
         } catch(error) {
             console.log(error)
         }
-
-
-
     }
 
     const completeTask = () => {
@@ -249,7 +245,7 @@ console.log(isReassignTask)
                         <p>{taskInfo.department && taskInfo.department.name}</p>
                     </div>
                     <div className={style.startDate}>
-                        Создана {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
+                        Дата отправки {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
                     </div>
 
                 </div>
@@ -277,17 +273,44 @@ console.log(isReassignTask)
                 <div className={style.modal}>
                     <div className={style.overlay} onClick={() => setIsModal(false)}></div>
                     <div className={style.modalContent}>
+                        <i className={`bx bx-x ${style.closeModal}`} onClick={() => setIsModal(false)}></i>
                         <div className={style.title}>Отправить заявку в другой отдел</div>
-                        <p>Отдел из которого отправляется заявка:</p>
-                        <p>{taskInfo.department && taskInfo.department.name}</p>
-                        <p>Отдел куда отправить заявку:</p>
-                        <select onChange={(e) => setIdDepart(e.target.value)}>
-                            {departs.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
+                        <p className={style.labelModalTaskInfo}>Данные заявки:</p>
+                        <div className={style.modalTaskInfo}>
+                            <div>
+                                <p className={'label-main'}>Заголовок</p>
+                                <p>{taskInfo.title}</p>
+                            </div>
+                            <div>
+                                <p className={'label-main'}>Отправитель</p>
+                                <p>
+                                    {taskInfo.customer &&
+                                        `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
+                                    }
+                                </p>
+                            </div>
+                            <div>
+                                <p className={'label-main'}>Дата отправки</p>
+                                <p>{new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}</p>
+                            </div>
+                        </div>
+                        <div className={style.reassignContent}>
+                            <div className={style.currentDep}>
+                                <p>Отдел из которого отправляется заявка:</p>
+                                <span>{taskInfo.department && taskInfo.department.name}</span>
+                            </div>
+                            <i className='bx bx-arrow-to-right'></i>
+                            <div className={style.comingDep}>
+                                <p>Отдел куда отправить заявку:</p>
+                                <select onChange={(e) => setIdDepart(e.target.value)}>
+                                    {departs.map((item) => (
+                                        <option key={item.id} value={item.id}>
+                                            {item.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
                         <input type="button" className={'btn-main'} value={'Отправить'}
                                onClick={() => reassignTask(taskInfo.id, idDepart)}/>
                     </div>
