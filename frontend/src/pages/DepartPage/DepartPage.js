@@ -34,9 +34,22 @@ const DepartPage = ({ userContext }) => {
     });
   };
 
-  const handleCustomToast = () => {
+  const handleCreateDepartToast = () => {
     toast('Отдел успешно создан!', {
       icon: { type: 'success' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
+  const handleCreateDepartErrorToast = () => {
+    toast('Что-то пошло не так!', {
+      icon: { type: 'error' },
       theme: {
         type: 'custom',
         style: {
@@ -52,9 +65,10 @@ const DepartPage = ({ userContext }) => {
     try {
       await departApi.newDepartment(user.authdata, valueDepartment);
       setValueDepartment({ name: '' });
-      handleCustomToast();
+      handleCreateDepartToast();
     } catch (error) {
       console.log(error);
+      handleCreateDepartErrorToast();
     }
   };
 

@@ -11,6 +11,7 @@ import {userApi} from "../../../misc/UserApi";
 import Dropdown from "../../../components/Dropdown";
 
 import style from "./taskInfo.module.scss";
+import {toast} from "wc-toast";
 
 
 const TaskInfo = ({ userContext }) => {
@@ -72,6 +73,7 @@ const TaskInfo = ({ userContext }) => {
             await taskApi.reassign(user.authdata, idTask, idDepart)
             await setIsModal(false);
             await setIsReassignTask(!isReassignTask);
+            await handleReassignToast();
         } catch(error) {
             console.log(error)
         }
@@ -94,8 +96,34 @@ const TaskInfo = ({ userContext }) => {
         await setOpenMenu(false);
         await setIsReassignTask(!isReassignTask);
         await setTaskInfo({});
+        await handleRemoveToast();
     }
-console.log(isReassignTask)
+
+    const handleRemoveToast = () => {
+        toast('Заявка удалена!', {
+            icon: { type: 'success' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
+    const handleReassignToast = () => {
+        toast('Заявка отправлена в другой отдел!', {
+            icon: { type: 'success' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
+
     return (
         <>
             {taskInfo && taskInfo.id ?

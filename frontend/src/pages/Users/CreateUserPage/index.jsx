@@ -28,18 +28,6 @@ const UsersPage = ({ userContext }) => {
   const [userData, setUserData] = React.useState(initialUser);
   const [listDepartment, setListDepartment] = React.useState([]);
 
-    const handleCustomToast = () => {
-        toast('Отдел успешно создан!', {
-            icon: { type: 'success' },
-            theme: {
-                type: 'custom',
-                style: {
-                    background: 'var(--primary-color-light)',
-                    color: 'var(--text-color)',
-                },
-            },
-        });
-    };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setUserData(prevState => ({
@@ -75,10 +63,11 @@ const UsersPage = ({ userContext }) => {
         e.preventDefault();
         try {
             await userApi.createUser(user.authdata, userData);
-            handleCustomToast();
+            handleCreateUserToast();
             setUserData(initialUser);
         } catch (error) {
             console.log(error);
+            handleCreateUserErrorToast();
         }
     };
 
@@ -91,6 +80,32 @@ const UsersPage = ({ userContext }) => {
         .catch((error) => console.log(error));
     return () => {};
   }, [user.authdata]);
+
+    const handleCreateUserToast = () => {
+        toast('Пользователь успешно создан!', {
+            icon: { type: 'success' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
+
+    const handleCreateUserErrorToast = () => {
+        toast('Что-то пошло не так!', {
+            icon: { type: 'error' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
 
   return (
     <>

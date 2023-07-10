@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfile.scss';
+import {toast} from "wc-toast";
 
 const ProfilePage = ({ userContext }) => {
   const user = userContext.getUser({ userContext });
@@ -29,8 +30,10 @@ const ProfilePage = ({ userContext }) => {
     e.preventDefault();
     try {
       await userApi.changeSelfInfo(user.authdata, userProfile);
+      await handleChangeProfileToast();
     } catch (error) {
       console.log(error);
+      handleChangeProfileErrorToast()
     }
     if (selectedFile) {
       const formData = new FormData();
@@ -70,6 +73,33 @@ const ProfilePage = ({ userContext }) => {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  const handleChangeProfileToast = () => {
+    toast('Изменения успешно внесены!', {
+      icon: { type: 'success' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
+  const handleChangeProfileErrorToast = () => {
+    toast('Что-то пошло не так!', {
+      icon: { type: 'error' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
   return (
     <>
       {editProfile ? (

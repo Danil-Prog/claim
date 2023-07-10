@@ -11,6 +11,7 @@ import UserCard from "../../components/UserCard";
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import {Link} from "react-router-dom";
+import {toast} from "wc-toast";
 
 const Index = ({ userContext }) => {
     const user = userContext.getUser({ userContext });
@@ -30,6 +31,8 @@ const Index = ({ userContext }) => {
         e.preventDefault();
         try {
             await taskApi.createTask(user.authdata, valueTask);
+            await handleCreateTaskToast();
+            await setValueTask(initialTask);
         } catch (error) {
             console.log(error)
         }
@@ -68,9 +71,38 @@ const Index = ({ userContext }) => {
             .then((response) => {
                 setListDepartment(response.data.content);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                handleCreateTaskErrorToast();
+                console.log(error)
+            });
         return () => {};
     }, [user.authdata]);
+
+    const handleCreateTaskToast = () => {
+        toast('Заявка успешно создана!', {
+            icon: { type: 'success' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
+
+    const handleCreateTaskErrorToast = () => {
+        toast('Что-то пошло не так!', {
+            icon: { type: 'error' },
+            theme: {
+                type: 'custom',
+                style: {
+                    background: 'var(--primary-color-light)',
+                    color: 'var(--text-color)',
+                },
+            },
+        });
+    };
 
   return (
     <>
