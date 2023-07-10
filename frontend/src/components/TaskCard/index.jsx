@@ -20,9 +20,7 @@ function TaskCard({ task, active }) {
                             Отправитель:
                             {task.customer && `${task.customer.profile.lastname} ${task.customer.profile.firstname}`}
                         </div>
-                        <div className={style.status}>
-                            Статус заявки: {task.statusTask}
-                        </div>
+
                         <div className={style.executor}>
                             Исполнитель:{` `}
                             {task.executor ? `${task.executor.profile.firstname} ${task.executor.profile.lastname}` :

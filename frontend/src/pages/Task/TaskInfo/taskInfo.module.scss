@@ -78,6 +78,32 @@
       }
     }
     .executor {
+      .executorInfo {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-gap: 15px;
+        .emptyExec {
+          display: flex;
+          flex-direction: column;
+          margin: 5px 0;
+          .btnAddExec {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            padding: 3px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--tran-03);
+            &:hover {
+              background-color: var(--primary-color-light);
+            }
+          }
+        }
+        .nameExec {
+          margin: 17px 0;
+        }
+      }
       .selectDep {
         margin-top: 6px;
         background-color: var(--input-color);
@@ -117,12 +143,73 @@
   }
 
   .menu {
-    position: absolute;
+
     right: 20px;
     top: -50px;
     font-size: 30px;
+    position: absolute;
     i {
       cursor: pointer;
     }
+    .dropdownPopup {
+      position: absolute;
+      top: 40px;
+      width: 205px;
+      text-align: center;
+      right: 0;
+      border-radius: 10px;
+      color: var(--text-color);
+      background-color: var(--input-color);
+      font-size: 15px;
+      z-index: 11;
+      -webkit-box-shadow: 0px 2px 4px 0px var(--body-color);
+      -moz-box-shadow: 0px 2px 4px 0px var(--body-color);
+      box-shadow: 0px 2px 4px 0px var(--body-color);
+
+      ul {
+        .active {
+          background-color: var(--primary-color-light);
+          color: var(--text-color);
+        }
+        li {
+          list-style-type: none;
+          padding: 10px;
+          cursor: pointer;
+          transition: var(--tran-03);
+          &:hover {
+            background-color: var(--primary-color-light);
+          }
+        }
+        li:first-child {
+          border-radius: 10px 10px 0 0;
+        }
+        li:last-child {
+          border-radius: 0 0 10px 10px;
+        }
+      }
+    }
   }
 }
+
+.modal {
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.7);
+  }
+  .modalContent {
+    background-color: var(--input-color);
+    position: fixed;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    z-index: 1010;
+  }
+}
+

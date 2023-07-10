@@ -18,8 +18,8 @@ function createTask(authdata, data) {
   });
 }
 
-function getTaskDepart(authdata, page = 0, size = 10, sortBy = 'ASC') {
-  return instance.get(`/api/v1/task/department?page=${page}&size=${size}&sortBy=${sortBy}`, {
+function getTaskDepart(authdata, page = 0, size = 10, sortBy = 'ASC', sort = 'id') {
+  return instance.get(`/api/v1/task/department?page=${page}&size=${size}&sortBy=${sortBy}&sort=${sort}`, {
     headers: {
       Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',

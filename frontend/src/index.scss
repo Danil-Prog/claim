@@ -186,11 +186,14 @@ body {
 }
 
 
+.null-avatar {
+  height: 30px;
+  width: 30px;
+}
 .mini-avatar,
 .null-avatar {
     transition: var(--tran-03);
     background-color: var(--content-color);
-
     border-radius: 50%;
     display: flex;
     justify-content: center;

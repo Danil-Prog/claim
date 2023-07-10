@@ -16,21 +16,39 @@ const TaskDepart = ({ userContext }) => {
 
     const [totalPages, setTotalPages] = React.useState(null);
     const [currentPage, setCurrentPage] = React.useState(0);
-
+    const [sizeItems, setSizeItems] = React.useState(10);
+    const [selectedSort, setSelectedSort] = React.useState('startDate');
+    const [selectedSortBy, setSelectedSortBy] = React.useState('desc');
     const [taskDepart, setTaskDepart] = React.useState([]);
+    const [isReassignTask, setIsReassignTask] = React.useState(false);
 
     React.useEffect(() => {
         taskApi
-            .getTaskDepart(user.authdata, currentPage)
+            .getTaskDepart(user.authdata, currentPage, sizeItems, selectedSortBy, selectedSort )
             .then((response) => {
                 setTaskDepart(response.data.content)
                 setTotalPages(response.data.totalPages)
             })
             .catch((error) => console.log(error));
         return () => {};
-    }, [currentPage]);
+    }, [currentPage, sizeItems, selectedSortBy, selectedSort, isReassignTask]);
 
     const setActive = ({isActive}) => isActive ? 'active' : '';
+
+
+    const handleSizeChange = (e) => {
+        setSizeItems(e.target.value);
+    }
+    const handleSortChange = (e) => {
+        setSelectedSort(e.target.value);
+    }
+    const handleSortByChange = (e) => {
+        if (selectedSortBy === 'desc') {
+            setSelectedSortBy('asc')
+        } else {
+            setSelectedSortBy('desc')
+        }
+    }
 
 
     return (
@@ -41,12 +59,16 @@ const TaskDepart = ({ userContext }) => {
                     <div className={style.taskContent}>
                         <div className={style.listTasks}>
                             <div className={style.wrapperList}>
-                                <select name="" id="">
-                                    <option value="">Сортировать</option>
-                                    <option value="">По дате</option>
-                                    <option value="">До статусу</option>
+                                <select onChange={handleSortChange}>
+                                    <option value="startDate">По дате</option>
+                                    <option value="statusTask">По статусу</option>
                                 </select>
-                                <i className='bx bx-filter'></i>
+                                <select onChange={handleSizeChange}>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                </select>
+                                <i className={`bx bx-filter ${selectedSortBy === 'asc' ? 'bx-rotate-180' : ''}`} onClick={handleSortByChange}></i>
                             </div>
                             <div className={style.list}>
                                 {taskDepart.map((item) => (
@@ -79,8 +101,9 @@ const TaskDepart = ({ userContext }) => {
                                     </div>
                                 </>
                             }
-                            <Outlet />
+                            <Outlet context={[isReassignTask, setIsReassignTask]}/>
                         </div>
+
                     </div>
                 </section>
             </div>

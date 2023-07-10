@@ -1,22 +1,34 @@
 import React from "react";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useOutletContext } from "react-router-dom";
+import {useParams} from "react-router-dom";
+import { Navigate } from 'react-router-dom';
 
 import {taskApi} from "../../../misc/TaskApi";
-import style from "./taskInfo.module.scss";
-import {useParams} from "react-router-dom";
 import {departApi} from "../../../misc/DepartApi";
 import {userApi} from "../../../misc/UserApi";
+import Dropdown from "../../../components/Dropdown";
+
+import style from "./taskInfo.module.scss";
+
 
 const TaskInfo = ({ userContext }) => {
     const user = userContext.getUser();
     const { taskId } = useParams();
+    const rand = (min, max) => Math.floor(Math.random() * max) + min;
+    const [isReassignTask, setIsReassignTask] = useOutletContext();
 
     const [reassignState, setReassignState] = React.useState(false);
     const [taskInfo, setTaskInfo] = React.useState({});
     const [idDepart, setIdDepart] = React.useState({});
     const [departs, setDeparts] = React.useState({});
     const [departUsers, setdepartUsers] = React.useState([]);
+    const [isAssignExec, setIsAssignExec] = React.useState(false);
+    const [isModal, setIsModal] = React.useState(false);
+
+    const [openMenu, setOpenMenu] = React.useState(false);
+
     // const handleDepartChange = (e) => {
     //     const { name, value } = e.target;
     //     setUserData(prevState => ({
@@ -30,7 +42,6 @@ const TaskInfo = ({ userContext }) => {
     //         }
     //     }));
     // };
-    console.log(taskInfo)
     React.useEffect(() => {
         taskApi.getTaskInfo(user.authdata, taskId)
             .then((response) => {
@@ -54,14 +65,35 @@ const TaskInfo = ({ userContext }) => {
             .catch((error) => console.log(error));
 
         return () => {};
-    }, [taskId]);
+    }, [taskId, isReassignTask]);
 
-    const reassignTask = (idTask, idDepart) => {
-        taskApi.reassign(user.authdata, idTask, idDepart)
-            .catch((error) => console.log(error));
-        setReassignState(!reassignState);
+    const  reassignTask = async (idTask, idDepart) => {
+        try {
+            await taskApi.reassign(user.authdata, idTask, idDepart)
+            await setIsModal(false);
+            await setIsReassignTask(!isReassignTask);
+
+        } catch(error) {
+            console.log(error)
+        }
+
+
+
     }
 
+    const completeTask = () => {
+        setOpenMenu(false);
+    }
+
+    const showReassignTaskField = () => {
+        setOpenMenu(false);
+        setIsModal(true);
+    }
+
+    const cancelTask = () => {
+        setOpenMenu(false);
+    }
+console.log(isReassignTask)
     return (
         <>
             {taskInfo && <div className={style.task}>
@@ -136,7 +168,66 @@ const TaskInfo = ({ userContext }) => {
 
                     <div className={style.executor}>
                         <p className='label-main'>ИСПОЛНИТЕЛЬ</p>
-                        <select name="id" className={style.selectDep}>
+                        <p className={style.executorInfo}>
+                            <>
+                                {taskInfo.executor && taskInfo.executor.profile.avatar ? (
+                                    <img
+                                        className={
+                                            taskInfo.executor.role === 'ROLE_SUPER_ADMIN'
+                                                ? 'mini-avatar border-super-admin'
+                                                : taskInfo.executor.role === 'ROLE_ADMIN'
+                                                    ? 'mini-avatar border-admin'
+                                                    : taskInfo.executor.role === 'ROLE_EXEC'
+                                                        ? 'mini-avatar border-exec'
+                                                        : taskInfo.executor.role === 'ROLE_USER'
+                                                            ? 'mini-avatar border-user'
+                                                            : 'mini-avatar null-avatar'
+                                        }
+                                        src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.executor.profile.avatar}`}
+                                        alt="avatar"
+                                        width={30}
+                                        height={30}
+                                    />
+                                ) : (
+                                    <>
+                                        {taskInfo.executor &&
+                                            <div
+                                                className=
+                                                    {
+                                                        taskInfo.executor.role === 'ROLE_SUPER_ADMIN' ?
+                                                            `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
+                                                            : taskInfo.executor.role === 'ROLE_ADMIN' ?
+                                                                `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
+                                                                : taskInfo.executor.role === 'ROLE_EXEC' ?
+                                                                    `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
+                                                                    : taskInfo.executor.role === 'ROLE_USER' ?
+                                                                        `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
+                                                                        : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
+                                                    }
+                                            >
+                                            <span className="null-avatar-title">
+                                                {!!taskInfo.executor && taskInfo.executor.profile.firstname[0]}
+                                                {!!taskInfo.executor && taskInfo.executor.profile.lastname[0]}
+                                            </span>
+                                            </div>
+                                        }
+                                    </>
+                                )}
+                            </>
+                            {taskInfo.executor ?
+                                <p className={style.nameExec}>
+                                    {taskInfo.executor.profile.lastname}
+                                    {' '}
+                                    {taskInfo.executor.profile.firstname}
+                                </p> :
+                                <p className={style.emptyExec}>
+                                    <p>Не назначен</p>
+                                    <input type="button" className={style.btnAddExec} value={'Назначить'} onClick={() => setIsAssignExec(!isAssignExec)}/>
+                                </p>
+
+                            }
+                        </p>
+                        {isAssignExec ? <select name="id" className={style.selectDep}>
                             {taskInfo.executor ?
                                 `<option>
                                     ${taskInfo.executor.profile.firstname} 
@@ -146,11 +237,13 @@ const TaskInfo = ({ userContext }) => {
                             }
                             {departUsers && departUsers.map((item) => (
                                 <option key={item.id} value={item.id}>
-                                    {item.username}
+                                    {`${item.profile.lastname} ${item.profile.firstname}`}
                                 </option>
                             ))}
-                        </select>
+                        </select> : ''}
+
                     </div>
+
                     <div className={style.department}>
                         <p className='label-main upp'>ОТПРАВЛЕНА В</p>
                         <p>{taskInfo.department && taskInfo.department.name}</p>
@@ -159,24 +252,47 @@ const TaskInfo = ({ userContext }) => {
                         Создана {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
                     </div>
 
-                    {reassignState &&
-                        <div>
-                            <select onChange={(e) => setIdDepart(e.target.value)}>
-                                {departs.map((item) => (
-                                    <option key={item.id} value={item.id}>
-                                        {item.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <input type="button" className={'btn-main'} value={'Отправить'}
-                                   onClick={() => reassignTask(taskInfo.id, idDepart)}/>
-                        </div>
-                    }
                 </div>
                 <div className={style.menu}>
-                    <i className='bx bx-dots-horizontal-rounded'></i>
+                    <i className='bx bx-dots-horizontal-rounded' onClick={() => setOpenMenu(!openMenu)}></i>
+                        {openMenu && (
+                            <div className={style.dropdownPopup}>
+                                <ul>
+                                    <li onClick={completeTask}>
+                                        Закрыть заявку
+                                    </li>
+                                    <li onClick={showReassignTaskField}>
+                                        Отправить в другой отдел
+                                    </li>
+                                    <li onClick={cancelTask}>
+                                        Отменить задачу
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                 </div>
             </div>}
+
+            {isModal &&
+                <div className={style.modal}>
+                    <div className={style.overlay} onClick={() => setIsModal(false)}></div>
+                    <div className={style.modalContent}>
+                        <div className={style.title}>Отправить заявку в другой отдел</div>
+                        <p>Отдел из которого отправляется заявка:</p>
+                        <p>{taskInfo.department && taskInfo.department.name}</p>
+                        <p>Отдел куда отправить заявку:</p>
+                        <select onChange={(e) => setIdDepart(e.target.value)}>
+                            {departs.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </select>
+                        <input type="button" className={'btn-main'} value={'Отправить'}
+                               onClick={() => reassignTask(taskInfo.id, idDepart)}/>
+                    </div>
+                </div>
+            }
         </>
     )
 }
