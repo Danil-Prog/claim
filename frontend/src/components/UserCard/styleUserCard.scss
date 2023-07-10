@@ -1,0 +1,49 @@
+.user-card {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--content-color-light);
+  min-width: 300px;
+  grid-gap: 20px;
+  transition: var(--tran-03);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--input-color);
+  }
+
+
+  .user-card-info {
+    display: flex;
+    flex-direction: column;
+    transition: var(--tran-03);
+    .name {
+      color: var(--text-color);
+      transition: var(--tran-03);
+    }
+    .super-admin {
+      color: var(--super-admin-color);
+      transition: var(--tran-03);
+    }
+
+    .admin {
+      color: var(--admin-color);
+      transition: var(--tran-03);
+    }
+
+    .exec {
+      color: var(--exec-color);
+      transition: var(--tran-03);
+    }
+
+    .user {
+      color: var(--user-color);
+      transition: var(--tran-03);
+    }
+
+    .username {
+      color: var(--text-color);
+      transition: var(--tran-03);
+    }
+  }
+}

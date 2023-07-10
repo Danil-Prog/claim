@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     Page<Task> getTasksByCustomer(User user, PageRequest pageRequest);
+    Page<Task> getTasksByDepartment_Id(Long id, PageRequest pageRequest);
 }

@@ -7,8 +7,9 @@ import './styleDepart.scss';
 
 import { departApi } from '../../misc/DepartApi';
 import Pagination from '../../components/Pagination';
-import Sort from '../../components/Sort';
+
 import Header from '../../components/Header';
+import Dropdown from '../../components/Dropdown';
 
 const DepartPage = ({ userContext }) => {
   const user = userContext.getUser();
@@ -19,7 +20,12 @@ const DepartPage = ({ userContext }) => {
   const [totalPages, setTotalPages] = React.useState(null);
   const [sizeItems, setSizeItems] = React.useState(10);
   const [selectedSort, setSelectedSort] = React.useState('asc');
-  const list = ['возрастанию', 'убыванию'];
+  const listAscDesc = [
+    ['возрастанию', 'asc'],
+    ['убыванию', 'desc'],
+  ];
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setValueDepartment({
@@ -28,12 +34,28 @@ const DepartPage = ({ userContext }) => {
     });
   };
 
-  const handleCustomToast = () => {
+  const handleCreateDepartToast = () => {
     toast('Отдел успешно создан!', {
       icon: { type: 'success' },
       theme: {
         type: 'custom',
-        style: { background: 'var(--dark-primary-color)', color: 'var(--dark-text-color)' },
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
+  const handleCreateDepartErrorToast = () => {
+    toast('Что-то пошло не так!', {
+      icon: { type: 'error' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
       },
     });
   };
@@ -43,9 +65,10 @@ const DepartPage = ({ userContext }) => {
     try {
       await departApi.newDepartment(user.authdata, valueDepartment);
       setValueDepartment({ name: '' });
-      handleCustomToast();
+      handleCreateDepartToast();
     } catch (error) {
       console.log(error);
+      handleCreateDepartErrorToast();
     }
   };
 
@@ -85,14 +108,7 @@ const DepartPage = ({ userContext }) => {
                       </form>
                     </label>
                   </div>
-                  <Sort
-                    selectedSort={selectedSort}
-                    setSelectedSort={setSelectedSort}
-                    list={list}
-                    sortName0={'asc'}
-                    sortName1={'desc'}
-                    sortName2={'1'}
-                  />
+                  <Dropdown setSelected={setSelectedSort} list={listAscDesc} />
 
                   <div className="search-depart">
                     <label className="label-field" htmlFor="search">

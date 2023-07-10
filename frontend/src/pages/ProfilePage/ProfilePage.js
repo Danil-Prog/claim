@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfile.scss';
+import {toast} from "wc-toast";
 
 const ProfilePage = ({ userContext }) => {
   const user = userContext.getUser({ userContext });
@@ -27,14 +28,24 @@ const ProfilePage = ({ userContext }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('image', selectedFile);
     try {
-      await userApi.setAvatar(user.authdata, formData);
-      setEditProfile(false);
+      await userApi.changeSelfInfo(user.authdata, userProfile);
+      await handleChangeProfileToast();
     } catch (error) {
       console.log(error);
+      handleChangeProfileErrorToast()
     }
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      try {
+        await userApi.setAvatar(user.authdata, formData);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    setEditProfile(false);
   };
 
   React.useEffect(() => {
@@ -43,6 +54,7 @@ const ProfilePage = ({ userContext }) => {
         .getProfile(user.authdata)
         .then((response) => {
           const info = response.data;
+          console.log(info)
           setUserProfile(info);
         })
         .catch((error) => {
@@ -50,7 +62,7 @@ const ProfilePage = ({ userContext }) => {
         });
     }
     return () => {};
-  }, [setUserProfile, user.authdata]);
+  }, [setUserProfile, user.authdata, editProfile]);
 
   const handleFileSelect = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -61,6 +73,33 @@ const ProfilePage = ({ userContext }) => {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  const handleChangeProfileToast = () => {
+    toast('Изменения успешно внесены!', {
+      icon: { type: 'success' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
+  const handleChangeProfileErrorToast = () => {
+    toast('Что-то пошло не так!', {
+      icon: { type: 'error' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
   return (
     <>
       {editProfile ? (
@@ -75,7 +114,7 @@ const ProfilePage = ({ userContext }) => {
                     <div className="change-wrap-avatar">
                       <label>
                         <input type="file" hidden onChange={handleFileSelect} />
-                        {userProfile.avatar != null && (
+                        {userProfile.avatar != null ? (
                           <img
                             className={
                               user.role === 'ROLE_SUPER_ADMIN'
@@ -86,7 +125,7 @@ const ProfilePage = ({ userContext }) => {
                                 ? 'avatar border-exec'
                                 : user.role === 'ROLE_USER'
                                 ? 'avatar border-user'
-                                : ''
+                                : 'avatar'
                             }
                             src={
                               preview
@@ -97,6 +136,8 @@ const ProfilePage = ({ userContext }) => {
                             height={200}
                             alt="avatar"
                           />
+                        ) : (
+                          <div>avatar null</div>
                         )}
                         {user.role === 'ROLE_SUPER_ADMIN' ? (
                           <i className="bx bx-crown icon-crown"></i>
@@ -119,7 +160,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="firstname"
-                          value={userProfile.firstname}
+                          value={userProfile.firstname || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -130,7 +171,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="lastname"
-                          value={userProfile.lastname}
+                          value={userProfile.lastname || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -141,7 +182,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="email"
-                          value={userProfile.email}
+                          value={userProfile.email || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -152,7 +193,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="phone"
-                          value={userProfile.phone}
+                          value={userProfile.phone || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -163,7 +204,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="cabinet"
-                          value={userProfile.cabinet}
+                          value={userProfile.cabinet || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -174,7 +215,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="pc"
-                          value={userProfile.pc}
+                          value={userProfile.pc || ''}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -185,7 +226,7 @@ const ProfilePage = ({ userContext }) => {
                         <input
                           type="text"
                           name="department"
-                          value={userProfile.department.name}
+                          value={userProfile.department && userProfile.department.name}
                           onChange={handleInputChange}
                         />
                       </span>
@@ -220,7 +261,7 @@ const ProfilePage = ({ userContext }) => {
                             ? 'avatar border-user'
                             : ''
                         }
-                        src={`http://localhost:8080/api/v1/user/${user.id}/avatar/${userProfile.avatar}`}
+                        src={`http://localhost:8080/api/v1/user/avatar/3ddb50b0-0bf6-4211-a7a9-b9ca770b653c2.png`}
                         width={200}
                         height={200}
                         alt="avatar"

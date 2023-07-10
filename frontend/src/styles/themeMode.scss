@@ -1,109 +1,10 @@
 // Цвета тёмной темы
-.dark {
-  background-color: var(--dark-body-color);
-  transition: var(--tran-03);
-
-  .container {
-    .signin {
-      form {
-        h2 {
-          color: var(--dark-text-color);
-        }
-        background: var(--dark-sidebar-color);
-
-        .field__item {
-          input {
-            background-color: var(--dark-primary-color-light);
-            &:focus {
-              + span {
-                background: var(--dark-primary-color);
-              }
-            }
-            &:valid {
-              + span {
-                background: var(--dark-primary-color);
-              }
-            }
-          }
-          span {
-            color: var(--dark-text-color);
-          }
-        }
-        .btn-main {
-          background-color: var(--dark-primary-color);
-          color: var(--dark-text-color);
-
-          &:hover {
-            box-shadow: 0 2px 0 var(--dark-text-color);
-          }
-        }
-      }
-    }
-  }
-
-  .sidebar {
-    background-color: var(--dark-sidebar-color);
-    .menu-bar {
-      .mode {
-        background-color: var(--dark-primary-color-light);
-        .toggle-switch {
-          .switch-on {
-            background-color: var(--dark-text-color);
-            &::before {
-              background: var(--dark-primary-color-light);
-            }
-          }
-        }
-      }
-    }
-
-    li {
-      a {
-        color: var(--dark-text-color);
-        &:hover {
-          background-color: var(--dark-primary-color-light);
-        }
-      }
-    }
-
-    header {
-      a {
-        color: var(--dark-text-color);
-      }
-      .toggle {
-        color: var(--dark-text-color);
-      }
-    }
-  }
-
-  .content {
-    .page {
-      .top {
-        .title-page {
-          color: var(--dark-text-color);
-        }
-      }
-
-      .wrapper {
-        .page-content {
-          background-color: var(--dark-sidebar-color);
-        }
-
-        .users {
-          background-color: var(--dark-sidebar-color);
-        }
-      }
-    }
-  }
-}
-
-// Цвета светлой темы
+.dark,
 .light {
   background-color: var(--body-color);
-  width: 100%;
-
   transition: var(--tran-03);
-  .container {
+
+  .login-page {
     .signin {
       form {
         h2 {
@@ -113,93 +14,29 @@
 
         .field__item {
           input {
-            background-color: var(--body-color);
+            background-color: var(--content-color-light);
             &:focus {
               + span {
-                background: var(--primary-color);
-                color: var(--dark-toggle-color);
+                background: var(--content-color);
               }
             }
             &:valid {
               + span {
-                background: var(--primary-color);
-                color: var(--dark-toggle-color);
+                background: var(--content-color);
               }
             }
           }
           span {
-            color: var(--title-text-color);
+            color: var(--text-color);
           }
         }
         .btn-main {
-          background-color: var(--primary-color);
-          color: var(--text-color-light);
+          background-color: var(--content-color);
+          color: var(--text-color);
 
           &:hover {
-            box-shadow: 0 2px 0 var(--dark-sidebar-color);
+            box-shadow: 0 2px 0 var(--text-color);
           }
-        }
-      }
-    }
-  }
-
-  .sidebar {
-    background-color: var(--sidebar-color);
-    transition: {
-      property: all;
-      duration: 0.3s;
-      timing-function: ease;
-      delay: 0s;
-    }
-
-    .menu-bar {
-      .mode {
-        background-color: var(--primary-color-light);
-        .toggle-switch {
-          .switch-off {
-            background-color: var(--text-color);
-            &::before {
-              background: var(--primary-color-light);
-            }
-          }
-        }
-      }
-    }
-
-    li {
-      a {
-        color: var(--text-color);
-        &:hover {
-          background-color: var(--primary-color-light);
-        }
-      }
-    }
-
-    header {
-      a {
-        color: var(--text-color);
-      }
-      .toggle {
-        color: var(--sidebar-color);
-      }
-    }
-  }
-
-  .content {
-    .page {
-      .top {
-        .title-page {
-          color: var(--text-color);
-        }
-      }
-
-      .wrapper {
-        .page-content {
-          background-color: var(--sidebar-color);
-        }
-
-        .users {
-          background-color: var(--sidebar-color);
         }
       }
     }

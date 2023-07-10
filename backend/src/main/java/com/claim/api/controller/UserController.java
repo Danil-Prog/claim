@@ -9,8 +9,8 @@ import com.claim.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
-import java.util.List;
 
 import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
@@ -40,72 +39,80 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/{id}")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Returns user by id")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/all")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Gets a paginated list of users, user passwords are not taken into account")
     public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
                                                   @RequestParam(defaultValue = "ASC") String sortBy,
                                                   @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        List<UserDto> users = userService.getUserList(pageRequest).stream()
-                .map(userMapper::toUserDto)
-                .toList();
-        return ResponseEntity.ok(new PageImpl<>(users));
+        Page<UserDto> users = userService.getUserList(pageRequest).map(userMapper::toUserDto);
+        return ResponseEntity.ok(users);
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Accepts the user in the request body, saves to the database")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (userService.saveUser(user))
             return new ResponseEntity<>("User created", HttpStatus.OK);
         return new ResponseEntity<>("User with the same name already exists", HttpStatus.FOUND);
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Returns the profile information of an authorized user")
     public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserByUsername(principal));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @GetMapping("/{id}/avatar/{filename}")
-    public ResponseEntity<byte[]> getUserAvatar(@PathVariable Long id,
-                                                @PathVariable String filename) {
+    @GetMapping("/avatar/{filename}")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Returns the user's photo, the user ID and photo name are passed to the parameters")
+    public ResponseEntity<Resource> getUserAvatar(@PathVariable String filename) {
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(MediaType.IMAGE_GIF_VALUE))
-                .body(userService.getUserAvatar(id, filename));
+                .body(userService.getUserAvatar(filename));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> removeUserById(@PathVariable Long id) {
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Deletes a user by id")
+    public ResponseEntity<UserDto> removeUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.removeUserById(id));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.update(id, user));
+    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Updated user by id")
+    public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.update(id, userDto));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PutMapping
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Updates the profile information of an authorized user")
     public ResponseEntity<String> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
         return ResponseEntity.ok(userService.updateAuthorizeUserProfile(principal, profile));
     }
 
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @PostMapping("/avatar")
-    public ResponseEntity<String> updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
-        return ResponseEntity.ok(userService.updateUserImage(image, principal));
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Updates the profile photo of an authorized user")
+    public void updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
+       userService.updateUserAvatar(image, principal);
     }
 }

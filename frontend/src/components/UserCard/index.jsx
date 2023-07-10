@@ -2,12 +2,13 @@ import React from 'react';
 
 import './styleUserCard.scss';
 
-function UserCard({ user, item }) {
+function UserCard({ user }) {
+  const rand = (min, max) => Math.floor(Math.random() * max) + min;
   return (
     <>
       <div key={user.id} className="user-card">
         <div className="mini-avatar">
-          {item.profile.avatar ? (
+          {user.profile.avatar ? (
             <img
               className={
                 user.role === 'ROLE_SUPER_ADMIN'
@@ -20,16 +21,34 @@ function UserCard({ user, item }) {
                   ? 'mini-avatar border-user'
                   : 'mini-avatar null-avatar'
               }
-              src={`http://localhost:8080/api/v1/user/${item.profile.id}/avatar/${item.profile.avatar}`}
+              src={`http://localhost:8080/api/v1/user/avatar/${user.profile.avatar}`}
               alt="avatar"
+              width={60}
+              height={60}
             />
           ) : (
-            <div className="null-avatar"></div>
+            <div
+              className={
+                user.role === 'ROLE_SUPER_ADMIN'
+                  ? `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_ADMIN'
+                  ? `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_EXEC'
+                  ? `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
+                  : user.role === 'ROLE_USER'
+                  ? `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
+                  : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
+              }>
+              <span className="null-avatar-title">
+                {!!user.profile.firstname && user.profile.firstname[0]}
+                {!!user.profile.lastname && user.profile.lastname[0]}
+              </span>
+            </div>
           )}
         </div>
         <div className="user-card-info">
           <span className="name">
-            {item.profile.firstname} {item.profile.lastname}
+            {user.profile.firstname} {user.profile.lastname}
           </span>
           <span className="username">{user.username}</span>
           <span

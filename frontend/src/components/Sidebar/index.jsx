@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 import UserContext from '../../context/UserContext';
 import ThemeContext from '../../context/ThemeContext';
@@ -19,32 +19,39 @@ const Sidebar = () => {
   };
 
   React.useEffect(() => {
-    themeContext.getThemeMode();
-  }, [themeContext]);
+    const theme = themeContext.getThemeMode();
+    if (theme) {
+      document.body.setAttribute('data-theme', 'dark');
+    } else {
+      document.body.setAttribute('data-theme', 'light');
+    }
+
+    return () => {};
+  }, [themeContext, userContext.userValue]);
 
   const setModeValue = () => {
-    const mode = themeContext.getThemeMode();
-    themeContext.themeMode(!mode);
+    themeContext.themeMode(!theme);
   };
 
   const setSidebarPosition = () => {
     const position = themeContext.getSidebarPosition();
     themeContext.sidebarPosition(!position);
   };
+
   return (
     <nav className={sidebar ? 'sidebar open' : 'sidebar close'}>
       <header>
-        <Link to="">
+        <NavLink to="">
           <div className="image-text">
             <span className="image">
               <img src="/img/logo.png" width={60} height={60} alt="logo" />
             </span>
 
             <div className="text header-text">
-              <span className="name">Claim</span>
+              {sidebar && <span className="name">Claim</span>}
             </div>
           </div>
-        </Link>
+        </NavLink>
         <i className="bx bx-chevron-right toggle" onClick={setSidebarPosition}></i>
       </header>
 
@@ -52,34 +59,34 @@ const Sidebar = () => {
         <div className="menu">
           <ul className="menu-links">
             <li className="nav-link">
-              <Link to="profile">
+              <NavLink to="profile">
                 <i className="bx bx-user icon"></i>
                 <span className="text nav-text">Профиль ({user.username})</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <NavLink to="/task">
                 <i className="bx bx-task icon"></i>
                 <span className="text nav-text">Задачи</span>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <NavLink to="/users">
                 <i className="bx bx-group icon"></i>
                 <span className="text nav-text">Пользователи</span>
-              </a>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <Link to="department">
+              <NavLink to="department">
                 <i className="bx bx-sitemap icon"></i>
                 <span className="text nav-text">Отделы</span>
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-link">
-              <a href="/">
+              <NavLink to="statistic">
                 <i className="bx bxs-bar-chart-alt-2 icon"></i>
                 <span className="text nav-text">Статистика</span>
-              </a>
+              </NavLink>
             </li>
           </ul>
         </div>

@@ -4,7 +4,7 @@ import React from 'react';
 import { userApi } from '../../misc/UserApi';
 import UserContext from '../../context/UserContext';
 
-import './styleLogin.scss';
+import s from './login.module.scss';
 
 const LoginPage = () => {
   const userContext = React.useContext(UserContext);
@@ -24,8 +24,9 @@ const LoginPage = () => {
     userApi
       .authenticate(username, password)
       .then((response) => {
-        const { id, username, role } = response.data;
-        const authdata = window.btoa(username + ':' + password);
+        const { id, username } = response.data;
+        const role = response.data.authorities[0].authority;
+        const authdata = response.data.token;
         const user = { id, username, role, authdata };
         setIsLoggedIn(true);
 
@@ -52,12 +53,12 @@ const LoginPage = () => {
       {isLoggedIn ? (
         <Navigate to="/" />
       ) : (
-        <div className="container">
-          <div className="signin">
+        <div className={s.page}>
+          <div className={s.signin}>
             <form id="form-login" onSubmit={handleSubmit}>
               <h2>Вход</h2>
 
-              <label htmlFor="username" className="field__item">
+              <label htmlFor="username" className={s.field__item}>
                 <input
                   required
                   id="username"
@@ -71,7 +72,7 @@ const LoginPage = () => {
                 <div className="line"></div>
               </label>
 
-              <label htmlFor="password" className="field__item">
+              <label htmlFor="password" className={s.field__item}>
                 <input
                   required
                   id="password"
@@ -85,7 +86,7 @@ const LoginPage = () => {
                 <div className="line"></div>
               </label>
 
-              <input className="btn-main" type="submit" value="Вход" />
+              <input className={s.btn} type="submit" value="Вход" />
             </form>
           </div>
         </div>
