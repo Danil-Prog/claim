@@ -84,9 +84,9 @@
 body {
   margin: 0;
   padding: 0;
-
   background-color: var(--body-color);
   transition: var(--tran-03);
+  overflow-x: hidden;
 }
 
 .content {

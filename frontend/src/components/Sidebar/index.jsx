@@ -48,7 +48,7 @@ const Sidebar = () => {
             </span>
 
             <div className="text header-text">
-              <span className="name">Claim</span>
+              {sidebar && <span className="name">Claim</span>}
             </div>
           </div>
         </NavLink>

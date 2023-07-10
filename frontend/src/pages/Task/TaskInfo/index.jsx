@@ -89,185 +89,198 @@ const TaskInfo = ({ userContext }) => {
     const cancelTask = () => {
         setOpenMenu(false);
     }
+    const removeTask = () => {
+        taskApi.remove(user.authdata, taskInfo.id)
+        setOpenMenu(false);
+    }
 console.log(isReassignTask)
     return (
         <>
-            {taskInfo && <div className={style.task}>
-                <div className={style.messageTask}>
-                    <div className={style.title}>{taskInfo.title}</div>
-                    <div className={style.description}>
-                        <p className='label-main'>Описание</p>
-                        <p dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
+            {taskInfo &&
+                <div className={style.task}>
+                    <div className={style.messageTask}>
+                        <div className={style.title}>{taskInfo.title}</div>
+                        <div className={style.description}>
+                            <p className='label-main'>Описание</p>
+                            <p dangerouslySetInnerHTML={{ __html: taskInfo.description }} />
+                        </div>
+                        <div className={style.messageField}>
+                            <ReactQuill className={style.description} theme="snow" />
+                            <input type="button" value={"Отправить"}/>
+                        </div>
                     </div>
-                    <div className={style.messageField}>
-                        <ReactQuill className={style.description} theme="snow" />
-                        <input type="button" value={"Отправить"}/>
-                    </div>
-                </div>
 
-                <div className={style.info}>
+                    <div className={style.info}>
 
-                    <div className={style.status}>
-                        <p className={style.label}>
-                            <p className='label-main'>СТАТУС</p>
-                            <svg
-                                className={taskInfo.statusTask &&
-                                taskInfo.statusTask === 'COMPLETED' ? `${style.dotCompleted}` :
-                                    taskInfo.statusTask === 'REVIEW' ? `${style.dotReview}` :
-                                        taskInfo.statusTask === 'IN_PROGRESS' ? `${style.dotInProgress}` :
-                                            taskInfo.statusTask === 'CANCELED' ? `${style.dotCanceled}` : ''}
-                                width="16" height="16">
-                                <circle r="5" cx="8" cy="8"/>
-                            </svg>
-                        </p>
-                        <p>
-                            {taskInfo &&
-                            taskInfo.statusTask === 'COMPLETED' ? `Выполнена` :
-                                taskInfo.statusTask === 'REVIEW' ? `Новая` :
-                                    taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
-                                        taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
-                        </p>
-                    </div>
-                    <div className={style.customer}>
-                        <p className='label-main'>ОТПРАВИТЕЛЬ</p>
-                        <p className={style.customerInfo}>
-                            <p>
-                                {taskInfo.customer && taskInfo.customer.profile.avatar ? (
-                                    <img
-                                        className={
-                                            taskInfo.customer.role === 'ROLE_SUPER_ADMIN'
-                                                ? 'mini-avatar border-super-admin'
-                                                : taskInfo.customer.role === 'ROLE_ADMIN'
-                                                    ? 'mini-avatar border-admin'
-                                                    : taskInfo.customer.role === 'ROLE_EXEC'
-                                                        ? 'mini-avatar border-exec'
-                                                        : taskInfo.customer.role === 'ROLE_USER'
-                                                            ? 'mini-avatar border-user'
-                                                            : 'mini-avatar null-avatar'
-                                        }
-                                        src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.customer.profile.avatar}`}
-                                        alt="avatar"
-                                        width={30}
-                                        height={30}
-                                    />
-                                ) : (
-                                    <div className="null-avatar"></div>
-                                )}
+                        <div className={style.status}>
+                            <p className={style.label}>
+                                <p className='label-main'>СТАТУС</p>
+                                <svg
+                                    className={taskInfo.statusTask &&
+                                    taskInfo.statusTask === 'COMPLETED' ? `${style.dotCompleted}` :
+                                        taskInfo.statusTask === 'REVIEW' ? `${style.dotReview}` :
+                                            taskInfo.statusTask === 'IN_PROGRESS' ? `${style.dotInProgress}` :
+                                                taskInfo.statusTask === 'CANCELED' ? `${style.dotCanceled}` : ''}
+                                    width="16" height="16">
+                                    <circle r="5" cx="8" cy="8"/>
+                                </svg>
                             </p>
                             <p>
-                                {taskInfo.customer &&
-                                    `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
+                                {taskInfo &&
+                                taskInfo.statusTask === 'COMPLETED' ? `Выполнена` :
+                                    taskInfo.statusTask === 'REVIEW' ? `Новая` :
+                                        taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
+                                            taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
+                            </p>
+                        </div>
+
+                        <div className={style.customer}>
+                            <p className='label-main'>ОТПРАВИТЕЛЬ</p>
+                            <p className={style.customerInfo}>
+                                <p>
+                                    {taskInfo.customer && taskInfo.customer.profile.avatar ? (
+                                        <img
+                                            className={
+                                                taskInfo.customer.role === 'ROLE_SUPER_ADMIN'
+                                                    ? 'mini-avatar border-super-admin'
+                                                    : taskInfo.customer.role === 'ROLE_ADMIN'
+                                                        ? 'mini-avatar border-admin'
+                                                        : taskInfo.customer.role === 'ROLE_EXEC'
+                                                            ? 'mini-avatar border-exec'
+                                                            : taskInfo.customer.role === 'ROLE_USER'
+                                                                ? 'mini-avatar border-user'
+                                                                : 'mini-avatar null-avatar'
+                                            }
+                                            src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.customer.profile.avatar}`}
+                                            alt="avatar"
+                                            width={30}
+                                            height={30}
+                                        />
+                                    ) : (
+                                        <div className="null-avatar"></div>
+                                    )}
+                                </p>
+                                <p>
+                                    {taskInfo.customer &&
+                                        `${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`
+                                    }
+                                </p>
+                            </p>
+                        </div>
+
+                        <div className={style.executor}>
+                            <p className='label-main'>ИСПОЛНИТЕЛЬ</p>
+                            <p className={style.executorInfo}>
+                                <>
+                                    {taskInfo.executor && taskInfo.executor.profile.avatar ? (
+                                        <img
+                                            className={
+                                                taskInfo.executor.role === 'ROLE_SUPER_ADMIN'
+                                                    ? 'mini-avatar border-super-admin'
+                                                    : taskInfo.executor.role === 'ROLE_ADMIN'
+                                                        ? 'mini-avatar border-admin'
+                                                        : taskInfo.executor.role === 'ROLE_EXEC'
+                                                            ? 'mini-avatar border-exec'
+                                                            : taskInfo.executor.role === 'ROLE_USER'
+                                                                ? 'mini-avatar border-user'
+                                                                : 'mini-avatar null-avatar'
+                                            }
+                                            src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.executor.profile.avatar}`}
+                                            alt="avatar"
+                                            width={30}
+                                            height={30}
+                                        />
+                                    ) : (
+                                        <>
+                                            {taskInfo.executor &&
+                                                <div
+                                                    className=
+                                                        {
+                                                            taskInfo.executor.role === 'ROLE_SUPER_ADMIN' ?
+                                                                `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
+                                                                : taskInfo.executor.role === 'ROLE_ADMIN' ?
+                                                                    `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
+                                                                    : taskInfo.executor.role === 'ROLE_EXEC' ?
+                                                                        `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
+                                                                        : taskInfo.executor.role === 'ROLE_USER' ?
+                                                                            `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
+                                                                            : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
+                                                        }
+                                                >
+                                                <span className="null-avatar-title">
+                                                    {!!taskInfo.executor && taskInfo.executor.profile.firstname[0]}
+                                                    {!!taskInfo.executor && taskInfo.executor.profile.lastname[0]}
+                                                </span>
+                                                </div>
+                                            }
+                                        </>
+                                    )}
+                                </>
+                                {taskInfo.executor ?
+                                    <p className={style.nameExec}>
+                                        {taskInfo.executor.profile.lastname}
+                                        {' '}
+                                        {taskInfo.executor.profile.firstname}
+                                    </p> :
+                                    <p className={style.emptyExec}>
+                                        <p>Не назначен</p>
+                                        <input type="button" className={style.btnAddExec} value={'Назначить'} onClick={() => setIsAssignExec(!isAssignExec)}/>
+                                    </p>
+
                                 }
                             </p>
-                        </p>
-                    </div>
+                            {isAssignExec ? <select name="id" className={style.selectDep}>
+                                {taskInfo.executor ?
+                                    `<option>
+                                        ${taskInfo.executor.profile.firstname} 
+                                        ${taskInfo.executor.profile.lastname}
+                                    </option>` :
+                                    <option>Не назначен</option>
+                                }
+                                {departUsers && departUsers.map((item) => (
+                                    <option key={item.id} value={item.id}>
+                                        {`${item.profile.lastname} ${item.profile.firstname}`}
+                                    </option>
+                                ))}
+                            </select> : ''}
 
-                    <div className={style.executor}>
-                        <p className='label-main'>ИСПОЛНИТЕЛЬ</p>
-                        <p className={style.executorInfo}>
-                            <>
-                                {taskInfo.executor && taskInfo.executor.profile.avatar ? (
-                                    <img
-                                        className={
-                                            taskInfo.executor.role === 'ROLE_SUPER_ADMIN'
-                                                ? 'mini-avatar border-super-admin'
-                                                : taskInfo.executor.role === 'ROLE_ADMIN'
-                                                    ? 'mini-avatar border-admin'
-                                                    : taskInfo.executor.role === 'ROLE_EXEC'
-                                                        ? 'mini-avatar border-exec'
-                                                        : taskInfo.executor.role === 'ROLE_USER'
-                                                            ? 'mini-avatar border-user'
-                                                            : 'mini-avatar null-avatar'
+                        </div>
+
+                        <div className={style.department}>
+                            <p className='label-main upp'>ОТПРАВЛЕНА В</p>
+                            <p>{taskInfo.department && taskInfo.department.name}</p>
+                        </div>
+
+                        <div className={style.startDate}>
+                            Дата отправки {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
+                        </div>
+
+                    </div>
+                    <div className={style.menu}>
+                        <i className='bx bx-dots-horizontal-rounded' onClick={() => setOpenMenu(!openMenu)}></i>
+                            {openMenu && (
+                                <div className={style.dropdownPopup}>
+                                    <ul>
+                                        <li onClick={completeTask}>
+                                            Закрыть заявку
+                                        </li>
+                                        <li onClick={showReassignTaskField}>
+                                            Отправить в другой отдел
+                                        </li>
+                                        <li onClick={cancelTask}>
+                                            Отменить задачу
+                                        </li>
+                                        {user.role === 'ROLE_SUPER_ADMIN' &&
+                                            <li onClick={removeTask}>
+                                                Удалить задачу
+                                            </li>
                                         }
-                                        src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.executor.profile.avatar}`}
-                                        alt="avatar"
-                                        width={30}
-                                        height={30}
-                                    />
-                                ) : (
-                                    <>
-                                        {taskInfo.executor &&
-                                            <div
-                                                className=
-                                                    {
-                                                        taskInfo.executor.role === 'ROLE_SUPER_ADMIN' ?
-                                                            `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
-                                                            : taskInfo.executor.role === 'ROLE_ADMIN' ?
-                                                                `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
-                                                                : taskInfo.executor.role === 'ROLE_EXEC' ?
-                                                                    `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
-                                                                    : taskInfo.executor.role === 'ROLE_USER' ?
-                                                                        `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
-                                                                        : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
-                                                    }
-                                            >
-                                            <span className="null-avatar-title">
-                                                {!!taskInfo.executor && taskInfo.executor.profile.firstname[0]}
-                                                {!!taskInfo.executor && taskInfo.executor.profile.lastname[0]}
-                                            </span>
-                                            </div>
-                                        }
-                                    </>
-                                )}
-                            </>
-                            {taskInfo.executor ?
-                                <p className={style.nameExec}>
-                                    {taskInfo.executor.profile.lastname}
-                                    {' '}
-                                    {taskInfo.executor.profile.firstname}
-                                </p> :
-                                <p className={style.emptyExec}>
-                                    <p>Не назначен</p>
-                                    <input type="button" className={style.btnAddExec} value={'Назначить'} onClick={() => setIsAssignExec(!isAssignExec)}/>
-                                </p>
-
-                            }
-                        </p>
-                        {isAssignExec ? <select name="id" className={style.selectDep}>
-                            {taskInfo.executor ?
-                                `<option>
-                                    ${taskInfo.executor.profile.firstname} 
-                                    ${taskInfo.executor.profile.lastname}
-                                </option>` :
-                                <option>Не назначен</option>
-                            }
-                            {departUsers && departUsers.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {`${item.profile.lastname} ${item.profile.firstname}`}
-                                </option>
-                            ))}
-                        </select> : ''}
-
+                                    </ul>
+                                </div>
+                            )}
                     </div>
-
-                    <div className={style.department}>
-                        <p className='label-main upp'>ОТПРАВЛЕНА В</p>
-                        <p>{taskInfo.department && taskInfo.department.name}</p>
-                    </div>
-                    <div className={style.startDate}>
-                        Дата отправки {new Date(taskInfo.startDate).toLocaleString().slice(0,-10)}
-                    </div>
-
                 </div>
-                <div className={style.menu}>
-                    <i className='bx bx-dots-horizontal-rounded' onClick={() => setOpenMenu(!openMenu)}></i>
-                        {openMenu && (
-                            <div className={style.dropdownPopup}>
-                                <ul>
-                                    <li onClick={completeTask}>
-                                        Закрыть заявку
-                                    </li>
-                                    <li onClick={showReassignTaskField}>
-                                        Отправить в другой отдел
-                                    </li>
-                                    <li onClick={cancelTask}>
-                                        Отменить задачу
-                                    </li>
-                                </ul>
-                            </div>
-                        )}
-                </div>
-            </div>}
+            }
 
             {isModal &&
                 <div className={style.modal}>
