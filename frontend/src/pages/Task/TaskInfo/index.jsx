@@ -89,14 +89,16 @@ const TaskInfo = ({ userContext }) => {
     const cancelTask = () => {
         setOpenMenu(false);
     }
-    const removeTask = () => {
-        taskApi.remove(user.authdata, taskInfo.id)
-        setOpenMenu(false);
+    const removeTask = async (idTask) => {
+        await taskApi.remove(user.authdata, idTask)
+        await setOpenMenu(false);
+        await setIsReassignTask(!isReassignTask);
+        await setTaskInfo({});
     }
 console.log(isReassignTask)
     return (
         <>
-            {taskInfo &&
+            {taskInfo && taskInfo.id ?
                 <div className={style.task}>
                     <div className={style.messageTask}>
                         <div className={style.title}>{taskInfo.title}</div>
@@ -271,7 +273,7 @@ console.log(isReassignTask)
                                             Отменить задачу
                                         </li>
                                         {user.role === 'ROLE_SUPER_ADMIN' &&
-                                            <li onClick={removeTask}>
+                                            <li onClick={() => removeTask(taskInfo.id)}>
                                                 Удалить задачу
                                             </li>
                                         }
@@ -280,7 +282,12 @@ console.log(isReassignTask)
                             )}
                     </div>
                 </div>
-            }
+            :
+                <>
+                    <div className={style.emptyIcon}>
+                        <i className='bx bx-spreadsheet'></i>
+                    </div>
+                </>}
 
             {isModal &&
                 <div className={style.modal}>
