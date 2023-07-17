@@ -87,20 +87,17 @@ public class TaskService {
     public Task updateTask(Task task) {
         Optional<Task> taskOptional = taskRepository.findById(task.getId());
         if (taskOptional.isPresent()) {
-            if (task.getCustomer() != null) {
-                Optional<User> customerOptional = userRepository.findById(task.getCustomer().getId());
-                customerOptional.ifPresent(task::setCustomer);
-
+            Task taskExisting = taskOptional.get();
+            if (taskExisting.getCustomer() != null) {
+                task.setCustomer(taskOptional.get().getCustomer());
             }
             if (task.getExecutor() != null) {
                 Optional<User> executorOptional = userRepository.findById(task.getExecutor().getId());
                 executorOptional.ifPresent(task::setExecutor);
             }
-            if (task.getDepartment() != null) {
-                Optional<Department> departmentOptional = departmentRepository.findById(task.getDepartment().getId());
-                departmentOptional.ifPresentOrElse(task::setDepartment, () -> {
-                    throw new BadRequestException("No department by id=" + task.getDepartment().getId());
-                });
+            Department taskDepartment = taskExisting.getDepartment();
+            if (taskDepartment != null) {
+                task.setDepartment(taskDepartment);
             }
             logger.info("Task with id= '{}' successfully updated", taskOptional.get().getId());
             return taskRepository.save(task);
