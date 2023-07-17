@@ -1,5 +1,6 @@
 package com.claim.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -37,6 +38,7 @@ public class Profile {
     private String email;
     @Column(name = "avatar")
     private String avatar;
+    @JsonIgnore
     @OneToMany(mappedBy = "uploaded", fetch = FetchType.EAGER)
     private Set<Attachment> attachments = new HashSet<>();
     @Size(min = 3, max = 11)
