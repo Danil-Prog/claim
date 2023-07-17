@@ -2,6 +2,7 @@ package com.claim.api.service;
 
 import com.claim.api.entity.Department;
 import com.claim.api.entity.Task;
+import com.claim.api.entity.TaskType;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
@@ -131,5 +132,36 @@ public class TaskService {
             return "Task with id: " + taskId + " was deleted successfully";
         }
         throw new BadRequestException("Not found task with id: " + taskId);
+    }
+
+    public String createSubtask(Long id, Principal principal, Task task) {
+        Optional<Task> epicTaskOptional = taskRepository.findById(id);
+        if (epicTaskOptional.isPresent()) {
+            Task epicTask = epicTaskOptional.get();
+            if (epicTask.getTaskType() != TaskType.EPIC) {
+                logger.error("user '{}' tried to create a subtask in a task with the type '{}'", principal.getName(), epicTask.getTaskType());
+                throw new BadRequestException("It is not possible to create a subtask in the 'Task' type");
+            }
+
+            if (task.getCustomer() != null) {
+                Optional<User> customer = userRepository.findById(task.getCustomer().getId());
+                customer.ifPresent(task::setCustomer);
+            }
+
+            if (task.getExecutor() != null) {
+                Optional<User> executor = userRepository.findById(task.getExecutor().getId());
+                executor.ifPresent(task::setExecutor);
+            }
+            if (epicTask.getDepartment() != null) {
+                task.setDepartment(epicTask.getDepartment());
+            }
+
+            task.setTaskType(TaskType.SUBTASK);
+            epicTask.getSubtask().add(task);
+            taskRepository.save(epicTask);
+
+            return "Subtask successfully created";
+        }
+        throw new BadRequestException("Task with id: " + id + " not exist");
     }
 }
