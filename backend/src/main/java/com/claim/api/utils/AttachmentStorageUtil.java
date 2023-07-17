@@ -61,6 +61,11 @@ public final class AttachmentStorageUtil {
         }
     }
 
+    public static boolean isExist(Attachment attachment) {
+        Path pathToResource = getPath(attachment);
+        return Files.exists(pathToResource.resolve(attachment.getName()));
+    }
+
     private static Path getPath(Attachment attachment) {
         switch (attachment.getAttachmentType()) {
             case USER_IMAGE -> {
