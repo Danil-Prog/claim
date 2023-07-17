@@ -1,6 +1,6 @@
 package com.claim.api.entity;
 
-public enum StatusTask {
+public enum TaskStatus {
 
     COMPLETED,
     IN_PROGRESS,
