@@ -87,17 +87,21 @@ public class TaskService {
     public Task updateTask(Task task) {
         Optional<Task> taskOptional = taskRepository.findById(task.getId());
         if (taskOptional.isPresent()) {
-            Optional<User> customerOptional = userRepository.findById(task.getCustomer().getId());
-            Optional<User> executorOptional = userRepository.findById(task.getExecutor().getId());
-            Optional<Department> departmentOptional = departmentRepository.findById(task.getDepartment().getId());
+            if (task.getCustomer() != null) {
+                Optional<User> customerOptional = userRepository.findById(task.getCustomer().getId());
+                customerOptional.ifPresent(task::setCustomer);
 
-            customerOptional.ifPresent(task::setCustomer);
-            executorOptional.ifPresent(task::setExecutor);
-
-            departmentOptional.ifPresentOrElse(task::setDepartment, () -> {
-                throw new BadRequestException("No department by id=" + task.getDepartment().getId());
-            });
-
+            }
+            if (task.getExecutor() != null) {
+                Optional<User> executorOptional = userRepository.findById(task.getExecutor().getId());
+                executorOptional.ifPresent(task::setExecutor);
+            }
+            if (task.getDepartment() != null) {
+                Optional<Department> departmentOptional = departmentRepository.findById(task.getDepartment().getId());
+                departmentOptional.ifPresentOrElse(task::setDepartment, () -> {
+                    throw new BadRequestException("No department by id=" + task.getDepartment().getId());
+                });
+            }
             logger.info("Task with id= '{}' successfully updated", taskOptional.get().getId());
             return taskRepository.save(task);
         }
