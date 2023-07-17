@@ -55,6 +55,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.createTask(principal, task));
     }
 
+    @PostMapping("/{id}")
+    public ResponseEntity<String> createSubtask(@PathVariable Long id, @RequestBody Task task, Principal principal) {
+        return ResponseEntity.ok(taskService.createSubtask(id, principal, task));
+    }
+
     @PutMapping
     public ResponseEntity<TaskDto> updateTask(@RequestBody Task task) {
         return ResponseEntity.ok(taskMapper.toTaskDto(taskService.updateTask(task)));

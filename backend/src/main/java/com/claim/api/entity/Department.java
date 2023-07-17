@@ -1,6 +1,7 @@
 package com.claim.api.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class Department {
     @Column(name = "image")
     private String image;
     @OneToMany
+    @JsonIgnore
     private Set<Attachment> attachments = new HashSet<>();
 }
