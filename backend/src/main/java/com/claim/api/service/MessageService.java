@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Service
 public class MessageService {
 
+    private final Set<User> usersOnline = new HashSet<>();
     private final UserRepository userRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final UserMapper userMapper;
-    private final Set<User> users = new HashSet<>();
 
     public MessageService(UserRepository userRepository, SimpMessagingTemplate simpMessagingTemplate, UserMapper userMapper) {
         this.userRepository = userRepository;
@@ -34,10 +34,10 @@ public class MessageService {
         MessageType messageType = MessageType.valueOf(stompHeaderAccessor.getFirstNativeHeader("MessageType"));
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (messageType == MessageType.SUBSCRIBE)
-            userOptional.ifPresent(users::add);
+            userOptional.ifPresent(usersOnline::add);
         else if (messageType == MessageType.UNSUBSCRIBE)
-            userOptional.ifPresent(users::remove);
-        Set<UserDto> userDtos = users.stream().map(userMapper::toUserDto).collect(Collectors.toSet());
+            userOptional.ifPresent(usersOnline::remove);
+        Set<UserDto> userDtos = usersOnline.stream().map(userMapper::toUserDto).collect(Collectors.toSet());
         simpMessagingTemplate.convertAndSend("/topic/online", ResponseEntity.ok(userDtos));
     }
 }
