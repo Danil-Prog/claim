@@ -40,8 +40,8 @@ function UserCard({ user }) {
                   : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
               }>
               <span className="null-avatar-title">
-                {!!user.profile.firstname && user.profile.firstname[0]}
                 {!!user.profile.lastname && user.profile.lastname[0]}
+                {!!user.profile.firstname && user.profile.firstname[0]}
               </span>
             </div>
           )}

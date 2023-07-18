@@ -20,7 +20,7 @@ const TaskInfo = ({ userContext }) => {
     const rand = (min, max) => Math.floor(Math.random() * max) + min;
     const {
         reassign: [isReassignTask, setIsReassignTask],
-        status: [isChangeStatus, setIsChangeStatus],
+        status: [isChangeTask, setIsChangeTask],
     } = useOutletContext();
 
 
@@ -70,7 +70,7 @@ const TaskInfo = ({ userContext }) => {
             .catch((error) => console.log(error));
 
         return () => {};
-    }, [taskId, isReassignTask, isChangeStatus]);
+    }, [taskId, isReassignTask, isChangeTask]);
 
     const  reassignTask = async (idTask, idDepart) => {
         try {
@@ -103,7 +103,7 @@ const TaskInfo = ({ userContext }) => {
                 },
             });
             await setOpenMenu(false);
-            await setIsChangeStatus(!isChangeStatus);
+            await setIsChangeTask(!isChangeTask);
         } catch (error) {
             toast('Произошла ошибка!', {
                 icon: { type: 'error' },
@@ -143,7 +143,7 @@ const TaskInfo = ({ userContext }) => {
                 },
             });
             await setOpenMenu(false);
-            await setIsChangeStatus(!isChangeStatus);
+            await setIsChangeTask(!isChangeTask);
         } catch (error) {
             toast('Произошла ошибка!', {
                 icon: { type: 'error' },
@@ -158,11 +158,25 @@ const TaskInfo = ({ userContext }) => {
         }
     }
     const removeTask = async (idTask) => {
-        await taskApi.remove(user.authdata, idTask)
-        await setOpenMenu(false);
-        await setIsReassignTask(!isReassignTask);
-        await setTaskInfo({});
-        await handleRemoveToast();
+        try {
+            await taskApi.remove(user.authdata, idTask)
+            await setOpenMenu(false);
+            await setIsReassignTask(!isReassignTask);
+            await setTaskInfo({});
+            await handleRemoveToast();
+        } catch (error) {
+            toast('Произошла ошибка!', {
+                icon: { type: 'error' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+            console.log(error)
+        }
     }
 
     const handleRemoveToast = () => {
@@ -189,6 +203,46 @@ const TaskInfo = ({ userContext }) => {
             },
         });
     };
+
+    const handleSetExec = async (e) => {
+        try {
+            const { value } = e.target;
+            const initialExec = {
+                "id": taskInfo.id,
+                "title": taskInfo.title,
+                "description": taskInfo.description,
+                "taskStatus": taskInfo.taskStatus,
+                "executor": {
+                    "id": value
+                }
+            }
+            await taskApi.changeStatus(user.authdata, initialExec)
+            await setIsChangeTask(!isChangeTask);
+            await setIsAssignExec(false);
+            toast('Исполнитель назначен!', {
+                icon: { type: 'success' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+        } catch (error) {
+            toast('Произошла ошибка!', {
+                icon: { type: 'error' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+            console.log(error)
+        }
+    }
 
     return (
         <>
@@ -253,7 +307,25 @@ const TaskInfo = ({ userContext }) => {
                                             height={30}
                                         />
                                     ) : (
-                                        <div className="null-avatar"></div>
+                                        <div
+                                            className=
+                                                {
+                                                    taskInfo.customer.role === 'ROLE_SUPER_ADMIN' ?
+                                                        `mini-avatar null-avatar border-super-admin rand-color-${rand(1, 5)}`
+                                                        : taskInfo.customer.role === 'ROLE_ADMIN' ?
+                                                            `mini-avatar null-avatar border-admin rand-color-${rand(1, 5)}`
+                                                            : taskInfo.customer.role === 'ROLE_EXEC' ?
+                                                                `mini-avatar null-avatar border-exec rand-color-${rand(1, 5)}`
+                                                                : taskInfo.customer.role === 'ROLE_USER' ?
+                                                                    `mini-avatar null-avatar border-user rand-color-${rand(1, 5)}`
+                                                                    : `mini-avatar null-avatar rand-color-${rand(1, 5)}`
+                                                }
+                                        >
+                                                <span className="null-avatar-title">
+                                                    {!!taskInfo.customer && taskInfo.customer.profile.lastname[0]}
+                                                    {!!taskInfo.customer && taskInfo.customer.profile.firstname[0]}
+                                                </span>
+                                        </div>
                                     )}
                                 </p>
                                 <p>
@@ -304,8 +376,8 @@ const TaskInfo = ({ userContext }) => {
                                                         }
                                                 >
                                                 <span className="null-avatar-title">
-                                                    {!!taskInfo.executor && taskInfo.executor.profile.firstname[0]}
                                                     {!!taskInfo.executor && taskInfo.executor.profile.lastname[0]}
+                                                    {!!taskInfo.executor && taskInfo.executor.profile.firstname[0]}
                                                 </span>
                                                 </div>
                                             }
@@ -325,7 +397,7 @@ const TaskInfo = ({ userContext }) => {
 
                                 }
                             </p>
-                            {isAssignExec ? <select name="id" className={style.selectDep}>
+                            {isAssignExec ? <select name="executor" className={style.selectDep} onChange={handleSetExec}>
                                 {taskInfo.executor ?
                                     `<option>
                                         ${taskInfo.executor.profile.firstname} 

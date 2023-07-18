@@ -177,7 +177,7 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--content-color); /* цвет зоны отслеживания */
+  background: var(--body-color); /* цвет зоны отслеживания */
 }
 
 *::-webkit-scrollbar-thumb {
@@ -189,6 +189,7 @@ body {
 .null-avatar {
   height: 30px;
   width: 30px;
+  background-color: var(--text-color-light) !important;
 }
 .mini-avatar,
 .null-avatar {
@@ -200,7 +201,7 @@ body {
     align-items: center;
 
     .null-avatar-title {
-      font-size: 30px;
+      font-size: 15px;
       font-weight: 800;
       transition: var(--tran-03);
       color: var(--dark);

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const taskApi = {
   createTask,
+  changeTask,
   getTaskDepart,
   getTaskInfo,
   changeStatus,
@@ -38,6 +39,15 @@ function getTaskInfo(authdata, id) {
 
 function changeStatus(authdata, status) {
   return instance.put('/api/v1/task', status, {
+    headers: {
+      Authorization: `Bearer ${authdata}`,
+      'Content-type': 'application/json',
+    },
+  });
+}
+
+function changeTask(authdata, task) {
+  return instance.put('/api/v1/task', task, {
     headers: {
       Authorization: `Bearer ${authdata}`,
       'Content-type': 'application/json',
