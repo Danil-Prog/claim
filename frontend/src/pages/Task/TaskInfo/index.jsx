@@ -18,9 +18,13 @@ const TaskInfo = ({ userContext }) => {
     const user = userContext.getUser();
     const { taskId } = useParams();
     const rand = (min, max) => Math.floor(Math.random() * max) + min;
-    const [isReassignTask, setIsReassignTask] = useOutletContext();
+    const {
+        reassign: [isReassignTask, setIsReassignTask],
+        status: [isChangeStatus, setIsChangeStatus],
+    } = useOutletContext();
 
-    const [reassignState, setReassignState] = React.useState(false);
+
+
     const [taskInfo, setTaskInfo] = React.useState({});
     const [idDepart, setIdDepart] = React.useState({});
     const [departs, setDeparts] = React.useState({});
@@ -66,7 +70,7 @@ const TaskInfo = ({ userContext }) => {
             .catch((error) => console.log(error));
 
         return () => {};
-    }, [taskId, isReassignTask]);
+    }, [taskId, isReassignTask, isChangeStatus]);
 
     const  reassignTask = async (idTask, idDepart) => {
         try {
@@ -79,8 +83,39 @@ const TaskInfo = ({ userContext }) => {
         }
     }
 
-    const completeTask = () => {
-        setOpenMenu(false);
+    const completeTask = async () => {
+        try {
+            const initialTask = {
+                "id": taskInfo.id,
+                "title": taskInfo.title,
+                "description": taskInfo.description,
+                "taskStatus": "COMPLETED"
+            }
+            await taskApi.changeStatus(user.authdata, initialTask)
+            toast('Заявка выполнена!', {
+                icon: { type: 'success' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+            await setOpenMenu(false);
+            await setIsChangeStatus(!isChangeStatus);
+        } catch (error) {
+            toast('Произошла ошибка!', {
+                icon: { type: 'error' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+        }
     }
 
     const showReassignTaskField = () => {
@@ -88,8 +123,39 @@ const TaskInfo = ({ userContext }) => {
         setIsModal(true);
     }
 
-    const cancelTask = () => {
-        setOpenMenu(false);
+    const cancelTask = async () => {
+        try {
+            const initialTask = {
+                "id": taskInfo.id,
+                "title": taskInfo.title,
+                "description": taskInfo.description,
+                "taskStatus": "CANCELED"
+            }
+            await taskApi.changeStatus(user.authdata, initialTask)
+            toast('Заявка отменена!', {
+                icon: { type: 'success' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+            await setOpenMenu(false);
+            await setIsChangeStatus(!isChangeStatus);
+        } catch (error) {
+            toast('Произошла ошибка!', {
+                icon: { type: 'error' },
+                theme: {
+                    type: 'custom',
+                    style: {
+                        background: 'var(--primary-color-light)',
+                        color: 'var(--text-color)',
+                    },
+                },
+            });
+        }
     }
     const removeTask = async (idTask) => {
         await taskApi.remove(user.authdata, idTask)
@@ -146,21 +212,21 @@ const TaskInfo = ({ userContext }) => {
                             <p className={style.label}>
                                 <p className='label-main'>СТАТУС</p>
                                 <svg
-                                    className={taskInfo.statusTask &&
-                                    taskInfo.statusTask === 'COMPLETED' ? `${style.dotCompleted}` :
-                                        taskInfo.statusTask === 'REVIEW' ? `${style.dotReview}` :
-                                            taskInfo.statusTask === 'IN_PROGRESS' ? `${style.dotInProgress}` :
-                                                taskInfo.statusTask === 'CANCELED' ? `${style.dotCanceled}` : ''}
+                                    className={taskInfo.taskStatus &&
+                                    taskInfo.taskStatus === 'COMPLETED' ? `${style.dotCompleted}` :
+                                        taskInfo.taskStatus === 'REVIEW' ? `${style.dotReview}` :
+                                            taskInfo.taskStatus === 'IN_PROGRESS' ? `${style.dotInProgress}` :
+                                                taskInfo.taskStatus === 'CANCELED' ? `${style.dotCanceled}` : ''}
                                     width="16" height="16">
                                     <circle r="5" cx="8" cy="8"/>
                                 </svg>
                             </p>
                             <p>
                                 {taskInfo &&
-                                taskInfo.statusTask === 'COMPLETED' ? `Выполнена` :
-                                    taskInfo.statusTask === 'REVIEW' ? `Новая` :
-                                        taskInfo.statusTask === 'IN_PROGRESS' ? `В процессе` :
-                                            taskInfo.statusTask === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
+                                taskInfo.taskStatus === 'COMPLETED' ? `Выполнена` :
+                                    taskInfo.taskStatus === 'REVIEW' ? `Новая` :
+                                        taskInfo.taskStatus === 'IN_PROGRESS' ? `В процессе` :
+                                            taskInfo.taskStatus === 'CANCELED' ? `Отменена` : 'Неизвестный статус'}
                             </p>
                         </div>
 
@@ -294,11 +360,11 @@ const TaskInfo = ({ userContext }) => {
                                         <li onClick={completeTask}>
                                             Закрыть заявку
                                         </li>
-                                        <li onClick={showReassignTaskField}>
-                                            Отправить в другой отдел
-                                        </li>
                                         <li onClick={cancelTask}>
                                             Отменить задачу
+                                        </li>
+                                        <li onClick={showReassignTaskField}>
+                                            Отправить в другой отдел
                                         </li>
                                         {user.role === 'ROLE_SUPER_ADMIN' &&
                                             <li onClick={() => removeTask(taskInfo.id)}>

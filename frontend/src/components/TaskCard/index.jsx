@@ -7,11 +7,11 @@ function TaskCard({ task, active }) {
         <>
             {task &&
                 <div
-                    className={task.statusTask &&
-                        task.statusTask === 'COMPLETED' ? `${style.card} ${style.statusCompleted} ${active}` :
-                        task.statusTask === 'REVIEW' ? `${style.card} ${style.statusReview} ${active}` :
-                        task.statusTask === 'IN_PROGRESS' ? `${style.card} ${style.statusInProgress} ${active}` :
-                        task.statusTask === 'CANCELED' ? `${style.card} ${style.statusCanceled} ${active}` : style.card}
+                    className={task.taskStatus &&
+                        task.taskStatus === 'COMPLETED' ? `${style.card} ${style.statusCompleted} ${active}` :
+                        task.taskStatus === 'REVIEW' ? `${style.card} ${style.statusReview} ${active}` :
+                        task.taskStatus === 'IN_PROGRESS' ? `${style.card} ${style.statusInProgress} ${active}` :
+                        task.taskStatus === 'CANCELED' ? `${style.card} ${style.statusCanceled} ${active}` : style.card}
 
                 >
                     <div className={style.title}>{task.title}</div>
@@ -27,7 +27,7 @@ function TaskCard({ task, active }) {
                                 `Не назначен`}
                         </div>
 
-                        <div className={style.startDate}>Дата отправки: {new Date(task.startDate).toLocaleString().slice(0,-10)} </div>
+                        <div className={style.startDate}>Дата отправки: {task.startDate ? new Date(task.startDate).toLocaleString().slice(0,-10) : 'Неизвестно'} </div>
 
                         {/*<div dangerouslySetInnerHTML={{ __html: task.description }} />*/}
                     </div>

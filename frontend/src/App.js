@@ -21,7 +21,6 @@ import Sidebar from './components/Sidebar';
 import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
-import * as PropTypes from "prop-types";
 
 function StaticElements() {
   const userContext = React.useContext(UserContext);

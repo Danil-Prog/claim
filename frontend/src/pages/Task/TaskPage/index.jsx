@@ -21,6 +21,7 @@ const TaskDepart = ({ userContext }) => {
     const [selectedSortBy, setSelectedSortBy] = React.useState('desc');
     const [taskDepart, setTaskDepart] = React.useState([]);
     const [isReassignTask, setIsReassignTask] = React.useState(false);
+    const [isChangeStatus, setIsChangeStatus] = React.useState(false);
 
     React.useEffect(() => {
         taskApi
@@ -31,7 +32,7 @@ const TaskDepart = ({ userContext }) => {
             })
             .catch((error) => console.log(error));
         return () => {};
-    }, [currentPage, sizeItems, selectedSortBy, selectedSort, isReassignTask]);
+    }, [currentPage, sizeItems, selectedSortBy, selectedSort, isReassignTask, isChangeStatus]);
 
     const setActive = ({isActive}) => isActive ? 'active' : '';
 
@@ -101,7 +102,14 @@ const TaskDepart = ({ userContext }) => {
                                     </div>
                                 </>
                             }
-                            <Outlet context={[isReassignTask, setIsReassignTask]}/>
+                            <Outlet
+                                context={
+                                    {
+                                        reassign: [isReassignTask, setIsReassignTask],
+                                        status: [isChangeStatus, setIsChangeStatus]
+                                    }
+                                }
+                            />
                         </div>
 
                     </div>
