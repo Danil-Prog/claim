@@ -211,7 +211,7 @@ const TaskInfo = ({ userContext }) => {
                 "id": taskInfo.id,
                 "title": taskInfo.title,
                 "description": taskInfo.description,
-                "taskStatus": taskInfo.taskStatus,
+                "taskStatus": "IN_PROGRESS",
                 "executor": {
                     "id": value
                 }
