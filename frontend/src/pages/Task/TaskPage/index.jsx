@@ -1,11 +1,11 @@
 import React from "react";
-import {Link, NavLink, Outlet, useLocation, useParams} from "react-router-dom";
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
 
-import Dropdown from "../../../components/Dropdown";
 import Pagination from "../../../components/Pagination";
 import Header from "../../../components/Header";
 import TaskCard from "../../../components/TaskCard";
 import {taskApi} from "../../../misc/TaskApi";
+
 import style from "./taskPage.module.scss";
 
 const TaskDepart = ({ userContext }) => {

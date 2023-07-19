@@ -1,9 +1,7 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import React from 'react';
 
-import './index.scss';
-import './styles/themeMode.scss';
-import Index from './pages/HomePage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import DepartPage from './pages/DepartPage/DepartPage';
@@ -14,6 +12,7 @@ import TaskInfo from './pages/Task/TaskInfo';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
+import MonitoringPage from './pages/MonitoringPage';
 
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
@@ -22,73 +21,99 @@ import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
 
+import './index.scss';
+import './styles/themeMode.scss';
+
 function StaticElements() {
-  const userContext = React.useContext(UserContext);
-  const userValue = userContext.getUser();
-  return (
-    <div className="content">
-      {userValue && <Sidebar />}
-      <Outlet />
-      {userValue && <Chat userContext={userContext} />}
-    </div>
-  );
+	const userContext = React.useContext(UserContext);
+	const userValue = userContext.getUser();
+	return (
+		<div className='content'>
+			{userValue && <Sidebar />}
+			<Outlet />
+			{userValue && <Chat userContext={userContext} />}
+		</div>
+	);
 }
 
 function StaticListTask() {
-  const userContext = React.useContext(UserContext);
-  const userValue = userContext.getUser();
-  return (
-      <>
-        <TaskPage userContext={userContext}/>
-      </>
-  );
+	const userContext = React.useContext(UserContext);
+	return (
+		<>
+			<TaskPage userContext={userContext} />
+		</>
+	);
 }
 
 function App() {
-  const userContext = React.useContext(UserContext);
-  return (
-    <ThemeMode>
-      <Routes>
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route path="/" element={<StaticElements />}>
-          <Route
-            path="/"
-            element={
-              <AdminRoute>
-                <Index userContext={userContext} />
-              </AdminRoute>
-            }
-          />
-          <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
-          <Route exact path="/task" element={<StaticListTask />} >
-            <Route
-                exact
-                path=":taskId"
-                element={<TaskInfo userContext={userContext} />}
-            />
-          </Route>
+	const userContext = React.useContext(UserContext);
+	return (
+		<ThemeMode>
+			<Routes>
+				<Route exact path='/login' element={<LoginPage />} />
+				<Route path='/' element={<StaticElements />}>
+					<Route
+						path='/'
+						element={
+							<AdminRoute>
+								<HomePage userContext={userContext} />
+							</AdminRoute>
+						}
+					/>
+					<Route
+						exact
+						path='/profile'
+						element={<ProfilePage userContext={userContext} />}
+					/>
+					<Route exact path='/task' element={<StaticListTask />}>
+						<Route
+							exact
+							path=':taskId'
+							element={<TaskInfo userContext={userContext} />}
+						/>
+					</Route>
 
-          <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
-          <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
-          <Route
-            exact
-            path="/user?/:userId"
-            element={<ProfileUserPage userContext={userContext} />}
-          />
-          <Route exact path="/department" element={<DepartPage userContext={userContext} />} />
-          <Route
-            exact
-            path="/department/users?/:userId"
-            element={<DepartUsersPage userContext={userContext} />}
-          />
+					<Route
+						exact
+						path='/users'
+						element={<UsersPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/create/user'
+						element={<CreateUserPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/user?/:userId'
+						element={<ProfileUserPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/department'
+						element={<DepartPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/department/users?/:userId'
+						element={<DepartUsersPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/statistic'
+						element={<StatisticPage userContext={userContext} />}
+					/>
+					<Route
+						exact
+						path='/monitoring'
+						element={<MonitoringPage userContext={userContext} />}
+					/>
 
-          <Route exact path="/statistic" element={<StatisticPage userContext={userContext} />} />
-
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-      </Routes>
-    </ThemeMode>
-  );
+					<Route path='*' element={<Navigate to='/' />} />
+				</Route>
+			</Routes>
+		</ThemeMode>
+	);
 }
 
 export default App;

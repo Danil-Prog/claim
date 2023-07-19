@@ -10,11 +10,11 @@ import 'babel-polyfill';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <ThemeProvider>
-      <AuthProvider>
-        <App />
-      </AuthProvider>
-    </ThemeProvider>
-  </BrowserRouter>,
+	<BrowserRouter>
+		<ThemeProvider>
+			<AuthProvider>
+				<App />
+			</AuthProvider>
+		</ThemeProvider>
+	</BrowserRouter>
 );
