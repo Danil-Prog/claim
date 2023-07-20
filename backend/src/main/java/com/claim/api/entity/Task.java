@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -38,13 +39,15 @@ public class Task {
     private Set<Task> subtask = new HashSet<>();
     @OneToOne
     private User executor;
-    @Column(name = "start_date")
+    @Column(name = "created_date")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp startDate;
-    @Column(name = "end_date")
+    @Column(name = "updated_date")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 
