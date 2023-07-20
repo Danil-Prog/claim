@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private Profile profile;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Task> task = new HashSet<>();
 
