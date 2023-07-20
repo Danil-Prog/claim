@@ -91,7 +91,6 @@ const MonitoringPage = ({ userContext }) => {
 
 		return () => {};
 	}, [user.authdata]);
-
 	return (
 		<>
 			<Header title={'Мониторинг'} />

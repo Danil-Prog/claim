@@ -4,6 +4,13 @@ import 'react-quill/dist/quill.snow.css';
 import { useOutletContext } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { toast } from 'wc-toast';
+import {
+	motion,
+	useAnimate,
+	stagger,
+	animate,
+	AnimatePresence
+} from 'framer-motion';
 
 import { taskApi } from '../../../misc/TaskApi';
 import { departApi } from '../../../misc/DepartApi';
@@ -233,6 +240,36 @@ const TaskInfo = ({ userContext }) => {
 		}
 	};
 
+	const menuAnimation = {
+		hidden: {
+			y: -30,
+			opacity: 0
+		},
+		visible: custom => ({
+			y: 0,
+			opacity: 1,
+			transition: { delay: custom * 0.2, duration: 0.3 }
+		})
+	};
+
+	const liAnimation = {
+		hidden: {
+			x: 0,
+			opacity: 0,
+			filter: 'blur(10px)'
+		},
+		visible: custom => ({
+			x: 0,
+			opacity: 1,
+
+			filter: 'blur(0px)',
+			transition: {
+				delay: custom * 0.4,
+				duration: 0.2
+			}
+		})
+	};
+
 	return (
 		<>
 			{taskInfo && taskInfo.id ? (
@@ -453,10 +490,27 @@ const TaskInfo = ({ userContext }) => {
 									)}
 								</>
 								{taskInfo.executor ? (
-									<p className={style.nameExec}>
-										{taskInfo.executor.profile.lastname}{' '}
-										{taskInfo.executor.profile.firstname}
-									</p>
+									<>
+										<p className={style.nameExec}>
+											{taskInfo.executor.profile.lastname}{' '}
+											{
+												taskInfo.executor.profile
+													.firstname
+											}
+										</p>
+										<p>
+											<input
+												type='button'
+												className={style.btnAddExec}
+												value={'Изменить'}
+												onClick={() =>
+													setIsAssignExec(
+														!isAssignExec
+													)
+												}
+											/>
+										</p>
+									</>
 								) : (
 									<p className={style.emptyExec}>
 										<p>Не назначен</p>
@@ -471,33 +525,51 @@ const TaskInfo = ({ userContext }) => {
 									</p>
 								)}
 							</p>
-							{isAssignExec ? (
-								<select
-									name='executor'
-									className={style.selectDep}
-									onChange={handleSetExec}
-								>
-									{taskInfo.executor ? (
-										`<option>
-                                        ${taskInfo.executor.profile.firstname} 
-                                        ${taskInfo.executor.profile.lastname}
-                                    </option>`
-									) : (
-										<option>Не назначен</option>
-									)}
-									{departUsers &&
-										departUsers.map(item => (
-											<option
-												key={item.id}
-												value={item.id}
-											>
-												{`${item.profile.lastname} ${item.profile.firstname}`}
-											</option>
-										))}
-								</select>
-							) : (
-								''
-							)}
+							{/*<CSSTransition*/}
+							{/*	in={isAssignExec}*/}
+							{/*	timeout={200}*/}
+							{/*	classNames={{*/}
+							{/*		enterActive: style.selectShow,*/}
+							{/*		exitActive: style.selectHide*/}
+							{/*	}}*/}
+							{/*	mountOnEnter*/}
+							{/*	unmountOnExit*/}
+							{/*>*/}
+							<AnimatePresence>
+								{isAssignExec && (
+									<motion.select
+										name='executor'
+										className={style.selectDep}
+										onChange={handleSetExec}
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										exit={{ opacity: 0 }}
+										transition={{
+											duration: 0.2,
+											ease: 'linear'
+										}}
+									>
+										{taskInfo.executor ? (
+											`<option>
+									${taskInfo.executor.profile.firstname} 
+									${taskInfo.executor.profile.lastname}
+								</option>`
+										) : (
+											<option>Не назначен</option>
+										)}
+										{departUsers &&
+											departUsers.map(item => (
+												<option
+													key={item.id}
+													value={item.id}
+												>
+													{`${item.profile.lastname} ${item.profile.firstname}`}
+												</option>
+											))}
+									</motion.select>
+								)}
+							</AnimatePresence>
+							{/*</CSSTransition>*/}
 						</div>
 
 						<div className={style.department}>
@@ -521,39 +593,66 @@ const TaskInfo = ({ userContext }) => {
 							onClick={() => setOpenMenu(!openMenu)}
 						></i>
 						{openMenu && (
-							<div className={style.dropdownPopup}>
+							<motion.div
+								initial='hidden'
+								whileInView='visible'
+								custom={1}
+								variants={menuAnimation}
+								viewport={{ amount: 0.2, once: true }}
+								className={style.dropdownPopup}
+							>
 								<ul>
 									{user.id === taskInfo.customer.id && (
-										<li onClick={completeTask}>
+										<motion.li
+											custom={0.5}
+											variants={liAnimation}
+											onClick={completeTask}
+										>
 											Редактировать
-										</li>
+										</motion.li>
 									)}
 									{user.role === 'ROLE_SUPER_ADMIN' ||
 									user.role === 'ROLE_ADMIN' ||
 									user.role === 'ROLE_EXEC' ? (
 										<>
-											<li onClick={showReassignTaskField}>
+											<motion.li
+												custom={0.7}
+												variants={liAnimation}
+												onClick={showReassignTaskField}
+											>
 												Отправить в другой отдел
-											</li>
-											<li onClick={completeTask}>
+											</motion.li>
+											<motion.li
+												custom={0.9}
+												variants={liAnimation}
+												onClick={completeTask}
+											>
 												Выполнена
-											</li>
+											</motion.li>
 										</>
 									) : (
 										''
 									)}
-									<li onClick={cancelTask}>Отменить</li>
+									<motion.li
+										custom={1.1}
+										variants={liAnimation}
+										onClick={cancelTask}
+									>
+										Отменить
+									</motion.li>
 									{user.role === 'ROLE_SUPER_ADMIN' && (
-										<li
+										<motion.li
+											custom={1.3}
+											variants={liAnimation}
 											onClick={() =>
 												removeTask(taskInfo.id)
 											}
 										>
 											Удалить
-										</li>
+										</motion.li>
 									)}
 								</ul>
-							</div>
+							</motion.div>
 						)}
 					</div>
 				</div>

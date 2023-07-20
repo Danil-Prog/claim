@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import React from 'react';
 
 import HomePage from './pages/HomePage';
@@ -47,69 +48,74 @@ function StaticListTask() {
 
 function App() {
 	const userContext = React.useContext(UserContext);
+	const routes = [
+		{
+			path: '/',
+			element: (
+				<AdminRoute>
+					<HomePage userContext={userContext} />
+				</AdminRoute>
+			)
+		},
+		{
+			path: '/profile',
+			element: <ProfilePage userContext={userContext} />
+		},
+		{
+			path: '/task',
+			element: <StaticListTask />,
+			children: (
+				<Route
+					exact
+					path=':taskId'
+					element={<TaskInfo userContext={userContext} />}
+				/>
+			)
+		},
+		{
+			path: '/users',
+			element: <UsersPage userContext={userContext} />
+		},
+		{
+			path: '/create/user',
+			element: <CreateUserPage userContext={userContext} />
+		},
+		{
+			path: '/user?/:userId',
+			element: <ProfileUserPage userContext={userContext} />
+		},
+		{
+			path: '/department',
+			element: <DepartPage userContext={userContext} />
+		},
+		{
+			path: '/department/users?/:userId',
+			element: <DepartUsersPage userContext={userContext} />
+		},
+		{
+			path: '/statistic',
+			element: <StatisticPage userContext={userContext} />
+		},
+		{
+			path: '/monitoring',
+			element: <MonitoringPage userContext={userContext} />
+		},
+		{
+			path: '*',
+			element: <Navigate to='/' />
+		}
+	];
+	const routeComponents = routes.map(({ path, element, children }, key) => (
+		<Route exact path={path} element={element} key={key}>
+			{children}
+		</Route>
+	));
 	return (
 		<ThemeMode>
 			<Routes>
 				<Route exact path='/login' element={<LoginPage />} />
 				<Route path='/' element={<StaticElements />}>
-					<Route
-						path='/'
-						element={
-							<AdminRoute>
-								<HomePage userContext={userContext} />
-							</AdminRoute>
-						}
-					/>
-					<Route
-						exact
-						path='/profile'
-						element={<ProfilePage userContext={userContext} />}
-					/>
-					<Route exact path='/task' element={<StaticListTask />}>
-						<Route
-							exact
-							path=':taskId'
-							element={<TaskInfo userContext={userContext} />}
-						/>
-					</Route>
-
-					<Route
-						exact
-						path='/users'
-						element={<UsersPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/create/user'
-						element={<CreateUserPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/user?/:userId'
-						element={<ProfileUserPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/department'
-						element={<DepartPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/department/users?/:userId'
-						element={<DepartUsersPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/statistic'
-						element={<StatisticPage userContext={userContext} />}
-					/>
-					<Route
-						exact
-						path='/monitoring'
-						element={<MonitoringPage userContext={userContext} />}
-					/>
-
-					<Route path='*' element={<Navigate to='/' />} />
+					{routeComponents}
 				</Route>
 			</Routes>
 		</ThemeMode>

@@ -281,9 +281,6 @@ const ProfilePage = ({ userContext }) => {
 												/>
 											</span>
 										</div>
-										{/* <div className="btn__item">
-                    
-                  </div> */}
 									</div>
 								</div>
 							</form>
