@@ -284,6 +284,10 @@ const TaskInfo = ({ userContext }) => {
 								}}
 							/>
 						</div>
+						<label htmlFor="" className={style.labelSubtask}>
+							<i className='bx bx-plus-circle'></i>
+							<span>Добавить дополнительную задачу</span>
+						</label>
 						<div className={style.messageField}>
 							<ReactQuill
 								className={style.description}
@@ -291,6 +295,7 @@ const TaskInfo = ({ userContext }) => {
 							/>
 							<input type='button' value={'Отправить'} />
 						</div>
+
 					</div>
 
 					<div className={style.info}>

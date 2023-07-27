@@ -38,14 +38,7 @@ const TaskDepart = ({ userContext }) => {
 			})
 			.catch(error => console.log(error));
 		return () => {};
-	}, [
-		currentPage,
-		sizeItems,
-		selectedSortBy,
-		selectedSort,
-		isReassignTask,
-		isChangeTask
-	]);
+	}, [currentPage, sizeItems, selectedSortBy, selectedSort, isReassignTask, isChangeTask, user.authdata]);
 
 	const setActive = ({ isActive }) => (isActive ? 'active' : '');
 
@@ -81,7 +74,7 @@ const TaskDepart = ({ userContext }) => {
 							<div className={style.wrapperList}>
 								<select onChange={handleSortChange}>
 									<option value='startDate'>По дате</option>
-									<option value='statusTask'>
+									<option value='taskStatus'>
 										По статусу
 									</option>
 								</select>

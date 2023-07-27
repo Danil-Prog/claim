@@ -126,7 +126,7 @@ const HomePage = ({ userContext }) => {
 							</label>
 							<label htmlFor='title' className={style.title}>
 								<input
-									placeholder='Опишите вашу заявку в двух словах'
+									placeholder='Опишите вашу задачу в двух словах'
 									type='text'
 									name={'title'}
 									onChange={handleChange}
