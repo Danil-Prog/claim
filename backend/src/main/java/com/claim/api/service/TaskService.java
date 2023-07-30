@@ -1,14 +1,15 @@
 package com.claim.api.service;
 
+import com.claim.api.controller.request.TaskExecutorRequest;
+import com.claim.api.controller.request.TaskStatusRequest;
+import com.claim.api.controller.request.TaskTypeRequest;
 import com.claim.api.entity.Department;
 import com.claim.api.entity.Task;
 import com.claim.api.entity.TaskType;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
-import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.DepartmentRepository;
 import com.claim.api.repository.TaskRepository;
-import com.claim.api.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,16 @@ public class TaskService {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskService.class);
     private final TaskRepository taskRepository;
-    private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final UserService userService;
 
     @Autowired
     public TaskService(TaskRepository taskRepository,
-                       UserRepository userRepository,
-                       DepartmentRepository departmentRepository) {
+                       DepartmentRepository departmentRepository,
+                       UserService userService) {
         this.taskRepository = taskRepository;
-        this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
+        this.userService = userService;
     }
 
     public Page<Task> getTasks(PageRequest pageRequest) {
@@ -41,14 +42,11 @@ public class TaskService {
     }
 
     public Page<Task> getTaskForDepartment(Principal principal, PageRequest pageRequest) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Long departmentId = user.getProfile().getDepartment().getId();
-            logger.info("User: {} got a list of department tasks", user.getUsername());
-            return taskRepository.getTasksByDepartment_Id(departmentId, pageRequest);
-        }
-        throw new UserNotFoundException("User id=" + userOptional.get().getId() + " not exist");
+        Optional<User> userOptional = userService.getUserByUsername(principal.getName());
+        User user = userOptional.get();
+        Long departmentId = user.getProfile().getDepartment().getId();
+        logger.info("User: {} got a list of department tasks", user.getUsername());
+        return taskRepository.getTasksByDepartment_Id(departmentId, pageRequest);
     }
 
     public Task getTaskById(Long id) {
@@ -61,28 +59,22 @@ public class TaskService {
     }
 
     public Page<Task> getUserTasks(Principal principal, PageRequest pageRequest) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return taskRepository.getTasksByCustomer(user, pageRequest);
-        }
-        throw new UserNotFoundException("User id=" + userOptional.get().getId() + " not exist");
+        Optional<User> userOptional = userService.getUserByUsername(principal.getName());
+        User user = userOptional.get();
+        return taskRepository.getTasksByCustomer(user, pageRequest);
     }
 
     public String createTask(Principal principal, Task task) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent()) {
-            if (task.getExecutor() != null) {
-                Optional<User> executorOption = userRepository.findById(task.getExecutor().getId());
-                executorOption.ifPresent(task::setExecutor);
-            }
-            User user = userOptional.get();
-            task.setCustomer(user);
-            user.setTask(task);
-            taskRepository.save(task);
-            return "Task successfully created";
+        Optional<User> userOptional = userService.getUserByUsername(principal.getName());
+        if (task.getExecutor() != null) {
+            Optional<User> executorOption = userService.getUser(task.getExecutor().getId());
+            executorOption.ifPresent(task::setExecutor);
         }
-        throw new UserNotFoundException("User id: " + userOptional.get().getId() + " not exist");
+        User user = userOptional.get();
+        task.setCustomer(user);
+        user.setTask(task);
+        taskRepository.save(task);
+        return "Task successfully created";
     }
 
     public Task updateTask(Task task) {
@@ -93,7 +85,7 @@ public class TaskService {
                 task.setCustomer(taskOptional.get().getCustomer());
             }
             if (task.getExecutor() != null) {
-                Optional<User> executorOptional = userRepository.findById(task.getExecutor().getId());
+                Optional<User> executorOptional = userService.getUser(task.getExecutor().getId());
                 executorOptional.ifPresent(task::setExecutor);
             }
             Department taskDepartment = taskExisting.getDepartment();
@@ -144,12 +136,12 @@ public class TaskService {
             }
 
             if (task.getCustomer() != null) {
-                Optional<User> customer = userRepository.findById(task.getCustomer().getId());
+                Optional<User> customer = userService.getUser(task.getCustomer().getId());
                 customer.ifPresent(task::setCustomer);
             }
 
             if (task.getExecutor() != null) {
-                Optional<User> executor = userRepository.findById(task.getExecutor().getId());
+                Optional<User> executor = userService.getUser(task.getExecutor().getId());
                 executor.ifPresent(task::setExecutor);
             }
             if (epicTask.getDepartment() != null) {
@@ -158,10 +150,29 @@ public class TaskService {
 
             task.setTaskType(TaskType.SUBTASK);
             epicTask.getSubtask().add(task);
-            taskRepository.save(epicTask);
+            this.taskRepository.save(epicTask);
 
             return "Subtask successfully created";
         }
         throw new BadRequestException("Task with id: " + id + " not exist");
+    }
+
+    public void updateTaskStatus(TaskStatusRequest taskStatusRequest) {
+        Task task = getTaskById(taskStatusRequest.getId());
+        task.setTaskStatus(taskStatusRequest.getTaskStatus());
+        taskRepository.save(task);
+    }
+
+    public void updateTaskExecutor(TaskExecutorRequest taskExecutorRequest) {
+        Task task = getTaskById(taskExecutorRequest.getId());
+        User user = this.userService.getUser(taskExecutorRequest.getExecutorId()).get();
+        task.setExecutor(user);
+        this.taskRepository.save(task);
+    }
+
+    public void updateTaskType(TaskTypeRequest taskTypeRequest) {
+        Task task = getTaskById(taskTypeRequest.getId());
+        task.setTaskType(taskTypeRequest.getTaskType());
+        this.taskRepository.save(task);
     }
 }

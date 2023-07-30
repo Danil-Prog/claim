@@ -2,6 +2,9 @@ package com.claim.api.controller;
 
 
 import com.claim.api.controller.dto.TaskDto;
+import com.claim.api.controller.request.TaskExecutorRequest;
+import com.claim.api.controller.request.TaskStatusRequest;
+import com.claim.api.controller.request.TaskTypeRequest;
 import com.claim.api.entity.Task;
 import com.claim.api.mapper.TaskMapper;
 import com.claim.api.service.TaskService;
@@ -79,6 +82,21 @@ public class TaskController {
     @GetMapping("{id}")
     public ResponseEntity<TaskDto> getTask(@PathVariable Long id) {
         return ResponseEntity.ok(taskMapper.toTaskDto(taskService.getTaskById(id)));
+    }
+
+    @PostMapping("/status")
+    public void updateTaskStatus(@RequestBody TaskStatusRequest taskStatusRequest) {
+        this.taskService.updateTaskStatus(taskStatusRequest);
+    }
+
+    @PostMapping("/executor")
+    public void updateTaskExecutor(@RequestBody TaskExecutorRequest taskExecutorRequest) {
+        this.taskService.updateTaskExecutor(taskExecutorRequest);
+    }
+
+    @PostMapping("/type")
+    public void updateTaskType(@RequestBody TaskTypeRequest taskTypeRequest) {
+        this.taskService.updateTaskType(taskTypeRequest);
     }
 
     @PutMapping("/{taskId}/department/{departmentId}")
