@@ -1,4 +1,4 @@
-package com.claim.api.controller.dto;
+package com.claim.api.controller.response;
 
 import org.springframework.security.core.GrantedAuthority;
 

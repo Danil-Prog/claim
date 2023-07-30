@@ -1,4 +1,4 @@
-package com.claim.api.controller.dto;
+package com.claim.api.controller.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
