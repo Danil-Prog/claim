@@ -3,10 +3,7 @@ package com.claim.api.service;
 import com.claim.api.controller.request.TaskExecutorRequest;
 import com.claim.api.controller.request.TaskStatusRequest;
 import com.claim.api.controller.request.TaskTypeRequest;
-import com.claim.api.entity.Department;
-import com.claim.api.entity.Task;
-import com.claim.api.entity.TaskType;
-import com.claim.api.entity.User;
+import com.claim.api.entity.*;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.DepartmentRepository;
 import com.claim.api.repository.TaskRepository;
@@ -42,11 +39,14 @@ public class TaskService {
         return taskRepository.findAll(pageRequest);
     }
 
-    public Page<Task> getTaskForDepartment(Principal principal, PageRequest pageRequest) {
+    public Page<Task> getTaskForDepartment(Principal principal, PageRequest pageRequest, TaskStatus taskStatus) {
         Optional<User> userOptional = userService.getUserByUsername(principal.getName());
         User user = userOptional.get();
         Long departmentId = user.getProfile().getDepartment().getId();
-        logger.info("User: {} got a list of department tasks", user.getUsername());
+
+        if (taskStatus != null)
+            return taskRepository.getTasksByDepartment_IdAndTaskStatus(departmentId, pageRequest, taskStatus);
+
         return taskRepository.getTasksByDepartment_Id(departmentId, pageRequest);
     }
 

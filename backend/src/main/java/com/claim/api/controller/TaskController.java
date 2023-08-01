@@ -6,6 +6,7 @@ import com.claim.api.controller.request.TaskExecutorRequest;
 import com.claim.api.controller.request.TaskStatusRequest;
 import com.claim.api.controller.request.TaskTypeRequest;
 import com.claim.api.entity.Task;
+import com.claim.api.entity.TaskStatus;
 import com.claim.api.mapper.TaskMapper;
 import com.claim.api.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,10 @@ public class TaskController {
                                                            @RequestParam(defaultValue = "0") int page,
                                                            @RequestParam(defaultValue = "10") int size,
                                                            @RequestParam(defaultValue = "ASC") String sortBy,
-                                                           @RequestParam(defaultValue = "id") String[] sort) {
+                                                           @RequestParam(defaultValue = "id") String[] sort,
+                                                           @RequestParam(required = false) TaskStatus taskStatus) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        Page<TaskDto> tasks = taskService.getTaskForDepartment(principal, pageRequest).map(taskMapper::toTaskDto);
+        Page<TaskDto> tasks = taskService.getTaskForDepartment(principal, pageRequest, taskStatus).map(taskMapper::toTaskDto);
         return ResponseEntity.ok(tasks);
     }
 
