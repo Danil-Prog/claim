@@ -80,8 +80,8 @@ public class TaskController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TaskDto> getTask(@PathVariable Long id) {
-        return ResponseEntity.ok(taskMapper.toTaskDto(taskService.getTaskById(id)));
+    public ResponseEntity<TaskDto> getTask(@PathVariable Long id, Principal principal) {
+        return ResponseEntity.ok(taskMapper.toTaskDto(taskService.getTaskByIdAndByUserAuthorities(id, principal)));
     }
 
     @PostMapping("/status")

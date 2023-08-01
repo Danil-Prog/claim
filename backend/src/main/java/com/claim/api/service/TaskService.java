@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -56,6 +57,17 @@ public class TaskService {
         }
         logger.error("Error getting task. Tasks with ID= '{}' does not exist", id);
         throw new BadRequestException("Task id=" + id + " not exist");
+    }
+
+    public Task getTaskByIdAndByUserAuthorities(Long id, Principal principal) {
+        Task task = getTaskById(id);
+        User user = userService.getUserByUsername(principal.getName()).get();
+        Department userDepartment = user.getProfile().getDepartment();
+        if (task.getCustomer().equals(user) || task.getDepartment().equals(userDepartment)) {
+            return task;
+        }
+        throw new AccessDeniedException("The user: '" + user.getUsername() +
+                "' does not have enough rights to view the task with id: " + task.getId());
     }
 
     public Page<Task> getUserTasks(Principal principal, PageRequest pageRequest) {
@@ -130,10 +142,7 @@ public class TaskService {
         Optional<Task> epicTaskOptional = taskRepository.findById(id);
         if (epicTaskOptional.isPresent()) {
             Task epicTask = epicTaskOptional.get();
-            if (epicTask.getTaskType() != TaskType.EPIC) {
-                logger.error("user '{}' tried to create a subtask in a task with the type '{}'", principal.getName(), epicTask.getTaskType());
-                throw new BadRequestException("It is not possible to create a subtask in the 'Task' type");
-            }
+            epicTask.setTaskType(TaskType.EPIC);
 
             if (task.getCustomer() != null) {
                 Optional<User> customer = userService.getUser(task.getCustomer().getId());
@@ -172,6 +181,9 @@ public class TaskService {
 
     public void updateTaskType(TaskTypeRequest taskTypeRequest) {
         Task task = getTaskById(taskTypeRequest.getId());
+        if (task.getTaskType() == TaskType.EPIC) {
+            this.taskRepository.deleteAll(task.getSubtask());
+        }
         task.setTaskType(taskTypeRequest.getTaskType());
         this.taskRepository.save(task);
     }
