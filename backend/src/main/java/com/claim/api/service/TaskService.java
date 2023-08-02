@@ -4,12 +4,15 @@ import com.claim.api.controller.request.TaskExecutorRequest;
 import com.claim.api.controller.request.TaskStatusRequest;
 import com.claim.api.controller.request.TaskTypeRequest;
 import com.claim.api.entity.*;
+import com.claim.api.events.EventStatus;
+import com.claim.api.events.TaskCreationEvent;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.DepartmentRepository;
 import com.claim.api.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
@@ -25,14 +28,17 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final DepartmentRepository departmentRepository;
     private final UserService userService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public TaskService(TaskRepository taskRepository,
                        DepartmentRepository departmentRepository,
-                       UserService userService) {
+                       UserService userService,
+                       ApplicationEventPublisher applicationEventPublisher) {
         this.taskRepository = taskRepository;
         this.departmentRepository = departmentRepository;
         this.userService = userService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public Page<Task> getTasks(PageRequest pageRequest) {
@@ -78,14 +84,25 @@ public class TaskService {
 
     public String createTask(Principal principal, Task task) {
         Optional<User> userOptional = userService.getUserByUsername(principal.getName());
+        Optional<Department> departmentOptional = departmentRepository.findById(task.getDepartment().getId());
+        if (departmentOptional.isEmpty()) {
+            throw new BadRequestException("Department is not exist");
+        }
         if (task.getExecutor() != null) {
             Optional<User> executorOption = userService.getUser(task.getExecutor().getId());
             executorOption.ifPresent(task::setExecutor);
         }
         User user = userOptional.get();
+        Department department = departmentOptional.get();
+
         task.setCustomer(user);
+        task.setDepartment(department);
         user.setTask(task);
+
         taskRepository.save(task);
+        applicationEventPublisher.publishEvent(new TaskCreationEvent(EventStatus.SUCCESSFULLY,
+                department.getShortName(),
+                task.getTitle()));
         return "Task successfully created";
     }
 
