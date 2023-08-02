@@ -11,9 +11,9 @@ public class TaskListener {
 
     @EventListener(TaskCreationEvent.class)
     public void taskCreationListener(TaskCreationEvent event) {
-        logger.info("[EVENT][TASK_CREATION] Создана задача с идентификатором: {}, в пространстве: {} [STATUS] {}",
-                event.getId(),
-                event.getDepartment().getShortName(),
+        logger.info("[EVENT][TASK_CREATION] Создана задача в пространстве: {}, [TITLE] {}, [STATUS] {}",
+                event.getDepartmentShortName(),
+                event.getTitle(),
                 event.getEventStatus());
     }
 }

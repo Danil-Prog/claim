@@ -1,20 +1,17 @@
 package com.claim.api.events;
 
-import com.claim.api.entity.Department;
 import lombok.Data;
 
 @Data
 public class TaskCreationEvent implements CustomEvent {
 
-    private Long id;
     private EventStatus eventStatus;
-    private Department department;
-    private String description;
+    private String departmentShortName;
+    private String title;
 
-    public TaskCreationEvent(Long id, EventStatus eventStatus, Department department, String description) {
-        this.id = id;
+    public TaskCreationEvent(EventStatus eventStatus, String departmentShortName, String title) {
         this.eventStatus = eventStatus;
-        this.department = department;
-        this.description = description;
+        this.departmentShortName = departmentShortName;
+        this.title = title;
     }
 }
