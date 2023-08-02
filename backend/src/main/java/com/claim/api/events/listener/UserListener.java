@@ -12,7 +12,7 @@ public class UserListener {
     private static final Logger logger = LoggerFactory.getLogger(UserListener.class);
 
     @EventListener(UserCreationEvent.class)
-    public void reportingUserCreation(UserCreationEvent event) {
-        logger.info("[USER_CREATION_EVENT] username: '{}', [STATUS] {} ", event.getUsername(), event.getEventStatus());
+    public void userCreationListener(UserCreationEvent event) {
+        logger.info("[EVENT][USER_CREATION] username: '{}', [STATUS] {} ", event.getUsername(), event.getEventStatus());
     }
 }
