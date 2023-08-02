@@ -9,7 +9,7 @@
 
 #### Authorization
 
-```http
+```
   POST /authenticate/
 ```
 
@@ -18,14 +18,14 @@
 | `username` | `string` | Username  |
 | `password` | `string` | User password  |
 
-Returns a token for user rest api calls (the token is valid for 12 hours)
+Returns a ${token} for user rest api calls (the token is valid for 12 hours)
 
-#### Get item
+#### Get task by id
 
-```http
+```
   GET /api/v1/task/${id}
 ```
-
+Header Authorization: ${token}
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `id`      | `string` | **Required**. Id of item to fetch |
