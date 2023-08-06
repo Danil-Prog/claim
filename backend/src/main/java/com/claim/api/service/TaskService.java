@@ -170,9 +170,8 @@ public class TaskService {
                 Optional<User> executor = userService.getUser(task.getExecutor().getId());
                 executor.ifPresent(task::setExecutor);
             }
-            if (epicTask.getDepartment() != null) {
-                task.setDepartment(epicTask.getDepartment());
-            }
+
+            task.setDepartment(epicTask.getDepartment());
 
             task.setTaskType(TaskType.SUBTASK);
             epicTask.getSubtask().add(task);
