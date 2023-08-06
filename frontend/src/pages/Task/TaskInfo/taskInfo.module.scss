@@ -287,6 +287,13 @@
   }
 }
 
+.titleSubTask, .descSubTask {
+  display: flex;
+  grid-gap: 20px;
+  background-color: var(--body-color);
+  border: none;
+}
+
 .emptyIcon {
   font-size: 70px;
   color: var(--input-color);

@@ -21,6 +21,7 @@ import style from './taskInfo.module.scss';
 const TaskInfo = ({ userContext }) => {
 	const user = userContext.getUser();
 	const { taskId } = useParams();
+	// rand for avatar background color
 	const rand = (min, max) => Math.floor(Math.random() * max) + min;
 	const {
 		reassign: [isReassignTask, setIsReassignTask],
@@ -32,7 +33,9 @@ const TaskInfo = ({ userContext }) => {
 	const [departs, setDeparts] = React.useState({});
 	const [departUsers, setdepartUsers] = React.useState([]);
 	const [isAssignExec, setIsAssignExec] = React.useState(false);
-	const [isModal, setIsModal] = React.useState(false);
+	const [isModalReassign, setIsModalReassign] = React.useState(false);
+	const [isModalSubTask, setIsModalSubTask] = React.useState(false);
+	const [subTaskInfo, setSubTaskInfo] = React.useState('');
 
 	const [openMenu, setOpenMenu] = React.useState(false);
 
@@ -71,7 +74,7 @@ const TaskInfo = ({ userContext }) => {
 	const reassignTask = async (idTask, idDepart) => {
 		try {
 			await taskApi.reassign(user.authdata, idTask, idDepart);
-			await setIsModal(false);
+			await setIsModalReassign(false);
 			await setIsReassignTask(!isReassignTask);
 			await handleReassignToast();
 		} catch (error) {
@@ -114,9 +117,9 @@ const TaskInfo = ({ userContext }) => {
 		}
 	};
 
-	const showReassignTaskField = () => {
+	const showReassignModal = () => {
 		setOpenMenu(false);
-		setIsModal(true);
+		setIsModalReassign(true);
 	};
 
 	const cancelTask = async () => {
@@ -270,6 +273,22 @@ const TaskInfo = ({ userContext }) => {
 		})
 	};
 
+	const handlerSubTask = id => {
+		try {
+			taskApi.createSubTask(user.authdata, subTaskInfo, id);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleChangeSubtask = event => {
+		const { name, value } = event.target;
+		setSubTaskInfo(prevState => ({
+			...prevState,
+			[name]: value
+		}));
+	};
+
 	return (
 		<>
 			{taskInfo && taskInfo.id ? (
@@ -284,7 +303,10 @@ const TaskInfo = ({ userContext }) => {
 								}}
 							/>
 						</div>
-						<label htmlFor="" className={style.labelSubtask}>
+						<label
+							className={style.labelSubtask}
+							onClick={() => setIsModalSubTask(true)}
+						>
 							<i className='bx bx-plus-circle'></i>
 							<span>Добавить дополнительную задачу</span>
 						</label>
@@ -295,7 +317,6 @@ const TaskInfo = ({ userContext }) => {
 							/>
 							<input type='button' value={'Отправить'} />
 						</div>
-
 					</div>
 
 					<div className={style.info}>
@@ -530,16 +551,6 @@ const TaskInfo = ({ userContext }) => {
 									</p>
 								)}
 							</p>
-							{/*<CSSTransition*/}
-							{/*	in={isAssignExec}*/}
-							{/*	timeout={200}*/}
-							{/*	classNames={{*/}
-							{/*		enterActive: style.selectShow,*/}
-							{/*		exitActive: style.selectHide*/}
-							{/*	}}*/}
-							{/*	mountOnEnter*/}
-							{/*	unmountOnExit*/}
-							{/*>*/}
 							<AnimatePresence>
 								{isAssignExec && (
 									<motion.select
@@ -574,7 +585,6 @@ const TaskInfo = ({ userContext }) => {
 									</motion.select>
 								)}
 							</AnimatePresence>
-							{/*</CSSTransition>*/}
 						</div>
 
 						<div className={style.department}>
@@ -623,7 +633,7 @@ const TaskInfo = ({ userContext }) => {
 											<motion.li
 												custom={0.7}
 												variants={liAnimation}
-												onClick={showReassignTaskField}
+												onClick={showReassignModal}
 											>
 												Отправить в другой отдел
 											</motion.li>
@@ -669,16 +679,16 @@ const TaskInfo = ({ userContext }) => {
 				</>
 			)}
 
-			{isModal && (
+			{isModalReassign && (
 				<div className={style.modal}>
 					<div
 						className={style.overlay}
-						onClick={() => setIsModal(false)}
+						onClick={() => setIsModalReassign(false)}
 					></div>
 					<div className={style.modalContent}>
 						<i
 							className={`bx bx-x ${style.closeModal}`}
-							onClick={() => setIsModal(false)}
+							onClick={() => setIsModalReassign(false)}
 						></i>
 						<div className={style.title}>
 							Отправить заявку в другой отдел
@@ -734,6 +744,44 @@ const TaskInfo = ({ userContext }) => {
 							className={'btn-main'}
 							value={'Отправить'}
 							onClick={() => reassignTask(taskInfo.id, idDepart)}
+						/>
+					</div>
+				</div>
+			)}
+
+			{isModalSubTask && (
+				<div className={style.modal}>
+					<div
+						className={style.overlay}
+						onClick={() => setIsModalSubTask(false)}
+					></div>
+					<div className={style.modalContent}>
+						<i
+							className={`bx bx-x ${style.closeModal}`}
+							onClick={() => setIsModalSubTask(false)}
+						></i>
+						<div className={style.title}>
+							Создать дополнительную задачу
+						</div>
+						<input
+							name='title'
+							type='text'
+							className={style.titleSubTask}
+							value={subTaskInfo.title}
+							onChange={handleChangeSubtask}
+						/>
+						<input
+							type='text'
+							name='description'
+							className={style.descSubTask}
+							value={subTaskInfo.description}
+							onChange={handleChangeSubtask}
+						/>
+						<input
+							type='button'
+							className={'btn-main'}
+							value={'Отправить'}
+							onClick={() => handlerSubTask(taskInfo.id)}
 						/>
 					</div>
 				</div>

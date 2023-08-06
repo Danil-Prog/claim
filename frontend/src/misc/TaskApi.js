@@ -7,7 +7,8 @@ export const taskApi = {
 	getTaskInfo,
 	changeStatus,
 	reassign,
-	remove
+	remove,
+	createSubTask
 };
 
 function createTask(authdata, data) {
@@ -79,6 +80,15 @@ function reassign(authdata, idTask, idDepart) {
 
 function remove(authdata, idTask) {
 	return instance.delete(`/api/v1/task/${idTask}`, {
+		headers: {
+			Authorization: `Bearer ${authdata}`,
+			'Content-type': 'application/json'
+		}
+	});
+}
+
+function createSubTask(authdata, data, id) {
+	return instance.post(`/api/v1/task/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'

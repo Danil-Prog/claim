@@ -32,7 +32,7 @@ function StaticElements() {
 		<div className='content'>
 			{userValue && <Sidebar />}
 			<Outlet />
-			{userValue && <Chat userContext={userContext} />}
+			{/*{userValue && <Chat userContext={userContext} />}*/}
 		</div>
 	);
 }
