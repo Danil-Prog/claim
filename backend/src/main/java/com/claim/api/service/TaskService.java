@@ -161,18 +161,15 @@ public class TaskService {
             Task epicTask = epicTaskOptional.get();
             epicTask.setTaskType(TaskType.EPIC);
 
-            if (task.getCustomer() != null) {
-                Optional<User> customer = userService.getUser(task.getCustomer().getId());
-                customer.ifPresent(task::setCustomer);
-            }
+            Optional<User> customer = userService.getUserByUsername(principal.getName());
+            customer.ifPresent(task::setCustomer);
 
             if (task.getExecutor() != null) {
                 Optional<User> executor = userService.getUser(task.getExecutor().getId());
                 executor.ifPresent(task::setExecutor);
             }
-            if (epicTask.getDepartment() != null) {
-                task.setDepartment(epicTask.getDepartment());
-            }
+
+            task.setDepartment(epicTask.getDepartment());
 
             task.setTaskType(TaskType.SUBTASK);
             epicTask.getSubtask().add(task);
