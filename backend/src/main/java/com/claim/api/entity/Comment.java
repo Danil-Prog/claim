@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Data
-@Table("comment")
+@Table(name = "comment")
 @Entity
 public class Comment {
 
@@ -17,7 +17,6 @@ public class Comment {
     @Column(name = "text")
     private String text;
     @OneToOne
-    @Column(name = "sender")
     private User sender;
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
