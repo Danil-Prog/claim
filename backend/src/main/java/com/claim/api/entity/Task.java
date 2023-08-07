@@ -2,6 +2,7 @@ package com.claim.api.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,6 +25,7 @@ public class Task {
     @Column(name = "title")
     private String title;
     @NotNull
+    @Size(min = 1, max = 2500)
     @Column(name = "description")
     private String description;
     @Column(name = "status_task")
