@@ -6,6 +6,7 @@ export const taskApi = {
 	getTaskDepart,
 	getTaskInfo,
 	changeStatus,
+	changeExec,
 	reassign,
 	remove,
 	createSubTask
@@ -48,7 +49,16 @@ function getTaskInfo(authdata, id) {
 }
 
 function changeStatus(authdata, status) {
-	return instance.put('/api/v1/task', status, {
+	return instance.post('/api/v1/task/status', status, {
+		headers: {
+			Authorization: `Bearer ${authdata}`,
+			'Content-type': 'application/json'
+		}
+	});
+}
+
+function changeExec(authdata, exec) {
+	return instance.post('/api/v1/task/executor', exec, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'

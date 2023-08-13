@@ -4,13 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useOutletContext } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { toast } from 'wc-toast';
-import {
-	motion,
-	useAnimate,
-	stagger,
-	animate,
-	AnimatePresence
-} from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { taskApi } from '../../../misc/TaskApi';
 import { departApi } from '../../../misc/DepartApi';
@@ -38,6 +32,32 @@ const TaskInfo = ({ userContext }) => {
 	const [subTaskInfo, setSubTaskInfo] = React.useState('');
 
 	const [openMenu, setOpenMenu] = React.useState(false);
+
+	const successToast = (message = 'Успешно') => {
+		toast(message, {
+			icon: { type: 'success' },
+			theme: {
+				type: 'custom',
+				style: {
+					background: 'var(--primary-color-light)',
+					color: 'var(--text-color)'
+				}
+			}
+		});
+	};
+
+	const errorToast = (message = 'Произошла ошибка!') => {
+		toast(message, {
+			icon: { type: 'error' },
+			theme: {
+				type: 'custom',
+				style: {
+					background: 'var(--primary-color-light)',
+					color: 'var(--text-color)'
+				}
+			}
+		});
+	};
 
 	React.useEffect(() => {
 		taskApi
@@ -74,9 +94,9 @@ const TaskInfo = ({ userContext }) => {
 	const reassignTask = async (idTask, idDepart) => {
 		try {
 			await taskApi.reassign(user.authdata, idTask, idDepart);
-			await setIsModalReassign(false);
-			await setIsReassignTask(!isReassignTask);
-			await handleReassignToast();
+			await successToast('Заявка отправлена в другой отдел!');
+			setIsModalReassign(false);
+			setIsReassignTask(!isReassignTask);
 		} catch (error) {
 			console.log(error);
 		}
@@ -86,34 +106,14 @@ const TaskInfo = ({ userContext }) => {
 		try {
 			const initialTask = {
 				id: taskInfo.id,
-				title: taskInfo.title,
-				description: taskInfo.description,
 				taskStatus: 'COMPLETED'
 			};
 			await taskApi.changeStatus(user.authdata, initialTask);
-			toast('Заявка выполнена!', {
-				icon: { type: 'success' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
-			await setOpenMenu(false);
-			await setIsChangeTask(!isChangeTask);
+			await successToast('Заявка выполнена!');
+			setOpenMenu(false);
+			setIsChangeTask(!isChangeTask);
 		} catch (error) {
-			toast('Произошла ошибка!', {
-				icon: { type: 'error' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
+			errorToast(error);
 		}
 	};
 
@@ -126,81 +126,26 @@ const TaskInfo = ({ userContext }) => {
 		try {
 			const initialTask = {
 				id: taskInfo.id,
-				title: taskInfo.title,
-				description: taskInfo.description,
 				taskStatus: 'CANCELED'
 			};
 			await taskApi.changeStatus(user.authdata, initialTask);
-			toast('Заявка отменена!', {
-				icon: { type: 'success' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
-			await setOpenMenu(false);
-			await setIsChangeTask(!isChangeTask);
+			await successToast('Заявка отменена!');
+			setOpenMenu(false);
+			setIsChangeTask(!isChangeTask);
 		} catch (error) {
-			toast('Произошла ошибка!', {
-				icon: { type: 'error' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
+			errorToast(error);
 		}
 	};
 	const removeTask = async idTask => {
 		try {
 			await taskApi.remove(user.authdata, idTask);
-			await setOpenMenu(false);
-			await setIsReassignTask(!isReassignTask);
-			await setTaskInfo({});
-			await handleRemoveToast();
+			await successToast('Заявка удалена!');
+			setOpenMenu(false);
+			setIsReassignTask(!isReassignTask);
+			setTaskInfo({});
 		} catch (error) {
-			toast('Произошла ошибка!', {
-				icon: { type: 'error' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
-			console.log(error);
+			errorToast(error);
 		}
-	};
-
-	const handleRemoveToast = () => {
-		toast('Заявка удалена!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-	const handleReassignToast = () => {
-		toast('Заявка отправлена в другой отдел!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
 	};
 
 	const handleSetExec = async e => {
@@ -208,38 +153,21 @@ const TaskInfo = ({ userContext }) => {
 			const { value } = e.target;
 			const initialExec = {
 				id: taskInfo.id,
-				title: taskInfo.title,
-				description: taskInfo.description,
-				taskStatus: 'IN_PROGRESS',
-				executor: {
-					id: value
-				}
+				executorId: value
 			};
-			await taskApi.changeStatus(user.authdata, initialExec);
-			await setIsChangeTask(!isChangeTask);
-			await setIsAssignExec(false);
-			toast('Исполнитель назначен!', {
-				icon: { type: 'success' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
+			const initialTask = {
+				id: taskInfo.id,
+				taskStatus: 'COMPLETED'
+			};
+			await taskApi.changeExec(user.authdata, initialExec).then(() => {
+				taskApi.changeStatus(user.authdata, initialTask);
 			});
+
+			await successToast('Исполнитель назначен!');
+			setIsChangeTask(!isChangeTask);
+			setIsAssignExec(false);
 		} catch (error) {
-			toast('Произошла ошибка!', {
-				icon: { type: 'error' },
-				theme: {
-					type: 'custom',
-					style: {
-						background: 'var(--primary-color-light)',
-						color: 'var(--text-color)'
-					}
-				}
-			});
-			console.log(error);
+			errorToast(error);
 		}
 	};
 
@@ -276,8 +204,10 @@ const TaskInfo = ({ userContext }) => {
 	const handlerSubTask = id => {
 		try {
 			taskApi.createSubTask(user.authdata, subTaskInfo, id);
+			setIsModalSubTask(false);
+			successToast('Дополнительная задача добавлена!');
 		} catch (error) {
-			console.log(error);
+			errorToast(error);
 		}
 	};
 
@@ -678,114 +608,145 @@ const TaskInfo = ({ userContext }) => {
 					</div>
 				</>
 			)}
-
-			{isModalReassign && (
-				<div className={style.modal}>
-					<div
-						className={style.overlay}
-						onClick={() => setIsModalReassign(false)}
-					></div>
-					<div className={style.modalContent}>
-						<i
-							className={`bx bx-x ${style.closeModal}`}
+			<AnimatePresence>
+				{isModalReassign && (
+					<motion.div
+						className={style.modal}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{
+							duration: 0.2,
+							ease: 'linear'
+						}}
+					>
+						<div
+							className={style.overlay}
 							onClick={() => setIsModalReassign(false)}
-						></i>
-						<div className={style.title}>
-							Отправить заявку в другой отдел
+						></div>
+						<div className={style.modalContent}>
+							<i
+								className={`bx bx-x ${style.closeModal}`}
+								onClick={() => setIsModalReassign(false)}
+							></i>
+							<div className={style.title}>
+								Отправить заявку в другой отдел
+							</div>
+							<p className={style.labelModalTaskInfo}>
+								Данные заявки:
+							</p>
+							<div className={style.modalTaskInfo}>
+								<div>
+									<p className={'label-main'}>Заголовок</p>
+									<p>{taskInfo.title}</p>
+								</div>
+								<div>
+									<p className={'label-main'}>Отправитель</p>
+									<p>
+										{taskInfo.customer &&
+											`${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}
+									</p>
+								</div>
+								<div>
+									<p className={'label-main'}>
+										Дата отправки
+									</p>
+									<p>
+										{new Date(taskInfo.startDate)
+											.toLocaleString()
+											.slice(0, -10)}
+									</p>
+								</div>
+							</div>
+							<div className={style.reassignContent}>
+								<div className={style.currentDep}>
+									<p>
+										Отдел из которого отправляется заявка:
+									</p>
+									<span>
+										{taskInfo.department &&
+											taskInfo.department.name}
+									</span>
+								</div>
+								<i className='bx bx-arrow-to-right'></i>
+								<div className={style.comingDep}>
+									<p>Отдел куда отправить заявку:</p>
+									<select
+										onChange={e =>
+											setIdDepart(e.target.value)
+										}
+									>
+										{departs.map(item => (
+											<option
+												key={item.id}
+												value={item.id}
+											>
+												{item.name}
+											</option>
+										))}
+									</select>
+								</div>
+							</div>
+							<input
+								type='button'
+								className={'btn-main'}
+								value={'Отправить'}
+								onClick={() =>
+									reassignTask(taskInfo.id, idDepart)
+								}
+							/>
 						</div>
-						<p className={style.labelModalTaskInfo}>
-							Данные заявки:
-						</p>
-						<div className={style.modalTaskInfo}>
-							<div>
-								<p className={'label-main'}>Заголовок</p>
-								<p>{taskInfo.title}</p>
-							</div>
-							<div>
-								<p className={'label-main'}>Отправитель</p>
-								<p>
-									{taskInfo.customer &&
-										`${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}
-								</p>
-							</div>
-							<div>
-								<p className={'label-main'}>Дата отправки</p>
-								<p>
-									{new Date(taskInfo.startDate)
-										.toLocaleString()
-										.slice(0, -10)}
-								</p>
-							</div>
-						</div>
-						<div className={style.reassignContent}>
-							<div className={style.currentDep}>
-								<p>Отдел из которого отправляется заявка:</p>
-								<span>
-									{taskInfo.department &&
-										taskInfo.department.name}
-								</span>
-							</div>
-							<i className='bx bx-arrow-to-right'></i>
-							<div className={style.comingDep}>
-								<p>Отдел куда отправить заявку:</p>
-								<select
-									onChange={e => setIdDepart(e.target.value)}
-								>
-									{departs.map(item => (
-										<option key={item.id} value={item.id}>
-											{item.name}
-										</option>
-									))}
-								</select>
-							</div>
-						</div>
-						<input
-							type='button'
-							className={'btn-main'}
-							value={'Отправить'}
-							onClick={() => reassignTask(taskInfo.id, idDepart)}
-						/>
-					</div>
-				</div>
-			)}
-
-			{isModalSubTask && (
-				<div className={style.modal}>
-					<div
-						className={style.overlay}
-						onClick={() => setIsModalSubTask(false)}
-					></div>
-					<div className={style.modalContent}>
-						<i
-							className={`bx bx-x ${style.closeModal}`}
+					</motion.div>
+				)}
+			</AnimatePresence>
+			<AnimatePresence>
+				{isModalSubTask && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{
+							duration: 0.2,
+							ease: 'linear'
+						}}
+						className={style.modal}
+					>
+						<div
+							className={style.overlay}
 							onClick={() => setIsModalSubTask(false)}
-						></i>
-						<div className={style.title}>
-							Создать дополнительную задачу
+						></div>
+						<div className={style.modalContent}>
+							<i
+								className={`bx bx-x ${style.closeModal}`}
+								onClick={() => setIsModalSubTask(false)}
+							></i>
+							<div className={style.title}>
+								Создать дополнительную задачу
+							</div>
+							<input
+								name='title'
+								type='text'
+								className={style.titleSubTask}
+								value={subTaskInfo.title}
+								onChange={handleChangeSubtask}
+							/>
+							<input
+								type='text'
+								name='description'
+								className={style.descSubTask}
+								value={subTaskInfo.description}
+								onChange={handleChangeSubtask}
+							/>
+							<input
+								type='button'
+								className={'btn-main'}
+								value={'Отправить'}
+								onClick={() => handlerSubTask(taskInfo.id)}
+							/>
 						</div>
-						<input
-							name='title'
-							type='text'
-							className={style.titleSubTask}
-							value={subTaskInfo.title}
-							onChange={handleChangeSubtask}
-						/>
-						<input
-							type='text'
-							name='description'
-							className={style.descSubTask}
-							value={subTaskInfo.description}
-							onChange={handleChangeSubtask}
-						/>
-						<input
-							type='button'
-							className={'btn-main'}
-							value={'Отправить'}
-							onClick={() => handlerSubTask(taskInfo.id)}
-						/>
-					</div>
-				</div>
-			)}
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</>
 	);
 };

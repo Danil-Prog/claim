@@ -29,6 +29,27 @@
       border-top: solid var(--input-color) 2px;
       padding-top: 20px;
     }
+    .labelSubtask {
+      display: flex;
+      grid-gap: 20px;
+      align-items: center;
+      text-decoration: none;
+      background-image: linear-gradient(currentColor, currentColor);
+      background-position: 0% 100%;
+      background-repeat: no-repeat;
+      background-size: 0% 2px;
+      transition: background-size .3s;
+      cursor: pointer;
+      &:hover {
+        background-size: 100% 2px;
+      }
+      i {
+        font-size: 1.2em;
+      }
+      span {
+        font-size: 1.2em;
+      }
+    }
   }
   .info {
     display: flex;
