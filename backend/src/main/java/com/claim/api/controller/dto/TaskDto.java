@@ -5,6 +5,7 @@ import com.claim.api.entity.TaskStatus;
 import com.claim.api.entity.TaskType;
 
 import java.util.Date;
+import java.util.List;
 
 public record TaskDto(Long id,
                        String title,
@@ -12,6 +13,7 @@ public record TaskDto(Long id,
                        TaskStatus taskStatus,
                        TaskType taskType,
                        Department department,
+                       List<SubTaskDto> subtasks,
                        UserDto executor,
                        Date startDate,
                        Date endDate,
