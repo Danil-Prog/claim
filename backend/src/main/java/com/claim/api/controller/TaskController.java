@@ -1,6 +1,7 @@
 package com.claim.api.controller;
 
 
+import com.claim.api.controller.dto.TaskAllDto;
 import com.claim.api.controller.dto.TaskDto;
 import com.claim.api.controller.request.TaskExecutorRequest;
 import com.claim.api.controller.request.TaskStatusRequest;
@@ -72,12 +73,12 @@ public class TaskController {
 
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<Page<TaskDto>> getTasks(@RequestParam(defaultValue = "0") int page,
-                                                  @RequestParam(defaultValue = "10") int size,
-                                                  @RequestParam(defaultValue = "ASC") String sortBy,
-                                                  @RequestParam(defaultValue = "id") String[] sort) {
+    public ResponseEntity<Page<TaskAllDto>> getTasks(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "10") int size,
+                                                     @RequestParam(defaultValue = "ASC") String sortBy,
+                                                     @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        Page<TaskDto> tasks = taskService.getTasks(pageRequest).map(taskMapper::toTaskDto);
+        Page<TaskAllDto> tasks = taskService.getTasks(pageRequest).map(taskMapper::toTaskAllDto);
         return ResponseEntity.ok(tasks);
     }
 
