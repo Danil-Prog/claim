@@ -30,6 +30,7 @@ const TaskInfo = ({ userContext }) => {
 	const [isModalReassign, setIsModalReassign] = React.useState(false);
 	const [isModalSubTask, setIsModalSubTask] = React.useState(false);
 	const [subTaskInfo, setSubTaskInfo] = React.useState('');
+	const [execModal, setExecModal] = React.useState(0);
 
 	const [openMenu, setOpenMenu] = React.useState(false);
 
@@ -205,6 +206,7 @@ const TaskInfo = ({ userContext }) => {
 		try {
 			taskApi.createSubTask(user.authdata, subTaskInfo, id);
 			setIsModalSubTask(false);
+			setIsChangeTask(!isChangeTask);
 			successToast('Дополнительная задача добавлена!');
 		} catch (error) {
 			errorToast(error);
@@ -213,6 +215,7 @@ const TaskInfo = ({ userContext }) => {
 
 	const handleChangeSubtask = event => {
 		const { name, value } = event.target;
+		console.log(event.target.id);
 		setSubTaskInfo(prevState => ({
 			...prevState,
 			[name]: value
@@ -248,7 +251,6 @@ const TaskInfo = ({ userContext }) => {
 							<input type='button' value={'Отправить'} />
 						</div>
 					</div>
-
 					<div className={style.info}>
 						<div className={style.status}>
 							<p className={style.label}>
@@ -602,12 +604,11 @@ const TaskInfo = ({ userContext }) => {
 					</div>
 				</div>
 			) : (
-				<>
-					<div className={style.emptyIcon}>
-						<i className='bx bx-spreadsheet'></i>
-					</div>
-				</>
+				<div className={style.emptyIcon}>
+					<i className='bx bx-spreadsheet'></i>
+				</div>
 			)}
+
 			<AnimatePresence>
 				{isModalReassign && (
 					<motion.div
@@ -723,26 +724,60 @@ const TaskInfo = ({ userContext }) => {
 							<div className={style.title}>
 								Создать дополнительную задачу
 							</div>
-							<input
-								name='title'
-								type='text'
-								className={style.titleSubTask}
-								value={subTaskInfo.title}
-								onChange={handleChangeSubtask}
-							/>
-							<input
-								type='text'
-								name='description'
-								className={style.descSubTask}
-								value={subTaskInfo.description}
-								onChange={handleChangeSubtask}
-							/>
-							<input
-								type='button'
-								className={'btn-main'}
-								value={'Отправить'}
-								onClick={() => handlerSubTask(taskInfo.id)}
-							/>
+							<div className={style.modalSubTaskInfo}>
+								<input
+									name='title'
+									type='text'
+									className={style.titleSubTask}
+									value={subTaskInfo.title}
+									onChange={handleChangeSubtask}
+								/>
+								<input
+									type='text'
+									name='description'
+									className={style.descSubTask}
+									value={subTaskInfo.description}
+									onChange={handleChangeSubtask}
+								/>
+
+								<select
+									name='executor'
+									className={style.selectDep}
+									onChange={e => {
+										const { name, value } = e.target;
+										setSubTaskInfo(prevState => ({
+											...prevState,
+											[name]: {
+												id: value
+											}
+										}));
+									}}
+								>
+									{taskInfo.executor ? (
+										`<option>
+											${taskInfo.executor.profile.firstname} 
+											${taskInfo.executor.profile.lastname}
+										</option>`
+									) : (
+										<option>Не назначен</option>
+									)}
+									{departUsers &&
+										departUsers.map(item => (
+											<option
+												key={item.id}
+												value={item.id}
+											>
+												{`${item.profile.lastname} ${item.profile.firstname}`}
+											</option>
+										))}
+								</select>
+								<input
+									type='button'
+									className={'btn-main'}
+									value={'Отправить'}
+									onClick={() => handlerSubTask(taskInfo.id)}
+								/>
+							</div>
 						</div>
 					</motion.div>
 				)}
