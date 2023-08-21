@@ -22,20 +22,17 @@ import java.util.Optional;
 public class AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public AttachmentService(AttachmentRepository attachmentRepository, UserRepository userRepository) {
+    public AttachmentService(AttachmentRepository attachmentRepository, UserService userService) {
         this.attachmentRepository = attachmentRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public Page<Attachment> getAttachmentsUser(PageRequest pageRequest, Principal principal) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent()) {
-            return attachmentRepository.findAttachmentByUploaded(pageRequest, userOptional.get().getProfile());
-        }
-        throw new BadRequestException("Bad request exception");
+        User user = userService.getUserByUsername(principal.getName()).get();
+        return attachmentRepository.findAttachmentByUploaded(pageRequest, user.getProfile());
     }
 
     public Page<Attachment> getInformationAttachments(PageRequest pageRequest) {
