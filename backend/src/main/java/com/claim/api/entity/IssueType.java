@@ -1,6 +1,6 @@
 package com.claim.api.entity;
 
-public enum TaskType {
+public enum IssueType {
 
     EPIC,
     SUBTASK,

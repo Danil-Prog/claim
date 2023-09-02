@@ -1,9 +1,9 @@
 package com.claim.api.controller.dto;
 
-import com.claim.api.entity.TaskStatus;
+import com.claim.api.entity.IssueStatus;
 
 public record SubTaskDto (Long id,
                           String title,
-                          TaskStatus taskStatus,
+                          IssueStatus issueStatus,
                           UserDto executor) {
 }

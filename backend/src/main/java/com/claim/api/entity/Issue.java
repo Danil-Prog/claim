@@ -11,12 +11,12 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
-@Table(name = "task")
+@Table(name = "issue")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class Issue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +28,17 @@ public class Task {
     @Size(min = 1, max = 2500)
     @Column(name = "description")
     private String description;
-    @Column(name = "status_task")
+    @Column(name = "issue_status")
     @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus = TaskStatus.REVIEW;
+    private IssueStatus issueStatus = IssueStatus.REVIEW;
     @NotNull
     @OneToOne
-    private Department department;
-    @Column(name = "type_task")
+    private Space space;
+    @Column(name = "issue_type")
     @Enumerated(EnumType.STRING)
-    private TaskType taskType = TaskType.TASK;
+    private IssueType issueType;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Task> subtask = new HashSet<>();
+    private Set<Issue> subtask = new HashSet<>();
     @OneToOne
     private User executor;
     @Column(name = "created_date")
@@ -52,17 +52,27 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
+    public void setComments(Comment comment) {
+        this.comments.add(comment);
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && taskStatus == task.taskStatus && Objects.equals(department, task.department) && taskType == task.taskType && Objects.equals(executor, task.executor) && Objects.equals(startDate, task.startDate) && Objects.equals(endDate, task.endDate) && Objects.equals(customer, task.customer);
+        Issue issue = (Issue) o;
+        return Objects.equals(id, issue.id) && Objects.equals(title, issue.title) &&
+                Objects.equals(description, issue.description) && issueStatus == issue.issueStatus &&
+                Objects.equals(space, issue.space) && issueType == issue.issueType &&
+                Objects.equals(executor, issue.executor) && Objects.equals(startDate, issue.startDate) &&
+                Objects.equals(endDate, issue.endDate) && Objects.equals(customer, issue.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, taskStatus, department, taskType, executor, startDate, endDate, customer);
+        return Objects.hash(id, title, description, issueStatus, space, issueType, executor, startDate, endDate, customer);
     }
 }
