@@ -54,5 +54,5 @@ public class Profile {
     private String pc;
     @NotNull
     @OneToOne
-    private Department department;
+    private Space space;
 }
