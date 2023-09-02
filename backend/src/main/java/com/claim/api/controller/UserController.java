@@ -5,6 +5,7 @@ import com.claim.api.controller.dto.UserDto;
 import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.mapper.UserMapper;
+import com.claim.api.service.AttachmentService;
 import com.claim.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -32,11 +33,15 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final AttachmentService attachmentService;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService,
+                          UserMapper userMapper,
+                          AttachmentService attachmentService) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.attachmentService = attachmentService;
     }
 
     @GetMapping("/{id}")
@@ -73,7 +78,7 @@ public class UserController {
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Returns the profile information of an authorized user")
     public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
-        return ResponseEntity.ok(userService.getUserByUsername(principal));
+        return ResponseEntity.ok(userService.getUserProfileByUsername(principal));
     }
 
     @GetMapping("/avatar/{filename}")
@@ -82,7 +87,7 @@ public class UserController {
     public ResponseEntity<Resource> getUserAvatar(@PathVariable String filename) {
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(MediaType.IMAGE_GIF_VALUE))
-                .body(userService.getUserAvatar(filename));
+                .body(attachmentService.getUserAvatar(filename));
     }
 
     @DeleteMapping("/{id}")
@@ -113,6 +118,6 @@ public class UserController {
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Updates the profile photo of an authorized user")
     public void updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
-       userService.updateUserAvatar(image, principal);
+       attachmentService.updateUserAvatar(image, principal);
     }
 }

@@ -42,7 +42,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Task> task = new HashSet<>();
+    private Set<Issue> issue = new HashSet<>();
 
     boolean isEnable;
 
@@ -76,8 +76,8 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void setTask(Task task) {
-        this.task.add(task);
+    public void setIssue(Issue issue) {
+        this.issue.add(issue);
     }
 
     @Override

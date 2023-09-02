@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.claim.api</groupId>
 	<artifactId>claim</artifactId>
-	<version>0.10.2-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>backend</name>
 	<description>backend</description>
 
