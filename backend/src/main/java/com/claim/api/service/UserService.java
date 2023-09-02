@@ -1,8 +1,6 @@
 package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Attachment;
-import com.claim.api.entity.AttachmentType;
 import com.claim.api.entity.Profile;
 import com.claim.api.entity.User;
 import com.claim.api.events.EventStatus;
@@ -15,16 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -33,14 +28,14 @@ public class UserService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AttachmentService attachmentService;
 
     @Autowired
-    public UserService(ApplicationEventPublisher applicationEventPublisher, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, AttachmentService attachmentService) {
+    public UserService(ApplicationEventPublisher applicationEventPublisher,
+                       UserRepository userRepository,
+                       BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.attachmentService = attachmentService;
     }
 
     public boolean saveUser(User user) {
@@ -60,7 +55,7 @@ public class UserService {
         return userRepository.findAll(pageRequest);
     }
 
-    public Profile getUserByUsername(Principal principal) {
+    public Profile getUserProfileByUsername(Principal principal) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent()) {
             return userOptional.get().getProfile();
@@ -77,10 +72,10 @@ public class UserService {
             throw new UserNotFoundException("User with id: " + id + " not found");
     }
 
-    public Optional<User> getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
-            return userOptional;
+            return userOptional.get();
         } else
             throw new UserNotFoundException("User with username: " + username + " not found");
     }
@@ -124,33 +119,8 @@ public class UserService {
             throw new BadRequestException("User id: " + id + " not found!");
     }
 
-    public Resource getUserAvatar(String filename) {
-        return attachmentService.getStorageFileByName(filename);
-    }
-
-    public void updateUserAvatar(MultipartFile image, Principal principal) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            String filename = UUID.randomUUID() + image.getOriginalFilename();
-
-            Attachment attachment = new Attachment(filename,
-                    image.getOriginalFilename(),
-                    AttachmentType.USER_IMAGE,
-                    user.getProfile().getId() + "/images",
-                    image.getSize(),
-                    user.getProfile(),
-                    image.getContentType());
-
-            if (attachmentService.save(image, attachment)) {
-                user.getProfile().setAvatar(filename);
-                userRepository.save(user);
-                logger.info("User named '{}' successfully updated avatar", principal.getName());
-            } else {
-                logger.error("An error occurred while updating the avatar for a user named '{}'", principal.getName());
-            }
-        } else
-            throw new BadRequestException("User: " + principal.getName() + " not found!");
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     public String updateAuthorizeUserProfile(Principal principal, Profile profile) {
