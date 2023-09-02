@@ -71,7 +71,7 @@ public final class AttachmentStorageUtil {
             case USER_IMAGE -> {
                 return root.resolve(user).resolve(attachment.getUrl());
             }
-            case DEPARTMENT_IMAGE -> {
+            case SPACE_IMAGE -> {
                 return root.resolve(department).resolve(attachment.getUrl());
             }
         }

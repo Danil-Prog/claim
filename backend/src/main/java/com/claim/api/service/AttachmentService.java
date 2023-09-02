@@ -1,11 +1,13 @@
 package com.claim.api.service;
 
 import com.claim.api.entity.Attachment;
+import com.claim.api.entity.AttachmentType;
 import com.claim.api.entity.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.AttachmentRepository;
-import com.claim.api.repository.UserRepository;
 import com.claim.api.utils.AttachmentStorageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -17,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class AttachmentService {
 
+    private static final Logger logger = LoggerFactory.getLogger(AttachmentService.class);
     private final AttachmentRepository attachmentRepository;
     private final UserService userService;
 
@@ -31,7 +35,7 @@ public class AttachmentService {
     }
 
     public Page<Attachment> getAttachmentsUser(PageRequest pageRequest, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName()).get();
+        User user = userService.getUserByUsername(principal.getName());
         return attachmentRepository.findAttachmentByUploaded(pageRequest, user.getProfile());
     }
 
@@ -52,6 +56,32 @@ public class AttachmentService {
             return new ByteArrayResource(AttachmentStorageUtil.loadAttachment(attachmentOptional.get()));
         }
         throw new BadRequestException("Attachment with id: " + id + " not found");
+    }
+
+    public void updateUserAvatar(MultipartFile image, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        String filename = UUID.randomUUID() + image.getOriginalFilename();
+
+        Attachment attachment = new Attachment(filename,
+                image.getOriginalFilename(),
+                AttachmentType.USER_IMAGE,
+                user.getProfile().getId() + "/images",
+                image.getSize(),
+                user.getProfile(),
+                image.getContentType());
+
+        if (this.save(image, attachment)) {
+            user.getProfile().setAvatar(filename);
+            userService.save(user);
+            logger.info("User named '{}' successfully updated avatar", principal.getName());
+        } else {
+            logger.error("An error occurred while updating the avatar for a user named '{}'", principal.getName());
+        }
+
+    }
+
+    public Resource getUserAvatar(String filename) {
+        return this.getStorageFileByName(filename);
     }
 
     public boolean save(MultipartFile file, Attachment attachment) {
