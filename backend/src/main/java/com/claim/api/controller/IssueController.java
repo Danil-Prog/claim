@@ -41,17 +41,17 @@ public class IssueController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<IssueDto>> getUserTasks(Principal principal,
+    public ResponseEntity<Page<IssueAllDto>> getUserTasks(Principal principal,
                                                        @RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") int size,
                                                        @RequestParam(defaultValue = "ASC") String sortBy,
                                                        @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        Page<IssueDto> tasks = issueService.getUserIssues(principal, pageRequest).map(issueMapper::toIssueDto);
+        Page<IssueAllDto> tasks = issueService.getUserIssues(principal, pageRequest).map(issueMapper::toIssueAllDto);
         return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping("/department")
+    @GetMapping("/space")
     public ResponseEntity<Page<IssueDto>> getTaskDepartment(Principal principal,
                                                             @RequestParam(defaultValue = "0") int page,
                                                             @RequestParam(defaultValue = "10") int size,
