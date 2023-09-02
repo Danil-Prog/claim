@@ -1,8 +1,8 @@
 package com.claim.api.controller;
 
-import com.claim.api.entity.Department;
+import com.claim.api.entity.Space;
 import com.claim.api.entity.User;
-import com.claim.api.service.DepartmentService;
+import com.claim.api.service.SpaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,67 +19,67 @@ import java.security.Principal;
 import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
 
 @RestController
-@RequestMapping("/api/v1/department")
-public class DepartmentController {
+@RequestMapping("/api/v1/space")
+public class SpaceController {
 
-    private final DepartmentService departmentService;
+    private final SpaceService spaceService;
 
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
+    public SpaceController(SpaceService spaceService) {
+        this.spaceService = spaceService;
     }
 
     @GetMapping
-    public ResponseEntity<Page<Department>> getDepartmentsList(@RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size,
-                                                               @RequestParam(defaultValue = "ASC") String sortBy,
-                                                               @RequestParam(defaultValue = "id") String[] sort) {
+    public ResponseEntity<Page<Space>> getDepartmentsList(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam(defaultValue = "ASC") String sortBy,
+                                                          @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        return ResponseEntity.ok(departmentService.getDepartmentsList(pageRequest));
+        return ResponseEntity.ok(spaceService.getSpacesList(pageRequest));
     }
 
-    @GetMapping("/{id}/users")
-    public ResponseEntity<Page<User>> getDepartmentUsers(@PathVariable Long id,
+    @GetMapping("/{spaceId}/users")
+    public ResponseEntity<Page<User>> getSpaceUsers(@PathVariable Long spaceId,
                                                          @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size,
                                                          @RequestParam(defaultValue = "ASC") String sortBy,
                                                          @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
-        return ResponseEntity.ok(departmentService.getDepartmentUsers(id, pageRequest));
+        return ResponseEntity.ok(spaceService.getSpaceUsers(spaceId, pageRequest));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartmentById(@PathVariable Long id) {
-        return ResponseEntity.ok(departmentService.getDepartmentById(id));
+    @GetMapping("/{spaceId}")
+    public ResponseEntity<Space> getSpaceById(@PathVariable Long spaceId) {
+        return ResponseEntity.ok(spaceService.getSpaceById(spaceId));
     }
 
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    public ResponseEntity<Department> createDepartment(@RequestBody Department department) {
-        return ResponseEntity.ok(departmentService.createDepartment(department));
+    public ResponseEntity<Space> createSpace(@RequestBody Space space) {
+        return ResponseEntity.ok(spaceService.createSpace(space));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{spaceId}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    public void removeDepartment(@PathVariable Long id) {
-        departmentService.removeDepartment(id);
+    public void removeSpace(@PathVariable Long spaceId) {
+        spaceService.removeSpace(spaceId);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{spaceId}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    public ResponseEntity<Department> updateDepartment(@PathVariable Long id, Department department) {
-        return ResponseEntity.ok(departmentService.updateDepartment(id, department));
+    public ResponseEntity<Space> updateSpace(@PathVariable Long spaceId, Space space) {
+        return ResponseEntity.ok(spaceService.updateSpace(spaceId, space));
     }
 
-    @PostMapping("/{id}/image")
+    @PostMapping("/{spaceId}/image")
     @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
-    public void updateDepartmentImage(@PathVariable Long id, @RequestParam("image") MultipartFile image, Principal principal) {
-        departmentService.updateDepartmentImage(id, image, principal);
+    public void updateSpaceImage(@PathVariable Long spaceId, @RequestParam("image") MultipartFile image, Principal principal) {
+        spaceService.updateSpaceImage(spaceId, image, principal);
     }
 
 }
