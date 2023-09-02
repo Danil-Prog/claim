@@ -18,13 +18,13 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "department")
-public class Department {
+@Table(name = "space")
+public class Space {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "department_name")
+    @Column(name = "space_name")
     @Size(min = 3, max = 25)
     private String name;
     @Column(name = "short_name")
@@ -40,7 +40,7 @@ public class Department {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Department that = (Department) o;
+        Space that = (Space) o;
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(shortName, that.shortName) && Objects.equals(image, that.image);
     }
 

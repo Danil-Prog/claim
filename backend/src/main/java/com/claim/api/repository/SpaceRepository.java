@@ -1,9 +1,9 @@
 package com.claim.api.repository;
 
-import com.claim.api.entity.Department;
+import com.claim.api.entity.Space;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department, Long> {
+public interface SpaceRepository extends JpaRepository<Space, Long> {
 }
