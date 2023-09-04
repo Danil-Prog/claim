@@ -10,6 +10,7 @@ import com.claim.api.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,10 @@ public class CommentService {
         this.commentMapper = commentMapper;
         this.userService = userService;
         this.commentRepository = commentRepository;
+    }
+
+    public List<Comment> getIssueComments(Long issueId) {
+        return this.issueService.getIssueById(issueId).getComments();
     }
 
     public Comment getCommentById(Long commentId) {
