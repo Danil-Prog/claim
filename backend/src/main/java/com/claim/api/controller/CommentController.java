@@ -1,6 +1,7 @@
 package com.claim.api.controller;
 
 import com.claim.api.controller.dto.CommentDto;
+import com.claim.api.controller.request.CommentUpdateRequest;
 import com.claim.api.entity.Comment;
 import com.claim.api.mapper.CommentMapper;
 import com.claim.api.service.CommentService;
@@ -39,5 +40,12 @@ public class CommentController {
     @DeleteMapping("/{commentId}/issue/{issueId}")
     public ResponseEntity<CommentDto> removeCommentInIssue(@PathVariable Long issueId, @PathVariable Long commentId, Principal principal) {
         return ResponseEntity.ok(commentService.removeComment(commentId, issueId, principal));
+    }
+
+    @PutMapping("/{commentId}")
+    public ResponseEntity<CommentDto> updateCommentText(@PathVariable Long commentId,
+                                                        @RequestBody CommentUpdateRequest commentUpdateRequest,
+                                                        Principal principal) {
+        return ResponseEntity.ok(commentService.updateTextComment(commentId, commentUpdateRequest, principal));
     }
 }
