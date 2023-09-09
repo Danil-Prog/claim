@@ -4,14 +4,14 @@ import { motion } from 'framer-motion';
 
 import Pagination from '../../../components/Pagination';
 import Header from '../../../components/Header';
-import TaskCard from '../../../components/TaskCard';
-import { taskApi } from '../../../misc/TaskApi';
+import IssueCard from '../../../components/IssueCard';
+import { issueApi } from '../../../misc/IssueApi';
 
-import style from './taskPage.module.scss';
+import style from './issuePage.module.scss';
 
-const TaskDepart = ({ userContext }) => {
+const IssueSpace = ({ userContext }) => {
 	const user = userContext.getUser();
-	const { taskId } = useParams();
+	const { IssueId } = useParams();
 	const location = useLocation();
 
 	const [totalPages, setTotalPages] = React.useState(null);
@@ -19,13 +19,13 @@ const TaskDepart = ({ userContext }) => {
 	const [sizeItems, setSizeItems] = React.useState(10);
 	const [selectedSort, setSelectedSort] = React.useState('startDate');
 	const [selectedSortBy, setSelectedSortBy] = React.useState('desc');
-	const [taskDepart, setTaskDepart] = React.useState([]);
-	const [isReassignTask, setIsReassignTask] = React.useState(false);
-	const [isChangeTask, setIsChangeTask] = React.useState(false);
+	const [IssueSpace, setIssueSpace] = React.useState([]);
+	const [isReassignIssue, setIsReassignIssue] = React.useState(false);
+	const [isChangeIssue, setIsChangeIssue] = React.useState(false);
 
 	React.useEffect(() => {
-		taskApi
-			.getTaskDepart(
+		issueApi
+			.getIssueSpace(
 				user.authdata,
 				currentPage,
 				sizeItems,
@@ -33,12 +33,20 @@ const TaskDepart = ({ userContext }) => {
 				selectedSort
 			)
 			.then(response => {
-				setTaskDepart(response.data.content);
+				setIssueSpace(response.data.content);
 				setTotalPages(response.data.totalPages);
 			})
 			.catch(error => console.log(error));
 		return () => {};
-	}, [currentPage, sizeItems, selectedSortBy, selectedSort, isReassignTask, isChangeTask, user.authdata]);
+	}, [
+		currentPage,
+		sizeItems,
+		selectedSortBy,
+		selectedSort,
+		isReassignIssue,
+		isChangeIssue,
+		user.authdata
+	]);
 
 	const setActive = ({ isActive }) => (isActive ? 'active' : '');
 
@@ -68,13 +76,13 @@ const TaskDepart = ({ userContext }) => {
 				}}
 				className='page'
 			>
-				<section className='wrapper depart'>
-					<div className={style.taskContent}>
-						<div className={style.listTasks}>
+				<section className='wrapper Space'>
+					<div className={style.IssueContent}>
+						<div className={style.listIssues}>
 							<div className={style.wrapperList}>
 								<select onChange={handleSortChange}>
 									<option value='startDate'>По дате</option>
-									<option value='taskStatus'>
+									<option value='IssueStatus'>
 										По статусу
 									</option>
 								</select>
@@ -93,29 +101,29 @@ const TaskDepart = ({ userContext }) => {
 								></i>
 							</div>
 							<div className={style.list}>
-								{taskDepart.map(item => (
+								{IssueSpace.map(item => (
 									<NavLink
 										key={item.id}
-										to={`/task/${item.id}`}
+										to={`/Issue/${item.id}`}
 										isActive={() =>
 											location.pathname.endsWith(
-												`${taskId}`
+												`${IssueId}`
 											)
 										}
 										className={setActive}
 									>
 										{({ isActive }) => (
-											<TaskCard
+											<IssueCard
 												active={
 													isActive ? 'active' : ''
 												}
-												task={item}
+												Issue={item}
 											/>
 										)}
 									</NavLink>
 								))}
 							</div>
-							<div className={style.footerListTasks}>
+							<div className={style.footerListIssues}>
 								<Pagination
 									totalPages={totalPages}
 									onChangePage={number =>
@@ -125,9 +133,9 @@ const TaskDepart = ({ userContext }) => {
 							</div>
 						</div>
 
-						<div className={style.pageTask}>
-							{/*Отображение информации о задаче, вызывается в App, файл taskInfo*/}
-							{taskId ? (
+						<div className={style.pageIssue}>
+							{/*Отображение информации о задаче, вызывается в App, файл IssueInfo*/}
+							{IssueId ? (
 								''
 							) : (
 								<>
@@ -139,10 +147,10 @@ const TaskDepart = ({ userContext }) => {
 							<Outlet
 								context={{
 									reassign: [
-										isReassignTask,
-										setIsReassignTask
+										isReassignIssue,
+										setIsReassignIssue
 									],
-									status: [isChangeTask, setIsChangeTask]
+									status: [isChangeIssue, setIsChangeIssue]
 								}}
 							/>
 						</div>
@@ -153,4 +161,4 @@ const TaskDepart = ({ userContext }) => {
 	);
 };
 
-export default TaskDepart;
+export default IssueSpace;

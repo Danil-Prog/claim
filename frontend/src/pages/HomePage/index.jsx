@@ -4,31 +4,31 @@ import 'react-quill/dist/quill.snow.css';
 import { toast } from 'wc-toast';
 
 import Header from '../../components/Header';
-import { departApi } from '../../misc/DepartApi';
-import { taskApi } from '../../misc/TaskApi';
+import { SpaceApi } from '../../misc/SpaceApi';
+import { issueApi } from '../../misc/IssueApi';
 
 import style from './home.module.scss';
 
 const HomePage = ({ userContext }) => {
 	const user = userContext.getUser({ userContext });
 
-	const initialTask = {
+	const initialIssue = {
 		title: '',
 		description: '',
-		department: {
+		space: {
 			id: 1
 		}
 	};
 
-	const [valueTask, setValueTask] = React.useState(initialTask);
-	const [listDepartment, setListDepartment] = React.useState([]);
+	const [valueIssue, setValueIssue] = React.useState(initialIssue);
+	const [listSpace, setListSpace] = React.useState([]);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
 		try {
-			await taskApi.createTask(user.authdata, valueTask);
-			await handleCreateTaskToast();
-			await setValueTask(initialTask);
+			await issueApi.createIssue(user.authdata, valueIssue);
+			await handleCreateIssueToast();
+			await setValueIssue(initialIssue);
 		} catch (error) {
 			console.log(error);
 		}
@@ -36,45 +36,44 @@ const HomePage = ({ userContext }) => {
 
 	const handleChange = event => {
 		const { name, value } = event.target;
-		setValueTask(prevState => ({
+		setValueIssue(prevState => ({
 			...prevState,
 			[name]: value
 		}));
 	};
 
-	const handleDepartChange = event => {
+	const handleSpaceChange = event => {
 		const { name, value } = event.target;
 		const valueNum = Number(value);
-		setValueTask(prevValue => ({
+		setValueIssue(prevValue => ({
 			...prevValue,
-			department: {
-				...prevValue.department,
+			Space: {
+				...prevValue.Space,
 				[name]: valueNum
 			}
 		}));
 	};
 
 	const handleDescChange = value => {
-		setValueTask(prevState => ({
+		setValueIssue(prevState => ({
 			...prevState,
 			description: value
 		}));
 	};
 
 	React.useEffect(() => {
-		departApi
-			.getDepartments(user.authdata)
+		SpaceApi.getSpaces(user.authdata)
 			.then(response => {
-				setListDepartment(response.data.content);
+				setListSpace(response.data.content);
 			})
 			.catch(error => {
-				handleCreateTaskErrorToast();
+				handleCreateIssueErrorToast();
 				console.log(error);
 			});
 		return () => {};
 	}, [user.authdata]);
 
-	const handleCreateTaskToast = () => {
+	const handleCreateIssueToast = () => {
 		toast('Заявка успешно создана!', {
 			icon: { type: 'success' },
 			theme: {
@@ -87,7 +86,7 @@ const HomePage = ({ userContext }) => {
 		});
 	};
 
-	const handleCreateTaskErrorToast = () => {
+	const handleCreateIssueErrorToast = () => {
 		toast('Что-то пошло не так!', {
 			icon: { type: 'error' },
 			theme: {
@@ -110,14 +109,14 @@ const HomePage = ({ userContext }) => {
 							<h2>Создать заявку</h2>
 						</div>
 						<form onSubmit={handleSubmit}>
-							<label className={style.depart}>
+							<label className={style.Space}>
 								<span>Выбрать отдел:</span>
 								<select
 									name='id'
 									id='select_dep'
-									onChange={handleDepartChange}
+									onChange={handleSpaceChange}
 								>
-									{listDepartment.map(item => (
+									{listSpace.map(item => (
 										<option key={item.id} value={item.id}>
 											{item.name}
 										</option>
@@ -130,7 +129,7 @@ const HomePage = ({ userContext }) => {
 									type='text'
 									name={'title'}
 									onChange={handleChange}
-									value={valueTask.title}
+									value={valueIssue.title}
 								/>
 							</label>
 							<label htmlFor='description'>
@@ -138,7 +137,7 @@ const HomePage = ({ userContext }) => {
 								<ReactQuill
 									className={style.description}
 									theme='snow'
-									value={valueTask.description}
+									value={valueIssue.description}
 									onChange={handleDescChange}
 								/>
 							</label>

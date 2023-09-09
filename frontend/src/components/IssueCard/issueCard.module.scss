@@ -39,17 +39,17 @@
 }
 
 .statusReview {
-  border-left: solid var(--task-review) 3px;
+  border-left: solid var(--Issue-review) 3px;
 }
 
 .statusCompleted {
-  border-left: solid var(--task-completed) 3px;
+  border-left: solid var(--Issue-completed) 3px;
 }
 
 .statusCanceled {
-  border-left: solid var(--task-canceled) 3px;
+  border-left: solid var(--Issue-canceled) 3px;
 }
 
 .statusInProgress {
-  border-left: solid var(--task-in-progress) 3px;
+  border-left: solid var(--Issue-in-progress) 3px;
 }

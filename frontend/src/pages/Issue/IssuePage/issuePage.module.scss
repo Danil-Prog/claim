@@ -1,4 +1,4 @@
-.taskContent {
+.IssueContent {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -14,7 +14,7 @@
     max-width: 100%;
     flex-direction: column;
   }
-  .listTasks {
+  .listIssues {
     display: flex;
     flex-direction: column;
     width: 25%;
@@ -60,14 +60,14 @@
         transition: var(--tran-03);
       }
     }
-    .footerListTasks {
+    .footerListIssues {
       display: flex;
       justify-content: space-around;
       align-items: center;
       flex: 1;
     }
   }
-  .pageTask {
+  .pageIssue {
     display: flex;
     justify-content: center;
     align-items: center;

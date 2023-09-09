@@ -1,19 +1,19 @@
 import axios from 'axios';
 
-export const taskApi = {
-	createTask,
-	changeTask,
-	getTaskDepart,
-	getTaskInfo,
+export const issueApi = {
+	createIssue,
+	changeIssue,
+	getIssueSpace,
+	getIssueInfo,
 	changeStatus,
 	changeExec,
 	reassign,
 	remove,
-	createSubTask
+	createSubIssue
 };
 
-function createTask(authdata, data) {
-	return instance.post('/api/v1/task', data, {
+function createIssue(authdata, data) {
+	return instance.post('/api/v1/issue', data, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -21,7 +21,7 @@ function createTask(authdata, data) {
 	});
 }
 
-function getTaskDepart(
+function getIssueSpace(
 	authdata,
 	page = 0,
 	size = 10,
@@ -29,7 +29,7 @@ function getTaskDepart(
 	sort = 'id'
 ) {
 	return instance.get(
-		`/api/v1/task/department?page=${page}&size=${size}&sortBy=${sortBy}&sort=${sort}`,
+		`/api/v1/issue/space?page=${page}&size=${size}&sortBy=${sortBy}&sort=${sort}`,
 		{
 			headers: {
 				Authorization: `Bearer ${authdata}`,
@@ -39,8 +39,8 @@ function getTaskDepart(
 	);
 }
 
-function getTaskInfo(authdata, id) {
-	return instance.get(`/api/v1/task/${id}`, {
+function getIssueInfo(authdata, id) {
+	return instance.get(`/api/v1/issue/${id}`, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -49,7 +49,7 @@ function getTaskInfo(authdata, id) {
 }
 
 function changeStatus(authdata, status) {
-	return instance.post('/api/v1/task/status', status, {
+	return instance.post('/api/v1/issue/status', status, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -58,7 +58,7 @@ function changeStatus(authdata, status) {
 }
 
 function changeExec(authdata, exec) {
-	return instance.post('/api/v1/task/executor', exec, {
+	return instance.post('/api/v1/issue/executor', exec, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -66,8 +66,8 @@ function changeExec(authdata, exec) {
 	});
 }
 
-function changeTask(authdata, task) {
-	return instance.put('/api/v1/task', task, {
+function changeIssue(authdata, Issue) {
+	return instance.put('/api/v1/issue', Issue, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -75,21 +75,8 @@ function changeTask(authdata, task) {
 	});
 }
 
-function reassign(authdata, idTask, idDepart) {
-	return instance.put(
-		`/api/v1/task/${idTask}/department/${idDepart}`,
-		idDepart,
-		{
-			headers: {
-				Authorization: `Bearer ${authdata}`,
-				'Content-type': 'application/json'
-			}
-		}
-	);
-}
-
-function remove(authdata, idTask) {
-	return instance.delete(`/api/v1/task/${idTask}`, {
+function reassign(authdata, idIssue, idSpace) {
+	return instance.put(`/api/v1/issue/${idIssue}/Space/${idSpace}`, idSpace, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -97,8 +84,17 @@ function remove(authdata, idTask) {
 	});
 }
 
-function createSubTask(authdata, data, id) {
-	return instance.post(`/api/v1/task/${id}`, data, {
+function remove(authdata, idIssue) {
+	return instance.delete(`/api/v1/issue/${idIssue}`, {
+		headers: {
+			Authorization: `Bearer ${authdata}`,
+			'Content-type': 'application/json'
+		}
+	});
+}
+
+function createSubIssue(authdata, data, id) {
+	return instance.post(`/api/v1/issue/${id}`, data, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'

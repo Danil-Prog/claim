@@ -6,30 +6,30 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'wc-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import { taskApi } from '../../../misc/TaskApi';
-import { departApi } from '../../../misc/DepartApi';
+import { issueApi } from '../../../misc/IssueApi';
+import { SpaceApi } from '../../../misc/SpaceApi';
 import { userApi } from '../../../misc/UserApi';
 
-import style from './taskInfo.module.scss';
+import style from './issueInfo.module.scss';
 
-const TaskInfo = ({ userContext }) => {
+const IssueInfo = ({ userContext }) => {
 	const user = userContext.getUser();
-	const { taskId } = useParams();
+	const { IssueId } = useParams();
 	// rand for avatar background color
 	const rand = (min, max) => Math.floor(Math.random() * max) + min;
 	const {
-		reassign: [isReassignTask, setIsReassignTask],
-		status: [isChangeTask, setIsChangeTask]
+		reassign: [isReassignIssue, setIsReassignIssue],
+		status: [isChangeIssue, setIsChangeIssue]
 	} = useOutletContext();
 
-	const [taskInfo, setTaskInfo] = React.useState({});
-	const [idDepart, setIdDepart] = React.useState({});
-	const [departs, setDeparts] = React.useState({});
-	const [departUsers, setdepartUsers] = React.useState([]);
+	const [issueInfo, setIssueInfo] = React.useState({});
+	const [idSpace, setIdSpace] = React.useState({});
+	const [Spaces, setSpaces] = React.useState({});
+	const [SpaceUsers, setSpaceUsers] = React.useState([]);
 	const [isAssignExec, setIsAssignExec] = React.useState(false);
 	const [isModalReassign, setIsModalReassign] = React.useState(false);
-	const [isModalSubTask, setIsModalSubTask] = React.useState(false);
-	const [subTaskInfo, setSubTaskInfo] = React.useState('');
+	const [isModalSubIssue, setIsModalSubIssue] = React.useState(false);
+	const [subIssueInfo, setSubIssueInfo] = React.useState('');
 	const [execModal, setExecModal] = React.useState(0);
 
 	const [openMenu, setOpenMenu] = React.useState(false);
@@ -61,58 +61,55 @@ const TaskInfo = ({ userContext }) => {
 	};
 
 	React.useEffect(() => {
-		taskApi
-			.getTaskInfo(user.authdata, taskId)
+		issueApi
+			.getIssueInfo(user.authdata, IssueId)
 			.then(response => {
-				setTaskInfo(response.data);
+				setIssueInfo(response.data);
 			})
 			.catch(error => console.log(error));
 		userApi
 			.getSelfInfo(user.authdata)
 			.then(response => {
-				departApi
-					.getDepartmentUsers(
-						user.authdata,
-						response.data.department.id
-					)
-					.then(response => {
-						setdepartUsers(response.data.content);
-					});
+				SpaceApi.getSpaceUsers(
+					user.authdata,
+					response.data.space.id
+				).then(response => {
+					setSpaceUsers(response.data.content);
+				});
 			})
 			.catch(error => console.log(error));
 		const page = 0;
 		const size = 99999;
-		departApi
-			.getDepartments(user.authdata, page, size)
+		SpaceApi.getSpaces(user.authdata, page, size)
 			.then(response => {
-				setDeparts(response.data.content);
+				setSpaces(response.data.content);
 			})
 			.catch(error => console.log(error));
 
 		return () => {};
-	}, [taskId, isReassignTask, isChangeTask, user.authdata]);
+	}, [IssueId, isReassignIssue, isChangeIssue, user.authdata]);
 
-	const reassignTask = async (idTask, idDepart) => {
+	const reassignIssue = async (idIssue, idSpace) => {
 		try {
-			await taskApi.reassign(user.authdata, idTask, idDepart);
+			await issueApi.reassign(user.authdata, idIssue, idSpace);
 			await successToast('Заявка отправлена в другой отдел!');
 			setIsModalReassign(false);
-			setIsReassignTask(!isReassignTask);
+			setIsReassignIssue(!isReassignIssue);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	const completeTask = async () => {
+	const completeIssue = async () => {
 		try {
-			const initialTask = {
-				id: taskInfo.id,
-				taskStatus: 'COMPLETED'
+			const initialIssue = {
+				id: issueInfo.id,
+				IssueStatus: 'COMPLETED'
 			};
-			await taskApi.changeStatus(user.authdata, initialTask);
+			await issueApi.changeStatus(user.authdata, initialIssue);
 			await successToast('Заявка выполнена!');
 			setOpenMenu(false);
-			setIsChangeTask(!isChangeTask);
+			setIsChangeIssue(!isChangeIssue);
 		} catch (error) {
 			errorToast(error);
 		}
@@ -123,27 +120,27 @@ const TaskInfo = ({ userContext }) => {
 		setIsModalReassign(true);
 	};
 
-	const cancelTask = async () => {
+	const cancelIssue = async () => {
 		try {
-			const initialTask = {
-				id: taskInfo.id,
-				taskStatus: 'CANCELED'
+			const initialIssue = {
+				id: issueInfo.id,
+				IssueStatus: 'CANCELED'
 			};
-			await taskApi.changeStatus(user.authdata, initialTask);
+			await issueApi.changeStatus(user.authdata, initialIssue);
 			await successToast('Заявка отменена!');
 			setOpenMenu(false);
-			setIsChangeTask(!isChangeTask);
+			setIsChangeIssue(!isChangeIssue);
 		} catch (error) {
 			errorToast(error);
 		}
 	};
-	const removeTask = async idTask => {
+	const removeIssue = async idIssue => {
 		try {
-			await taskApi.remove(user.authdata, idTask);
+			await issueApi.remove(user.authdata, idIssue);
 			await successToast('Заявка удалена!');
 			setOpenMenu(false);
-			setIsReassignTask(!isReassignTask);
-			setTaskInfo({});
+			setIsReassignIssue(!isReassignIssue);
+			setIssueInfo({});
 		} catch (error) {
 			errorToast(error);
 		}
@@ -153,19 +150,19 @@ const TaskInfo = ({ userContext }) => {
 		try {
 			const { value } = e.target;
 			const initialExec = {
-				id: taskInfo.id,
+				id: issueInfo.id,
 				executorId: value
 			};
-			const initialTask = {
-				id: taskInfo.id,
-				taskStatus: 'COMPLETED'
+			const initialIssue = {
+				id: issueInfo.id,
+				IssueStatus: 'COMPLETED'
 			};
-			await taskApi.changeExec(user.authdata, initialExec).then(() => {
-				taskApi.changeStatus(user.authdata, initialTask);
+			await issueApi.changeExec(user.authdata, initialExec).then(() => {
+				issueApi.changeStatus(user.authdata, initialIssue);
 			});
 
 			await successToast('Исполнитель назначен!');
-			setIsChangeTask(!isChangeTask);
+			setIsChangeIssue(!isChangeIssue);
 			setIsAssignExec(false);
 		} catch (error) {
 			errorToast(error);
@@ -202,21 +199,21 @@ const TaskInfo = ({ userContext }) => {
 		})
 	};
 
-	const handlerSubTask = id => {
+	const handlerSubIssue = id => {
 		try {
-			taskApi.createSubTask(user.authdata, subTaskInfo, id);
-			setIsModalSubTask(false);
-			setIsChangeTask(!isChangeTask);
+			issueApi.createSubIssue(user.authdata, subIssueInfo, id);
+			setIsModalSubIssue(false);
+			setIsChangeIssue(!isChangeIssue);
 			successToast('Дополнительная задача добавлена!');
 		} catch (error) {
 			errorToast(error);
 		}
 	};
 
-	const handleChangeSubtask = event => {
+	const handleChangeSubIssue = event => {
 		const { name, value } = event.target;
 		console.log(event.target.id);
-		setSubTaskInfo(prevState => ({
+		setSubIssueInfo(prevState => ({
 			...prevState,
 			[name]: value
 		}));
@@ -224,21 +221,21 @@ const TaskInfo = ({ userContext }) => {
 
 	return (
 		<>
-			{taskInfo && taskInfo.id ? (
-				<div className={style.task}>
-					<div className={style.messageTask}>
-						<div className={style.title}>{taskInfo.title}</div>
+			{issueInfo && issueInfo.id ? (
+				<div className={style.Issue}>
+					<div className={style.messageIssue}>
+						<div className={style.title}>{issueInfo.title}</div>
 						<div className={style.description}>
 							<p className='label-main'>Описание</p>
 							<p
 								dangerouslySetInnerHTML={{
-									__html: taskInfo.description
+									__html: issueInfo.description
 								}}
 							/>
 						</div>
 						<label
-							className={style.labelSubtask}
-							onClick={() => setIsModalSubTask(true)}
+							className={style.labelSubIssue}
+							onClick={() => setIsModalSubIssue(true)}
 						>
 							<i className='bx bx-plus-circle'></i>
 							<span>Добавить дополнительную задачу</span>
@@ -257,15 +254,16 @@ const TaskInfo = ({ userContext }) => {
 								<p className='label-main'>СТАТУС</p>
 								<svg
 									className={
-										taskInfo.taskStatus &&
-										taskInfo.taskStatus === 'COMPLETED'
+										issueInfo.issueStatus &&
+										issueInfo.issueStatus === 'COMPLETED'
 											? `${style.dotCompleted}`
-											: taskInfo.taskStatus === 'REVIEW'
+											: issueInfo.issueStatus === 'REVIEW'
 											? `${style.dotReview}`
-											: taskInfo.taskStatus ===
+											: issueInfo.issueStatus ===
 											  'IN_PROGRESS'
 											? `${style.dotInProgress}`
-											: taskInfo.taskStatus === 'CANCELED'
+											: issueInfo.issueStatus ===
+											  'CANCELED'
 											? `${style.dotCanceled}`
 											: ''
 									}
@@ -276,13 +274,14 @@ const TaskInfo = ({ userContext }) => {
 								</svg>
 							</p>
 							<p>
-								{taskInfo && taskInfo.taskStatus === 'COMPLETED'
+								{issueInfo &&
+								issueInfo.issueStatus === 'COMPLETED'
 									? `Выполнена`
-									: taskInfo.taskStatus === 'REVIEW'
+									: issueInfo.issueStatus === 'REVIEW'
 									? `Новая`
-									: taskInfo.taskStatus === 'IN_PROGRESS'
+									: issueInfo.issueStatus === 'IN_PROGRESS'
 									? `В процессе`
-									: taskInfo.taskStatus === 'CANCELED'
+									: issueInfo.issueStatus === 'CANCELED'
 									? `Отменена`
 									: 'Неизвестный статус'}
 							</p>
@@ -292,25 +291,28 @@ const TaskInfo = ({ userContext }) => {
 							<p className='label-main'>ОТПРАВИТЕЛЬ</p>
 							<p className={style.customerInfo}>
 								<p>
-									{taskInfo.customer &&
-									taskInfo.customer.profile.avatar ? (
+									{issueInfo.customer &&
+									issueInfo.customer.profile.avatar ? (
 										<img
 											className={
-												taskInfo.customer.role ===
+												issueInfo.customer.role ===
 												'ROLE_SUPER_ADMIN'
 													? 'mini-avatar border-super-admin'
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_ADMIN'
 													? 'mini-avatar border-admin'
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_EXEC'
 													? 'mini-avatar border-exec'
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_USER'
 													? 'mini-avatar border-user'
 													: 'mini-avatar null-avatar'
 											}
-											src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.customer.profile.avatar}`}
+											src={`http://localhost:8080/api/v1/user/avatar/${issueInfo.customer.profile.avatar}`}
 											alt='avatar'
 											width={30}
 											height={30}
@@ -318,25 +320,28 @@ const TaskInfo = ({ userContext }) => {
 									) : (
 										<div
 											className={
-												taskInfo.customer.role ===
+												issueInfo.customer.role ===
 												'ROLE_SUPER_ADMIN'
 													? `mini-avatar null-avatar border-super-admin rand-color-${rand(
 															1,
 															5
 													  )}`
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_ADMIN'
 													? `mini-avatar null-avatar border-admin rand-color-${rand(
 															1,
 															5
 													  )}`
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_EXEC'
 													? `mini-avatar null-avatar border-exec rand-color-${rand(
 															1,
 															5
 													  )}`
-													: taskInfo.customer.role ===
+													: issueInfo.customer
+															.role ===
 													  'ROLE_USER'
 													? `mini-avatar null-avatar border-user rand-color-${rand(
 															1,
@@ -349,19 +354,19 @@ const TaskInfo = ({ userContext }) => {
 											}
 										>
 											<span className='null-avatar-title'>
-												{!!taskInfo.customer &&
-													taskInfo.customer.profile
+												{!!issueInfo.customer &&
+													issueInfo.customer.profile
 														.lastname[0]}
-												{!!taskInfo.customer &&
-													taskInfo.customer.profile
+												{!!issueInfo.customer &&
+													issueInfo.customer.profile
 														.firstname[0]}
 											</span>
 										</div>
 									)}
 								</p>
 								<p>
-									{taskInfo.customer &&
-										`${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}
+									{issueInfo.customer &&
+										`${issueInfo.customer.profile.lastname} ${issueInfo.customer.profile.firstname}`}
 								</p>
 							</p>
 						</div>
@@ -370,56 +375,59 @@ const TaskInfo = ({ userContext }) => {
 							<p className='label-main'>ИСПОЛНИТЕЛЬ</p>
 							<p className={style.executorInfo}>
 								<>
-									{taskInfo.executor &&
-									taskInfo.executor.profile.avatar ? (
+									{issueInfo.executor &&
+									issueInfo.executor.profile.avatar ? (
 										<img
 											className={
-												taskInfo.executor.role ===
+												issueInfo.executor.role ===
 												'ROLE_SUPER_ADMIN'
 													? 'mini-avatar border-super-admin'
-													: taskInfo.executor.role ===
+													: issueInfo.executor
+															.role ===
 													  'ROLE_ADMIN'
 													? 'mini-avatar border-admin'
-													: taskInfo.executor.role ===
+													: issueInfo.executor
+															.role ===
 													  'ROLE_EXEC'
 													? 'mini-avatar border-exec'
-													: taskInfo.executor.role ===
+													: issueInfo.executor
+															.role ===
 													  'ROLE_USER'
 													? 'mini-avatar border-user'
 													: 'mini-avatar null-avatar'
 											}
-											src={`http://localhost:8080/api/v1/user/avatar/${taskInfo.executor.profile.avatar}`}
+											src={`http://localhost:8080/api/v1/user/avatar/${issueInfo.executor.profile.avatar}`}
 											alt='avatar'
 											width={30}
 											height={30}
 										/>
 									) : (
 										<>
-											{taskInfo.executor && (
+											{issueInfo.executor && (
 												<div
 													className={
-														taskInfo.executor
+														issueInfo.executor
 															.role ===
 														'ROLE_SUPER_ADMIN'
 															? `mini-avatar null-avatar border-super-admin rand-color-${rand(
 																	1,
 																	5
 															  )}`
-															: taskInfo.executor
+															: issueInfo.executor
 																	.role ===
 															  'ROLE_ADMIN'
 															? `mini-avatar null-avatar border-admin rand-color-${rand(
 																	1,
 																	5
 															  )}`
-															: taskInfo.executor
+															: issueInfo.executor
 																	.role ===
 															  'ROLE_EXEC'
 															? `mini-avatar null-avatar border-exec rand-color-${rand(
 																	1,
 																	5
 															  )}`
-															: taskInfo.executor
+															: issueInfo.executor
 																	.role ===
 															  'ROLE_USER'
 															? `mini-avatar null-avatar border-user rand-color-${rand(
@@ -433,12 +441,12 @@ const TaskInfo = ({ userContext }) => {
 													}
 												>
 													<span className='null-avatar-title'>
-														{!!taskInfo.executor &&
-															taskInfo.executor
+														{!!issueInfo.executor &&
+															issueInfo.executor
 																.profile
 																.lastname[0]}
-														{!!taskInfo.executor &&
-															taskInfo.executor
+														{!!issueInfo.executor &&
+															issueInfo.executor
 																.profile
 																.firstname[0]}
 													</span>
@@ -447,12 +455,15 @@ const TaskInfo = ({ userContext }) => {
 										</>
 									)}
 								</>
-								{taskInfo.executor ? (
+								{issueInfo.executor ? (
 									<>
 										<p className={style.nameExec}>
-											{taskInfo.executor.profile.lastname}{' '}
 											{
-												taskInfo.executor.profile
+												issueInfo.executor.profile
+													.lastname
+											}{' '}
+											{
+												issueInfo.executor.profile
 													.firstname
 											}
 										</p>
@@ -487,7 +498,7 @@ const TaskInfo = ({ userContext }) => {
 								{isAssignExec && (
 									<motion.select
 										name='executor'
-										className={style.selectDep}
+										className={style.selectSpace}
 										onChange={handleSetExec}
 										initial={{ opacity: 0 }}
 										animate={{ opacity: 1 }}
@@ -497,16 +508,16 @@ const TaskInfo = ({ userContext }) => {
 											ease: 'linear'
 										}}
 									>
-										{taskInfo.executor ? (
+										{issueInfo.executor ? (
 											`<option>
-									${taskInfo.executor.profile.firstname} 
-									${taskInfo.executor.profile.lastname}
+									${issueInfo.executor.profile.firstname} 
+									${issueInfo.executor.profile.lastname}
 								</option>`
 										) : (
 											<option>Не назначен</option>
 										)}
-										{departUsers &&
-											departUsers.map(item => (
+										{SpaceUsers &&
+											SpaceUsers.map(item => (
 												<option
 													key={item.id}
 													value={item.id}
@@ -519,17 +530,14 @@ const TaskInfo = ({ userContext }) => {
 							</AnimatePresence>
 						</div>
 
-						<div className={style.department}>
+						<div className={style.space}>
 							<p className='label-main upp'>ОТПРАВЛЕНА В</p>
-							<p>
-								{taskInfo.department &&
-									taskInfo.department.name}
-							</p>
+							<p>{issueInfo.space && issueInfo.space.name}</p>
 						</div>
 
 						<div className={style.startDate}>
 							Дата отправки{' '}
-							{new Date(taskInfo.startDate)
+							{new Date(issueInfo.startDate)
 								.toLocaleString()
 								.slice(0, -10)}
 						</div>
@@ -549,11 +557,11 @@ const TaskInfo = ({ userContext }) => {
 								className={style.dropdownPopup}
 							>
 								<ul>
-									{user.id === taskInfo.customer.id && (
+									{user.id === issueInfo.customer.id && (
 										<motion.li
 											custom={0.5}
 											variants={liAnimation}
-											onClick={completeTask}
+											onClick={completeIssue}
 										>
 											Редактировать
 										</motion.li>
@@ -572,7 +580,7 @@ const TaskInfo = ({ userContext }) => {
 											<motion.li
 												custom={0.9}
 												variants={liAnimation}
-												onClick={completeTask}
+												onClick={completeIssue}
 											>
 												Выполнена
 											</motion.li>
@@ -583,7 +591,7 @@ const TaskInfo = ({ userContext }) => {
 									<motion.li
 										custom={1.1}
 										variants={liAnimation}
-										onClick={cancelTask}
+										onClick={cancelIssue}
 									>
 										Отменить
 									</motion.li>
@@ -592,7 +600,7 @@ const TaskInfo = ({ userContext }) => {
 											custom={1.3}
 											variants={liAnimation}
 											onClick={() =>
-												removeTask(taskInfo.id)
+												removeIssue(issueInfo.id)
 											}
 										>
 											Удалить
@@ -633,19 +641,19 @@ const TaskInfo = ({ userContext }) => {
 							<div className={style.title}>
 								Отправить заявку в другой отдел
 							</div>
-							<p className={style.labelModalTaskInfo}>
+							<p className={style.labelModalIssueInfo}>
 								Данные заявки:
 							</p>
-							<div className={style.modalTaskInfo}>
+							<div className={style.modalIssueInfo}>
 								<div>
 									<p className={'label-main'}>Заголовок</p>
-									<p>{taskInfo.title}</p>
+									<p>{issueInfo.title}</p>
 								</div>
 								<div>
 									<p className={'label-main'}>Отправитель</p>
 									<p>
-										{taskInfo.customer &&
-											`${taskInfo.customer.profile.lastname} ${taskInfo.customer.profile.firstname}`}
+										{issueInfo.customer &&
+											`${issueInfo.customer.profile.lastname} ${issueInfo.customer.profile.firstname}`}
 									</p>
 								</div>
 								<div>
@@ -653,31 +661,31 @@ const TaskInfo = ({ userContext }) => {
 										Дата отправки
 									</p>
 									<p>
-										{new Date(taskInfo.startDate)
+										{new Date(issueInfo.startDate)
 											.toLocaleString()
 											.slice(0, -10)}
 									</p>
 								</div>
 							</div>
 							<div className={style.reassignContent}>
-								<div className={style.currentDep}>
+								<div className={style.currentSpace}>
 									<p>
 										Отдел из которого отправляется заявка:
 									</p>
 									<span>
-										{taskInfo.department &&
-											taskInfo.department.name}
+										{issueInfo.space &&
+											issueInfo.space.name}
 									</span>
 								</div>
 								<i className='bx bx-arrow-to-right'></i>
-								<div className={style.comingDep}>
+								<div className={style.comingSpace}>
 									<p>Отдел куда отправить заявку:</p>
 									<select
 										onChange={e =>
-											setIdDepart(e.target.value)
+											setIdSpace(e.target.value)
 										}
 									>
-										{departs.map(item => (
+										{Spaces.map(item => (
 											<option
 												key={item.id}
 												value={item.id}
@@ -693,7 +701,7 @@ const TaskInfo = ({ userContext }) => {
 								className={'btn-main'}
 								value={'Отправить'}
 								onClick={() =>
-									reassignTask(taskInfo.id, idDepart)
+									reassignIssue(issueInfo.id, idSpace)
 								}
 							/>
 						</div>
@@ -701,7 +709,7 @@ const TaskInfo = ({ userContext }) => {
 				)}
 			</AnimatePresence>
 			<AnimatePresence>
-				{isModalSubTask && (
+				{isModalSubIssue && (
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
@@ -714,30 +722,30 @@ const TaskInfo = ({ userContext }) => {
 					>
 						<div
 							className={style.overlay}
-							onClick={() => setIsModalSubTask(false)}
+							onClick={() => setIsModalSubIssue(false)}
 						></div>
 						<div className={style.modalContent}>
 							<i
 								className={`bx bx-x ${style.closeModal}`}
-								onClick={() => setIsModalSubTask(false)}
+								onClick={() => setIsModalSubIssue(false)}
 							></i>
 							<div className={style.title}>
 								Создать дополнительную задачу
 							</div>
-							<div className={style.modalSubTaskInfo}>
+							<div className={style.modalSubIssueInfo}>
 								<input
 									name='title'
 									type='text'
-									className={style.titleSubTask}
-									value={subTaskInfo.title}
-									onChange={handleChangeSubtask}
+									className={style.titleSubIssue}
+									value={subIssueInfo.title}
+									onChange={handleChangeSubIssue}
 								/>
 								<input
 									type='text'
 									name='description'
-									className={style.descSubTask}
-									value={subTaskInfo.description}
-									onChange={handleChangeSubtask}
+									className={style.descSubIssue}
+									value={subIssueInfo.description}
+									onChange={handleChangeSubIssue}
 								/>
 
 								<select
@@ -745,7 +753,7 @@ const TaskInfo = ({ userContext }) => {
 									className={style.selectDep}
 									onChange={e => {
 										const { name, value } = e.target;
-										setSubTaskInfo(prevState => ({
+										setSubIssueInfo(prevState => ({
 											...prevState,
 											[name]: {
 												id: value
@@ -753,16 +761,16 @@ const TaskInfo = ({ userContext }) => {
 										}));
 									}}
 								>
-									{taskInfo.executor ? (
+									{issueInfo.executor ? (
 										`<option>
-											${taskInfo.executor.profile.firstname} 
-											${taskInfo.executor.profile.lastname}
+											${issueInfo.executor.profile.firstname} 
+											${issueInfo.executor.profile.lastname}
 										</option>`
 									) : (
 										<option>Не назначен</option>
 									)}
-									{departUsers &&
-										departUsers.map(item => (
+									{SpaceUsers &&
+										SpaceUsers.map(item => (
 											<option
 												key={item.id}
 												value={item.id}
@@ -775,7 +783,9 @@ const TaskInfo = ({ userContext }) => {
 									type='button'
 									className={'btn-main'}
 									value={'Отправить'}
-									onClick={() => handlerSubTask(taskInfo.id)}
+									onClick={() =>
+										handlerSubIssue(issueInfo.id)
+									}
 								/>
 							</div>
 						</div>
@@ -786,4 +796,4 @@ const TaskInfo = ({ userContext }) => {
 	);
 };
 
-export default TaskInfo;
+export default IssueInfo;

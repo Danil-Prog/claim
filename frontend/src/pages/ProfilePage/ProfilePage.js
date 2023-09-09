@@ -271,11 +271,10 @@ const ProfilePage = ({ userContext }) => {
 											<span className='text'>
 												<input
 													type='text'
-													name='department'
+													name='Space'
 													value={
-														userProfile.department &&
-														userProfile.department
-															.name
+														userProfile.space &&
+														userProfile.space.name
 													}
 													onChange={handleInputChange}
 												/>
@@ -392,8 +391,8 @@ const ProfilePage = ({ userContext }) => {
 											Отдел:{' '}
 										</label>
 										<span className='text'>
-											{userProfile.department &&
-												userProfile.department.name}
+											{userProfile.space &&
+												userProfile.space.name}
 										</span>
 									</div>
 								</div>

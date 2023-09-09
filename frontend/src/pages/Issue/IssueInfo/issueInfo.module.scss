@@ -1,4 +1,4 @@
-.task {
+.Issue {
 
   display: flex;
   height: 600px;
@@ -7,7 +7,7 @@
   color: var(--text-color);
   padding: 0 30px;
   position: relative;
-  .messageTask {
+  .messageIssue {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,7 +29,7 @@
       border-top: solid var(--input-color) 2px;
       padding-top: 20px;
     }
-    .labelSubtask {
+    .labelSubIssue {
       display: flex;
       grid-gap: 20px;
       align-items: center;
@@ -77,16 +77,16 @@
           align-items: center;
         }
         .dotCompleted {
-          fill: var(--task-completed)
+          fill: var(--Issue-completed)
         }
         .dotReview {
-          fill: var(--task-review)
+          fill: var(--Issue-review)
         }
         .dotCanceled {
-          fill: var(--task-canceled)
+          fill: var(--Issue-canceled)
         }
         .dotInProgress {
-          fill: var(--task-in-progress)
+          fill: var(--Issue-in-progress)
         }
       }
       .statusInfo {
@@ -129,7 +129,7 @@
           background-color: var(--primary-color-light);
         }
       }
-      .selectDep {
+      .selectSpace {
         margin-top: 6px;
         background-color: var(--input-color);
         border: none;
@@ -247,10 +247,10 @@
     border-radius: 20px;
     z-index: 1010;
     color: var(--text-color);
-    .labelModalTaskInfo {
+    .labelModalIssueInfo {
       padding: 0 5px 10px 5px;
     }
-    .modalTaskInfo {
+    .modalIssueInfo {
       display: flex;
       grid-gap: 20px;
       background-color: var(--body-color);
@@ -283,10 +283,10 @@
       p {
         font-size: 1.2em;
       }
-      .currentDep {
+      .currentSpace {
 
       }
-      .comingDep {
+      .comingSpace {
         select {
           margin-top: 6px;
           background-color: var(--content-color-light);
@@ -307,11 +307,11 @@
   }
 }
 
-.modalSubTaskInfo {
+.modalSubIssueInfo {
   display: flex;
   flex-direction: column;
   grid-gap: 20px;
-  .titleSubTask, .descSubTask, select {
+  .titleSubIssue, .descSubIssue, select {
     display: flex;
     background-color: var(--content-color);
     color: var(--text-color);

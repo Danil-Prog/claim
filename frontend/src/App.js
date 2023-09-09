@@ -5,11 +5,11 @@ import React from 'react';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
-import DepartPage from './pages/DepartPage/DepartPage';
-import DepartUsersPage from './pages/DepartUsersPage';
+import SpacePage from './pages/SpacePage/SpacePage';
+import SpaceUsersPage from './pages/SpaceUsersPage';
 import UsersPage from './pages/Users/UsersPage';
-import TaskPage from './pages/Task/TaskPage';
-import TaskInfo from './pages/Task/TaskInfo';
+import IssuePage from './pages/Issue/IssuePage';
+import IssueInfo from './pages/Issue/IssueInfo';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
@@ -37,11 +37,11 @@ function StaticElements() {
 	);
 }
 
-function StaticListTask() {
+function StaticListIssue() {
 	const userContext = React.useContext(UserContext);
 	return (
 		<>
-			<TaskPage userContext={userContext} />
+			<IssuePage userContext={userContext} />
 		</>
 	);
 }
@@ -62,13 +62,13 @@ function App() {
 			element: <ProfilePage userContext={userContext} />
 		},
 		{
-			path: '/task',
-			element: <StaticListTask />,
+			path: '/Issue',
+			element: <StaticListIssue />,
 			children: (
 				<Route
 					exact
-					path=':taskId'
-					element={<TaskInfo userContext={userContext} />}
+					path=':IssueId'
+					element={<IssueInfo userContext={userContext} />}
 				/>
 			)
 		},
@@ -85,12 +85,12 @@ function App() {
 			element: <ProfileUserPage userContext={userContext} />
 		},
 		{
-			path: '/department',
-			element: <DepartPage userContext={userContext} />
+			path: '/Space',
+			element: <SpacePage userContext={userContext} />
 		},
 		{
-			path: '/department/users?/:userId',
-			element: <DepartUsersPage userContext={userContext} />
+			path: '/Space/users?/:userId',
+			element: <SpaceUsersPage userContext={userContext} />
 		},
 		{
 			path: '/statistic',
