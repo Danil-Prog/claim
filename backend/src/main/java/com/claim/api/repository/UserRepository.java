@@ -17,6 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> deleteUserById(Long id);
 
-    Page<User> findUsersByProfile_Department_Id(Long id, PageRequest pageRequest);
+    Page<User> findUsersByProfile_Space_Id(Long id, PageRequest pageRequest);
 
 }

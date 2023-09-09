@@ -7,7 +7,9 @@ import './styleDepart.scss';
 
 import { departApi } from '../../misc/DepartApi';
 import Pagination from '../../components/Pagination';
-import Sort from '../../components/Sort/Sort';
+
+import Header from '../../components/Header';
+import Dropdown from '../../components/Dropdown';
 
 const DepartPage = ({ userContext }) => {
   const user = userContext.getUser();
@@ -18,6 +20,11 @@ const DepartPage = ({ userContext }) => {
   const [totalPages, setTotalPages] = React.useState(null);
   const [sizeItems, setSizeItems] = React.useState(10);
   const [selectedSort, setSelectedSort] = React.useState('asc');
+  const listAscDesc = [
+    ['возрастанию', 'asc'],
+    ['убыванию', 'desc'],
+  ];
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,12 +34,28 @@ const DepartPage = ({ userContext }) => {
     });
   };
 
-  const handleCustomToast = () => {
+  const handleCreateDepartToast = () => {
     toast('Отдел успешно создан!', {
       icon: { type: 'success' },
       theme: {
         type: 'custom',
-        style: { background: 'var(--dark-primary-color)', color: 'var(--dark-text-color)' },
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
+      },
+    });
+  };
+
+  const handleCreateDepartErrorToast = () => {
+    toast('Что-то пошло не так!', {
+      icon: { type: 'error' },
+      theme: {
+        type: 'custom',
+        style: {
+          background: 'var(--primary-color-light)',
+          color: 'var(--text-color)',
+        },
       },
     });
   };
@@ -42,9 +65,10 @@ const DepartPage = ({ userContext }) => {
     try {
       await departApi.newDepartment(user.authdata, valueDepartment);
       setValueDepartment({ name: '' });
-      handleCustomToast();
+      handleCreateDepartToast();
     } catch (error) {
       console.log(error);
+      handleCreateDepartErrorToast();
     }
   };
 
@@ -61,56 +85,59 @@ const DepartPage = ({ userContext }) => {
   }, [currentPage, selectedSort]);
 
   return (
-    <div className="page">
-      <section className="top">
-        <div className="title-page">
-          <h2>Отделы</h2>
-        </div>
-      </section>
+    <>
+      {user.authdata && listDepartment && (
+        <>
+          <Header title={'Отделы'} />
+          <div className="page">
+            <section className="wrapper depart">
+              <div className="page-content">
+                <div className="page-content-top">
+                  <div className="create-depart">
+                    <label className="label-field" htmlFor="name">
+                      <form onSubmit={handleSubmit}>
+                        <input
+                          className="input-create-depart"
+                          type="text"
+                          name="name"
+                          value={valueDepartment && valueDepartment.name}
+                          onChange={handleInputChange}
+                        />
+                        <span>Создание отдела: </span>
+                        <input className="btn-input" type="submit" value="Создать" />
+                      </form>
+                    </label>
+                  </div>
+                  <Dropdown setSelected={setSelectedSort} list={listAscDesc} />
 
-      <section className="wrapper depart">
-        <div className="page-content">
-          <div className="page-content-top">
-            <div className="create-depart">
-              <label className="label-field" htmlFor="name">
-                <form onSubmit={handleSubmit}>
-                  <input
-                    className="input-create-depart"
-                    type="text"
-                    name="name"
-                    value={valueDepartment && valueDepartment.name}
-                    onChange={handleInputChange}
-                  />
-                  <span>Создание отдела: </span>
-                  <input className="btn-input" type="submit" value="Создать" />
-                </form>
-              </label>
-            </div>
-            <Sort selectedSort={selectedSort} setSelectedSort={setSelectedSort} />
+                  <div className="search-depart">
+                    <label className="label-field" htmlFor="search">
+                      <input className="input-search-depart" type="text" name="search" />
+                      <span>Поиск: </span>
+                    </label>
+                    <i className="bx bx-search icon"></i>
+                  </div>
+                </div>
 
-            <div className="search-depart">
-              <label className="label-field" htmlFor="search">
-                <input className="input-search-depart" type="text" name="search" />
-                <span>Поиск: </span>
-              </label>
-              <i className="bx bx-search icon"></i>
-            </div>
+                <div className="list-depart">
+                  <ul>
+                    {listDepartment.map((item) => (
+                      <Link to={`users?id=${item.id}`} key={item.id}>
+                        <li>{item.name}</li>
+                      </Link>
+                    ))}
+                  </ul>
+                </div>
+                <Pagination
+                  totalPages={totalPages}
+                  onChangePage={(number) => setCurrentPage(number)}
+                />
+              </div>
+            </section>
           </div>
-
-          <div className="list-depart">
-            <ul>
-              {listDepartment.map((item) => (
-                <Link to={`users?id=${item.id}`} key={item.id}>
-                  <li>{item.name}</li>
-                </Link>
-              ))}
-            </ul>
-          </div>
-          <Pagination totalPages={totalPages} onChangePage={(number) => setCurrentPage(number)} />
-        </div>
-        <div className="users">123</div>
-      </section>
-    </div>
+        </>
+      )}
+    </>
   );
 };
 

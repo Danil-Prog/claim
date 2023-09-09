@@ -1,0 +1,312 @@
+.task {
+
+  display: flex;
+  height: 600px;
+
+  width: 100%;
+  color: var(--text-color);
+  padding: 0 30px;
+  position: relative;
+  .messageTask {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+    .title {
+      font-size: 1.5em;
+      margin: 0 0 15px 0;
+      word-break: break-all;
+      width: 90%;
+    }
+    .description {
+      flex: 1;
+    }
+    .messageField {
+      display: flex;
+      justify-self: center;
+      align-self: center;
+      border-top: solid var(--input-color) 2px;
+      padding-top: 20px;
+    }
+  }
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    grid-gap: 40px;
+    height: 100%;
+    width: 25%;
+    .customer {
+      display: flex;
+      flex-direction: column;
+      .customerInfo {
+        display: flex;
+        align-items: center;
+        grid-gap: 15px;
+        padding-top: 15px;
+      }
+    }
+    .status {
+      .label {
+        display: flex;
+        grid-gap: 3px;
+        svg {
+          display: flex;
+          align-items: center;
+        }
+        .dotCompleted {
+          fill: var(--task-completed)
+        }
+        .dotReview {
+          fill: var(--task-review)
+        }
+        .dotCanceled {
+          fill: var(--task-canceled)
+        }
+        .dotInProgress {
+          fill: var(--task-in-progress)
+        }
+      }
+      .statusInfo {
+        display: flex;
+        align-items: center;
+        grid-gap: 5px;
+        margin-left: -21px;
+        .dotStatus {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+    .executor {
+      .executorInfo {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        grid-gap: 15px;
+        .emptyExec {
+          display: flex;
+          flex-direction: column;
+          margin: 5px 0;
+
+        }
+        .nameExec {
+          margin: 17px 0;
+        }
+      }
+      .btnAddExec {
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 5px;
+        padding: 3px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--tran-03);
+
+        &:hover {
+          background-color: var(--primary-color-light);
+        }
+      }
+      .selectDep {
+        margin-top: 6px;
+        background-color: var(--input-color);
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--tran-03);
+
+        &:focus,
+        &:active {
+          border: none;
+          outline:none;
+        }
+      }
+      .selectShow {
+        animation: showElement 0.3s forwards;
+      }
+      .selectHide {
+        animation: hideElement 0.3s forwards;
+      }
+    }
+    .startDate {
+      color: var(--label);
+    }
+  }
+  .description {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    width: 100%;
+  }
+  .messageField {
+    display: flex;
+    justify-self: flex-end;
+    align-self: flex-end;
+    input {
+      border-radius: 0 20px 20px 0;
+      border: none;
+      background-color: var(--primary-color);
+      color: var(--text-color);
+    }
+  }
+
+  .menu {
+
+    right: 20px;
+    top: -50px;
+    font-size: 30px;
+    position: absolute;
+    i {
+      cursor: pointer;
+    }
+    .dropdownPopup {
+      position: absolute;
+      top: 40px;
+      width: 205px;
+      text-align: center;
+      right: 0;
+      border-radius: 10px;
+      color: var(--text-color);
+      background-color: var(--input-color);
+      font-size: 15px;
+      z-index: 11;
+      -webkit-box-shadow: 0px 2px 4px 0px var(--body-color);
+      -moz-box-shadow: 0px 2px 4px 0px var(--body-color);
+      box-shadow: 0px 2px 4px 0px var(--body-color);
+
+      ul {
+        .active {
+          background-color: var(--primary-color-light);
+          color: var(--text-color);
+        }
+        li {
+          list-style-type: none;
+          padding: 10px;
+          cursor: pointer;
+          transition: var(--tran-03);
+          &:hover {
+            background-color: var(--primary-color-light);
+          }
+        }
+        li:first-child {
+          border-radius: 10px 10px 0 0;
+        }
+        li:last-child {
+          border-radius: 0 0 10px 10px;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0,0,0,0.7);
+  }
+  .modalContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--input-color);
+    position: fixed;
+    padding: 20px 50px 50px 50px;
+    top: 25%;
+    left: 25%;
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    z-index: 1010;
+    color: var(--text-color);
+    .labelModalTaskInfo {
+      padding: 0 5px 10px 5px;
+    }
+    .modalTaskInfo {
+      display: flex;
+      grid-gap: 20px;
+      background-color: var(--body-color);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .closeModal {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+      transition: var(--tran-03);
+      &:hover {
+        color: var(--text-color-light);
+      }
+    }
+    i {
+      font-size: 40px;
+    }
+    .title {
+      font-size: 1.8em;
+      padding: 20px 0;
+      display: flex;
+
+    }
+    .reassignContent {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex: 1;
+      p {
+        font-size: 1.2em;
+      }
+      .currentDep {
+
+      }
+      .comingDep {
+        select {
+          margin-top: 6px;
+          background-color: var(--content-color-light);
+          border: none;
+          padding: 5px;
+          border-radius: 5px;
+          color: var(--text-color);
+          cursor: pointer;
+          transition: var(--tran-03);
+          &:focus,
+          &:active {
+            border: none;
+            outline:none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.emptyIcon {
+  font-size: 70px;
+  color: var(--input-color);
+  transition: var(--tran-03);
+}
+
+@keyframes showElement {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes hideElement {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

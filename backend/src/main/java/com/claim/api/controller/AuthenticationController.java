@@ -1,7 +1,7 @@
 package com.claim.api.controller;
 
-import com.claim.api.controller.dto.AuthenticationRequest;
-import com.claim.api.controller.dto.AuthenticationResponse;
+import com.claim.api.controller.request.AuthenticationRequest;
+import com.claim.api.controller.response.AuthenticationResponse;
 import com.claim.api.entity.User;
 import com.claim.api.service.JwtTokenService;
 import com.claim.api.service.JwtUserDetails;

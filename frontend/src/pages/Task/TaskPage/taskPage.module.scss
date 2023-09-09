@@ -1,0 +1,82 @@
+.taskContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transition: var(--tran-03);
+  min-height: 740px;
+  width: 100%;
+  min-width: 500px;
+  max-width: 1700px;
+  padding: 0;
+  border-radius: 10px;
+  background-color: var(--content-color);
+  @media screen and (max-width: 1400px) {
+    max-width: 100%;
+    flex-direction: column;
+  }
+  .listTasks {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+    align-self: center;
+    height: 740px;
+    .list{
+      display: flex;
+      flex: 10;
+      flex-direction: column;
+      align-self: center;
+      width: 100%;
+      overflow: scroll;
+      overflow-x: hidden;
+      max-height: 600px;
+      grid-gap: 1px;
+      .active {
+        background-color: var(--primary-color);
+      }
+    }
+    .wrapperList {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex: 1;
+      select {
+        background-color: var(--content-color);
+        border: none;
+        padding: 5px;
+        border-radius: 5px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--tran-03);
+        &:focus,
+        &:active {
+          border: none;
+          outline:none;
+        }
+      }
+      i {
+        font-size: 25px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--tran-03);
+      }
+    }
+    .footerListTasks {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex: 1;
+    }
+  }
+  .pageTask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    .emptyIcon {
+      font-size: 70px;
+      color: var(--input-color);
+      transition: var(--tran-03);
+    }
+  }
+}
+

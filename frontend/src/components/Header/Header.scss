@@ -1,0 +1,37 @@
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  top: 0;
+  left: 250px;
+  height: 150px;
+  padding: 0 100px;
+  align-items: flex-end;
+  z-index: 10;
+  margin-bottom: 20px;
+  .title-page {
+    color: var(--title-text-color);
+    font-size: 25px;
+    h2 {
+      transition: var(--tran-03);
+    }
+    a {
+      text-decoration: none;
+      .bx-left-arrow-alt {
+        position: absolute;
+        left: 5%;
+        top: 11%;
+        padding: 2px;
+        font-size: 30px;
+        border-radius: 50%;
+        color: var(--text-color);
+        background: var(--primary-color);
+        transition: var(--tran-03);
+        cursor: pointer;
+        &:hover {
+          background: var(--primary-color-light);
+        }
+      }
+    }
+  }
+}

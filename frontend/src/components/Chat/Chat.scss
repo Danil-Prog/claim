@@ -1,0 +1,202 @@
+.chat.open {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  transition: var(--tran-03);
+  flex-grow: 1;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  min-height: 740px;
+  max-width: 430px;
+  height: 740px;
+  z-index: 1;
+
+  background-color: var(--sidebar-color);
+  @media screen and (max-width: 1400px) {
+    max-width: 100%;
+  }
+  .top {
+    z-index: 2;
+    margin-bottom: 20px;
+    position: relative;
+  .toggle {
+      position: absolute;
+      top: 50%;
+      left: -13px;
+      transform: translateY(-50%);
+      height: 25px;
+      width: 25px;
+      background-color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--tran-04);
+
+      font-size: 25px;
+      cursor: pointer;
+    }
+    .user-card {
+      width: 100%;
+      padding: 20px 30px 10px 30px;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  .user-list {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 13px;
+    padding-bottom: 13px;
+  }
+
+  .message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    grid-gap: 20px;
+    transition: var(--tran-03);
+    background-color: var(--content-color-light);
+    form {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      grid-gap: 20px;
+      transition: var(--tran-03);
+      .text_message {
+        min-width: 100px;
+        flex-grow: 3;
+        padding: 13px;
+        height: 50px;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        border-radius: 10px;
+        background-color: var(--input-color);
+        transition: var(--tran-03);
+        &:focus + span {
+          background-color: var(--primary-color);
+        }
+        &:invalid + span {
+          color: red;
+          background-color: #000;
+        }
+      }
+
+      .send_message {
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        border: none;
+        height: 50px;
+        width: 50px;
+        font-size: 22px;
+        color: var(--text-color);
+        transition: var(--tran-03);
+        cursor: pointer;
+        &:hover {
+          background-color: var(--primary-color-light);
+        }
+      }
+    }
+
+    .clip {
+      font-size: 22px;
+      transform: rotateZ(-45deg);
+      color: var(--text-color);
+
+      transition: var(--tran-02);
+      cursor: pointer;
+      &:hover {
+        color: var(--primary-color-light);
+      }
+    }
+  }
+}
+
+
+
+.chat.close {
+  display: flex;
+  flex-direction: column;
+
+  transition: var(--tran-03);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  min-height: 740px;
+  max-width: 82px;
+  height: 740px;
+  z-index: 1;
+  background-color: var(--sidebar-color);
+
+  @media screen and (max-width: 1200px) {
+    max-width: 100%;
+  }
+  .top {
+    z-index: 2;
+    position: relative;
+    .toggle {
+      position: absolute;
+      top: 50%;
+      left: -13px;
+      transform: translateY(-50%) rotate(180deg);
+
+      height: 25px;
+      width: 25px;
+      background-color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: var(--tran-04);
+      z-index: 10;
+      font-size: 25px;
+      cursor: pointer;
+    }
+    .user-card {
+      min-width: 80px;
+
+      height: 100px;
+
+      border-radius: 10px 10px 0 0;
+      background-color: var(--sidebar-color);
+
+      .user-card-info {
+        opacity: 0;
+      }
+    }
+  }
+
+  .user-list {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 13px;
+
+    .user-card {
+      min-width: 100px;
+      width: 100%;
+      border-radius: 0;
+      &:hover {
+        background-color: var(--content-color-light);
+      }
+      background-color: var(--sidebar-color);
+      .user-card-info {
+        opacity: 0;
+      }
+    }
+  }
+
+  .message {
+    display: none;
+  }
+}
