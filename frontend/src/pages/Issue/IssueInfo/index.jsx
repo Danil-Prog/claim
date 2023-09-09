@@ -715,7 +715,7 @@ const IssueInfo = ({ userContext }) => {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{
-							duration: 0.2,
+							duration: 0.3,
 							ease: 'linear'
 						}}
 						className={style.modal}
