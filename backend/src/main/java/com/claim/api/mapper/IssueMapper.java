@@ -17,13 +17,11 @@ public class IssueMapper {
 
     private final UserMapper userMapper;
     private final SubTaskMapper subTaskMapper;
-    private final CommentMapper commentMapper;
 
     @Autowired
-    public IssueMapper(UserMapper userMapper, SubTaskMapper subTaskMapper, CommentMapper commentMapper) {
+    public IssueMapper(UserMapper userMapper, SubTaskMapper subTaskMapper) {
         this.userMapper = userMapper;
         this.subTaskMapper = subTaskMapper;
-        this.commentMapper = commentMapper;
     }
 
     public IssueDto toIssueDto(Issue issue) {
@@ -33,10 +31,7 @@ public class IssueMapper {
         for (Issue issue1 : issue.getSubtask()) {
             subtaskDto.add(subTaskMapper.toSubTaskDto(issue1));
         }
-        List<CommentDto> comments = new ArrayList<>();
-        for (Comment comment : issue.getComments()) {
-            comments.add(commentMapper.toCommentDto(comment));
-        }
+
         return new IssueDto(issue.getId(),
                 issue.getTitle(),
                 issue.getDescription(),
@@ -46,8 +41,7 @@ public class IssueMapper {
                 subtaskDto,
                 userMapper.toUserDto(issue.getExecutor()),
                 issue.getStartDate(), issue.getEndDate(),
-                userMapper.toUserDto(issue.getCustomer()),
-                comments);
+                userMapper.toUserDto(issue.getCustomer()));
     }
 
     public IssueAllDto toIssueAllDto(Issue issue) {
