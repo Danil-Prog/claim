@@ -17,6 +17,5 @@ public record IssueDto(Long id,
                        UserDto executor,
                        Date startDate,
                        Date endDate,
-                       UserDto customer,
-                       List<CommentDto> comments){
+                       UserDto customer){
 }
