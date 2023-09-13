@@ -1,6 +1,5 @@
 package com.claim.api.service;
 
-import com.claim.api.controller.dto.CommentDto;
 import com.claim.api.controller.request.IssueExecutorRequest;
 import com.claim.api.controller.request.IssueStatusRequest;
 import com.claim.api.controller.request.IssueTypeRequest;
@@ -8,7 +7,6 @@ import com.claim.api.entity.*;
 import com.claim.api.events.EventStatus;
 import com.claim.api.events.IssueCreationEvent;
 import com.claim.api.exception.BadRequestException;
-import com.claim.api.mapper.CommentMapper;
 import com.claim.api.repository.IssueRepository;
 import com.claim.api.repository.SpaceRepository;
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 @Service
