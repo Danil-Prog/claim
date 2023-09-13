@@ -39,4 +39,8 @@ public class MessageService {
         Set<UserDto> users = usersOnline.stream().map(userMapper::toUserDto).collect(Collectors.toSet());
         simpMessagingTemplate.convertAndSend("/topic/online", ResponseEntity.ok(users));
     }
+
+    public void sendMessageToUser(String username, String message) {
+        simpMessagingTemplate.convertAndSendToUser(username, "/queue/", message);
+    }
 }
