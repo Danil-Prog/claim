@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
-import UserCard from '../../components/UserCard';
+import UserCard from '../../components/UserCardStr';
 
 const SpaceUsersPage = ({ userContext }) => {
 	const user = userContext.getUser();

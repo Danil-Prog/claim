@@ -11,6 +11,7 @@ import { SpaceApi } from '../../../misc/SpaceApi';
 import { userApi } from '../../../misc/UserApi';
 
 import style from './issueInfo.module.scss';
+import UserCard from '../../../components/UserCardStr';
 
 const IssueInfo = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -104,7 +105,7 @@ const IssueInfo = ({ userContext }) => {
 		try {
 			const initialIssue = {
 				id: issueInfo.id,
-				IssueStatus: 'COMPLETED'
+				issueStatus: 'COMPLETED'
 			};
 			await issueApi.changeStatus(user.authdata, initialIssue);
 			await successToast('Заявка выполнена!');
@@ -124,7 +125,7 @@ const IssueInfo = ({ userContext }) => {
 		try {
 			const initialIssue = {
 				id: issueInfo.id,
-				IssueStatus: 'CANCELED'
+				issueStatus: 'CANCELED'
 			};
 			await issueApi.changeStatus(user.authdata, initialIssue);
 			await successToast('Заявка отменена!');
@@ -146,7 +147,7 @@ const IssueInfo = ({ userContext }) => {
 		}
 	};
 
-	const handleSetExec = async e => {
+	const handleSetExec = e => {
 		try {
 			const { value } = e.target;
 			const initialExec = {
@@ -155,13 +156,13 @@ const IssueInfo = ({ userContext }) => {
 			};
 			const initialIssue = {
 				id: issueInfo.id,
-				IssueStatus: 'COMPLETED'
+				issueStatus: 'IN_PROGRESS'
 			};
-			await issueApi.changeExec(user.authdata, initialExec).then(() => {
+			issueApi.changeExec(user.authdata, initialExec).then(() => {
 				issueApi.changeStatus(user.authdata, initialIssue);
 			});
 
-			await successToast('Исполнитель назначен!');
+			successToast('Исполнитель назначен!');
 			setIsChangeIssue(!isChangeIssue);
 			setIsAssignExec(false);
 		} catch (error) {
@@ -240,6 +241,90 @@ const IssueInfo = ({ userContext }) => {
 							<i className='bx bx-plus-circle'></i>
 							<span>Добавить дополнительную задачу</span>
 						</label>
+						<div className={style.wrapperSubTask}>
+							{issueInfo &&
+								issueInfo.subtasks.map(item => (
+									<div
+										key={item.id}
+										className={`${style.subTaskItem} ${
+											item.issueStatus &&
+											item.issueStatus === 'COMPLETED'
+												? `${style.statusCompleted}`
+												: item.issueStatus === 'REVIEW'
+												? `${style.statusReview}`
+												: item.issueStatus ===
+												  'IN_PROGRESS'
+												? `${style.statusInProgress}`
+												: item.issueStatus ===
+												  'CANCELED'
+												? `${style.statusCanceled}`
+												: ''
+										}`}
+									>
+										<p className={style.subTaskTitle}>
+											<p className='label-main'>
+												Заголовок
+											</p>
+											{item.title}
+										</p>
+
+										<p>
+											<p className='label-main'>Статус</p>
+											{item &&
+											item.issueStatus === 'COMPLETED'
+												? `Выполнена`
+												: item.issueStatus === 'REVIEW'
+												? `Новая`
+												: item.issueStatus ===
+												  'IN_PROGRESS'
+												? `В процессе`
+												: item.issueStatus ===
+												  'CANCELED'
+												? `Отменена`
+												: 'Неизвестный статус'}
+										</p>
+										{!!item.executor ? (
+											<UserCard
+												user={item.executor}
+												role={false}
+												username={false}
+											/>
+										) : (
+											<motion.select
+												name='executor'
+												className={style.selectSpace}
+												onChange={handleSetExec}
+												initial={{ opacity: 0 }}
+												animate={{ opacity: 1 }}
+												exit={{ opacity: 0 }}
+												transition={{
+													duration: 0.2,
+													ease: 'linear'
+												}}
+											>
+												{item.executor ? (
+													`<option>
+														${item.executor.profile.firstname} 
+														${item.executor.profile.lastname}
+													</option>`
+												) : (
+													<option>Не назначен</option>
+												)}
+												{SpaceUsers &&
+													SpaceUsers.map(item => (
+														<option
+															key={item.id}
+															value={item.id}
+														>
+															{`${item.profile.lastname} ${item.profile.firstname}`}
+														</option>
+													))}
+											</motion.select>
+										)}
+									</div>
+								))}
+						</div>
+
 						<div className={style.messageField}>
 							<ReactQuill
 								className={style.description}

@@ -4,7 +4,7 @@
   padding: 10px;
   border-radius: 5px;
   background-color: var(--content-color-light);
-  min-width: 300px;
+  min-width: 200px;
   grid-gap: 20px;
   transition: var(--tran-03);
   cursor: pointer;
@@ -15,7 +15,7 @@
 
   .user-card-info {
     display: flex;
-    flex-direction: column;
+    grid-gap: 20px;
     transition: var(--tran-03);
     .name {
       color: var(--text-color);

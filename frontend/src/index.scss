@@ -96,16 +96,14 @@ body {
   flex-flow: row wrap;
   grid-gap: 0 30px;
   position: relative;
-
   left: 250px;
-  padding: 0 50px;
+  padding: 0 20px;
   width: calc(100% - 250px);
   transition: var(--tran-03);
 
   .page {
     flex: 1;
     width: 1100px;
-    margin-bottom: 20px;
 
     .top {
       .title-page {
@@ -120,10 +118,10 @@ body {
         display: flex;
         justify-content: space-between;
         transition: var(--tran-03);
-        min-height: 740px;
+        min-height: 830px;
         width: 100%;
         min-width: 500px;
-        max-width: 1700px;
+        max-width: 1800px;
         padding: 50px;
         border-radius: 10px;
         background-color: var(--content-color);

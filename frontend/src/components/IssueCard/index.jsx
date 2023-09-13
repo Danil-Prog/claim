@@ -8,13 +8,13 @@ function IssueCard({ Issue, active }) {
 			{Issue && (
 				<div
 					className={
-						Issue.IssueStatus && Issue.IssueStatus === 'COMPLETED'
+						Issue.issueStatus && Issue.issueStatus === 'COMPLETED'
 							? `${style.card} ${style.statusCompleted} ${active}`
-							: Issue.IssueStatus === 'REVIEW'
+							: Issue.issueStatus === 'REVIEW'
 							? `${style.card} ${style.statusReview} ${active}`
-							: Issue.IssueStatus === 'IN_PROGRESS'
+							: Issue.issueStatus === 'IN_PROGRESS'
 							? `${style.card} ${style.statusInProgress} ${active}`
-							: Issue.IssueStatus === 'CANCELED'
+							: Issue.issueStatus === 'CANCELED'
 							? `${style.card} ${style.statusCanceled} ${active}`
 							: style.card
 					}

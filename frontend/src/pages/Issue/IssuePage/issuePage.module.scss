@@ -3,10 +3,10 @@
   flex-direction: row;
   justify-content: space-between;
   transition: var(--tran-03);
-  min-height: 740px;
+  min-height: 830px;
   width: 100%;
   min-width: 500px;
-  max-width: 1700px;
+  max-width: 1800px;
   padding: 0;
   border-radius: 10px;
   background-color: var(--content-color);
@@ -17,9 +17,9 @@
   .listIssues {
     display: flex;
     flex-direction: column;
-    width: 25%;
+    width: 15%;
     align-self: center;
-    height: 740px;
+    height: 820px;
     .list{
       display: flex;
       flex: 10;
@@ -28,7 +28,7 @@
       width: 100%;
       overflow: scroll;
       overflow-x: hidden;
-      max-height: 600px;
+      max-height: 1000px;
       grid-gap: 1px;
       .active {
         background-color: var(--primary-color);
