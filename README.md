@@ -42,6 +42,6 @@ Header Authorization: ${token}
 
 
 
-- [@Chswell](https://github.com/Chswell)
-- [@Danil-Prog](https://github.com/Danil-Prog)
+- Frontend [@Chswell](https://github.com/Chswell)
+- Backend [@Danil-Prog](https://github.com/Danil-Prog)
 
