@@ -156,6 +156,10 @@ public class IssueService {
         Optional<Issue> epicIssueOptional = issueRepository.findById(id);
         if (epicIssueOptional.isPresent()) {
             Issue epicIssue = epicIssueOptional.get();
+
+            if (epicIssue.getIssueType() == IssueType.SUBTASK) {
+                throw new BadRequestException("It is not possible to create a subtask in a subtask");
+            }
             epicIssue.setIssueType(IssueType.EPIC);
 
             User customer = userService.getUserByUsername(principal.getName());
