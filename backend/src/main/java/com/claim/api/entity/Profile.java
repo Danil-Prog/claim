@@ -1,5 +1,6 @@
 package com.claim.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "profile")
@@ -34,6 +38,9 @@ public class Profile {
     private String email;
     @Column(name = "avatar")
     private String avatar;
+    @JsonIgnore
+    @OneToMany(mappedBy = "uploaded", fetch = FetchType.EAGER)
+    private Set<Attachment> attachments = new HashSet<>();
     @Size(min = 3, max = 11)
     @NotNull
     @Column(name = "phone")
@@ -47,5 +54,5 @@ public class Profile {
     private String pc;
     @NotNull
     @OneToOne
-    private Department department;
+    private Space space;
 }

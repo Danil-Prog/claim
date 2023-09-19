@@ -4,7 +4,7 @@
   left: 0;
   height: 100%;
   padding: 10px;
-  z-index: 100;
+  z-index: 10;
   transition: var(--tran-03);
   background-color: var(--sidebar-color);
   .menu-bar {
@@ -103,7 +103,6 @@
       font-size: 18px;
       font-weight: 400;
       white-space: nowrap;
-
       overflow: hidden;
     }
 
@@ -141,6 +140,7 @@
     .image-text {
       display: flex;
       align-items: center;
+
       .name {
         font-size: 23px;
         font-weight: 700;
@@ -213,7 +213,7 @@
 
   .text {
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: all 0.2s ease;
   }
 }
 

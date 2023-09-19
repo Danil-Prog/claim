@@ -7,29 +7,13 @@
   box-sizing: border-box;
   text-decoration: none;
 }
-.test {
-  color: #6078ff;
-  color: #ffffff;
-  color: #ff8360;
-  color: #60ff80;
 
-  color: #6078ff;
-  color: #ffffff;
-  color: #80ff60;
-  color: #ff6080;
-
-  color: #6078ff;
-  color: #7d8aff;
-  color: #9caaff;
-  color: #b9c9ff;
-  color: #d6e8ff;
-
-  color: #fed6bc;
-  color: #fffadd;
-  color: #def7fe;
-  color: #e7ecff;
-}
 :root {
+  --label: #7c7c7c;
+  --Issue-completed: #268112;
+  --Issue-review: #ffd454;
+  --Issue-in-progress: #6078ff;
+  --Issue-canceled: #9d0000;
   --body-color: #d6e8ff;
   --sidebar-color: #fff;
   --content-color: #fff;
@@ -100,9 +84,9 @@
 body {
   margin: 0;
   padding: 0;
-
   background-color: var(--body-color);
   transition: var(--tran-03);
+  overflow-x: hidden;
 }
 
 .content {
@@ -112,16 +96,14 @@ body {
   flex-flow: row wrap;
   grid-gap: 0 30px;
   position: relative;
-
   left: 250px;
-  padding: 0 50px;
+  padding: 0 20px;
   width: calc(100% - 250px);
   transition: var(--tran-03);
 
   .page {
     flex: 1;
     width: 1100px;
-    margin-bottom: 20px;
 
     .top {
       .title-page {
@@ -136,20 +118,16 @@ body {
         display: flex;
         justify-content: space-between;
         transition: var(--tran-03);
-        min-height: 740px;
+        min-height: 830px;
         width: 100%;
         min-width: 500px;
-        max-width: 1700px;
+        max-width: 1800px;
         padding: 50px;
         border-radius: 10px;
         background-color: var(--content-color);
         @media screen and (max-width: 1400px) {
           max-width: 100%;
           flex-direction: column;
-        }
-
-        .test {
-          background-color: var(--primary-color);
         }
 
         .text {
@@ -160,23 +138,7 @@ body {
   }
 }
 
-.btn-main {
-  background-color: var(--primary-color);
-  border: none;
-  border-radius: 5px;
-  padding: 9px;
-  max-width: 200px;
-  margin: 0 auto;
-  width: 200px;
-  color: var(--text-color);
-  font-size: 15px;
-  transition: var(--tran-03);
-  cursor: pointer;
-  &:hover {
-    background-color: var(--primary-color-light);
-  }
-}
-
+.btn-main,
 .btn-submit {
   background-color: var(--primary-color);
   border: none;
@@ -191,6 +153,103 @@ body {
   cursor: pointer;
   &:hover {
     background-color: var(--primary-color-light);
-    color: var(--body-color);
   }
+}
+
+.label-main {
+  text-transform: uppercase;
+  color: var(--label);
+  font-weight: 600;
+  font-size: 0.7em;
+}
+
+.active {
+  background-color: var(--primary-color) !important;
+  &:hover {
+    background-color: var(--primary-color-light) !important;
+  }
+}
+
+*::-webkit-scrollbar {
+  width: 5px; /* ширина всей полосы прокрутки */
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--body-color); /* цвет зоны отслеживания */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--content-color-light); //* цвет бегунка */
+  border-radius: 20px; /* округлость бегунка */
+}
+
+.large-null-avatar {
+  height: 200px;
+  width: 200px;
+}
+.medium-null-avatar {
+  height: 80px;
+  width: 80px;
+}
+.small-null-avatar {
+  height: 30px;
+  width: 30px;
+}
+
+.large-null-avatar,
+.medium-null-avatar,
+.small-null-avatar {
+  transition: var(--tran-03);
+  border-radius: 50%;
+  background-color: var(--body-color);
+}
+
+.mini-avatar,
+.null-avatar {
+    transition: var(--tran-03);
+    background-color: var(--content-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .null-avatar-title {
+      font-size: 15px;
+      font-weight: 800;
+      transition: var(--tran-03);
+      color: var(--dark);
+    }
+
+
+  .rand-color-1 {
+    background-color: var(--rand-color-1);
+  }
+  .rand-color-2 {
+    background-color: var(--rand-color-2);
+  }
+  .rand-color-3 {
+    background-color: var(--rand-color-3);
+  }
+  .rand-color-4 {
+    background-color: var(--rand-color-4);
+  }
+  .rand-color-5 {
+    background-color: var(--rand-color-5);
+  }
+  img {
+    border-radius: 50%;
+  }
+}
+
+.border-super-admin {
+  box-shadow: 0 0 0 3px var(--content-color-light), 0 0 0 5px var(--super-admin-color);
+}
+.border-admin {
+  box-shadow: 0 0 0 3px var(--content-color-light), 0 0 0 5px var(--admin-color);
+}
+.border-exec {
+  box-shadow: 0 0 0 3px var(--content-color-light), 0 0 0 5px var(--exec-color);
+}
+.border-user {
+  box-shadow: 0 0 0 3px var(--content-color-light), 0 0 0 5px var(--user-color);
 }

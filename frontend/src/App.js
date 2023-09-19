@@ -1,85 +1,123 @@
 import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import React from 'react';
 
-import './index.scss';
-import './styles/themeMode.scss';
-import Index from './pages/HomePage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
-import DepartPage from './pages/DepartPage/DepartPage';
-import DepartUsersPage from './pages/DepartUsersPage';
+import SpacePage from './pages/SpacePage/SpacePage';
+import SpaceUsersPage from './pages/SpaceUsersPage';
 import UsersPage from './pages/Users/UsersPage';
-import TaskPage from './pages/Task/TaskPage';
-import TaskDepart from './pages/Task/TaskDepart'
-import TaskInfo from './pages/Task/TaskInfo';
+import IssuePage from './pages/Issue/IssuePage';
+import IssueInfo from './pages/Issue/IssueInfo';
 import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
+import MonitoringPage from './pages/MonitoringPage';
 
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
 import Sidebar from './components/Sidebar';
-import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
-import * as PropTypes from "prop-types";
+
+import './index.scss';
+import './styles/themeMode.scss';
 
 function StaticElements() {
-  const userContext = React.useContext(UserContext);
-  const userValue = userContext.getUser();
-  return (
-    <div className="content">
-      {userValue && <Sidebar />}
-      <Outlet />
-      {userValue && <Chat userContext={userContext} />}
-    </div>
-  );
+	const userContext = React.useContext(UserContext);
+	const userValue = userContext.getUser();
+	return (
+		<div className='content'>
+			{userValue && <Sidebar />}
+			<Outlet />
+		</div>
+	);
+}
+
+function StaticListIssue() {
+	const userContext = React.useContext(UserContext);
+	return (
+		<>
+			<IssuePage userContext={userContext} />
+		</>
+	);
 }
 
 function App() {
-  const userContext = React.useContext(UserContext);
-  return (
-    <ThemeMode>
-      <Routes>
-        <Route exact path="/login" element={<LoginPage />} />
-        <Route path="/" element={<StaticElements />}>
-          <Route
-            path="/"
-            element={
-              <AdminRoute>
-                <Index userContext={userContext} />
-              </AdminRoute>
-            }
-          />
-          <Route exact path="/profile" element={<ProfilePage userContext={userContext} />} />
-          <Route exact path="/task" element={<TaskPage userContext={userContext} />} />
-          <Route exact path="/task/department" element={<TaskDepart userContext={userContext} />} />
-          <Route
-              exact
-              path="/task/info?/:taskId"
-              element={<TaskInfo userContext={userContext} />}
-          />
-          <Route exact path="/users" element={<UsersPage userContext={userContext} />} />
-          <Route exact path="/create/user" element={<CreateUserPage userContext={userContext} />} />
-          <Route
-            exact
-            path="/user?/:userId"
-            element={<ProfileUserPage userContext={userContext} />}
-          />
-          <Route exact path="/department" element={<DepartPage userContext={userContext} />} />
-          <Route
-            exact
-            path="/department/users?/:userId"
-            element={<DepartUsersPage userContext={userContext} />}
-          />
-
-          <Route exact path="/statistic" element={<StatisticPage userContext={userContext} />} />
-
-          <Route path="*" element={<Navigate to="/" />} />
-        </Route>
-      </Routes>
-    </ThemeMode>
-  );
+	const userContext = React.useContext(UserContext);
+	const routes = [
+		{
+			path: '/',
+			element: (
+				<AdminRoute>
+					<HomePage userContext={userContext} />
+				</AdminRoute>
+			)
+		},
+		{
+			path: '/profile',
+			element: <ProfilePage userContext={userContext} />
+		},
+		{
+			path: '/Issue',
+			element: <StaticListIssue />,
+			children: (
+				<Route
+					exact
+					path=':IssueId'
+					element={<IssueInfo userContext={userContext} />}
+				/>
+			)
+		},
+		{
+			path: '/users',
+			element: <UsersPage userContext={userContext} />
+		},
+		{
+			path: '/create/user',
+			element: <CreateUserPage userContext={userContext} />
+		},
+		{
+			path: '/user?/:userId',
+			element: <ProfileUserPage userContext={userContext} />
+		},
+		{
+			path: '/Space',
+			element: <SpacePage userContext={userContext} />
+		},
+		{
+			path: '/Space/users?/:userId',
+			element: <SpaceUsersPage userContext={userContext} />
+		},
+		{
+			path: '/statistic',
+			element: <StatisticPage userContext={userContext} />
+		},
+		{
+			path: '/monitoring',
+			element: <MonitoringPage userContext={userContext} />
+		},
+		{
+			path: '*',
+			element: <Navigate to='/' />
+		}
+	];
+	const routeComponents = routes.map(({ path, element, children }, key) => (
+		<Route exact path={path} element={element} key={key}>
+			{children}
+		</Route>
+	));
+	return (
+		<ThemeMode>
+			<Routes>
+				<Route exact path='/login' element={<LoginPage />} />
+				<Route path='/' element={<StaticElements />}>
+					{routeComponents}
+				</Route>
+			</Routes>
+		</ThemeMode>
+	);
 }
 
 export default App;
