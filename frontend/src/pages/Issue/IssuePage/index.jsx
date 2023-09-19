@@ -8,6 +8,7 @@ import IssueCard from '../../../components/IssueCard';
 import { issueApi } from '../../../misc/IssueApi';
 
 import style from './issuePage.module.scss';
+import ErrorToast from "../../../components/Toast/ErrorToast";
 
 const IssueSpace = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -36,7 +37,7 @@ const IssueSpace = ({ userContext }) => {
 				setIssueSpace(response.data.content);
 				setTotalPages(response.data.totalPages);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		return () => {};
 	}, [
 		currentPage,

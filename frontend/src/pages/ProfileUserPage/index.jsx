@@ -4,6 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfileUser.scss';
+import ErrorToast from "../../components/Toast/ErrorToast";
+import SuccessToast from "../../components/Toast/SuccessToast";
 
 const ProfilePage = ({ userContext }) => {
 	const user = userContext.getUser({ userContext });
@@ -35,8 +37,9 @@ const ProfilePage = ({ userContext }) => {
 		try {
 			await userApi.changeUserData(user.authdata, userData, userId);
 			setEditProfile(false);
+			SuccessToast();
 		} catch (error) {
-			console.log(error);
+			ErrorToast(error);
 		}
 	};
 
@@ -47,10 +50,9 @@ const ProfilePage = ({ userContext }) => {
 				.then(response => {
 					setUserData(response.data);
 					setUserProfile(response.data.profile);
-					console.log(response.data);
 				})
 				.catch(error => {
-					console.log(error);
+					ErrorToast(error);
 				});
 		}
 		return () => {};

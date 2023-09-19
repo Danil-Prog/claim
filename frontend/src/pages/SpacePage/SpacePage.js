@@ -10,6 +10,8 @@ import Pagination from '../../components/Pagination';
 
 import Header from '../../components/Header';
 import Dropdown from '../../components/Dropdown';
+import ErrorToast from "../../components/Toast/ErrorToast";
+import SuccessToast from "../../components/Toast/SuccessToast";
 
 const SpacePage = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -33,41 +35,14 @@ const SpacePage = ({ userContext }) => {
 		});
 	};
 
-	const handleCreateSpaceToast = () => {
-		toast('Отдел успешно создан!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const handleCreateSpaceErrorToast = () => {
-		toast('Что-то пошло не так!', {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
 	const handleSubmit = async e => {
 		e.preventDefault();
 		try {
 			await SpaceApi.newSpace(user.authdata, valueSpace);
 			setValueSpace({ name: '' });
-			handleCreateSpaceToast();
+			SuccessToast();
 		} catch (error) {
-			console.log(error);
-			handleCreateSpaceErrorToast();
+			ErrorToast(error);
 		}
 	};
 
@@ -78,7 +53,7 @@ const SpacePage = ({ userContext }) => {
 				setTotalPages(response.data.totalPages);
 				setSizeItems(response.data.size);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		return () => {};
 	}, [currentPage, selectedSort]);
 

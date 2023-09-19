@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 export const SpaceApi = {
 	newSpace,
 	getSpaces,
@@ -47,7 +48,7 @@ function getSpaceUsers(
 }
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8080/'
+	baseURL: process.env.REACT_APP_URL_API
 });
 
 //

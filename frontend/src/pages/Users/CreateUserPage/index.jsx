@@ -1,10 +1,11 @@
 import React from 'react';
-import { toast } from 'wc-toast';
 
 import style from './createUser.module.scss';
 import { userApi } from '../../../misc/UserApi';
 import { SpaceApi } from '../../../misc/SpaceApi';
 import Header from '../../../components/Header';
+import ErrorToast from "../../../components/Toast/ErrorToast";
+import SuccessToast from "../../../components/Toast/SuccessToast";
 
 const initialUser = {
 	username: '',
@@ -63,11 +64,10 @@ const UsersPage = ({ userContext }) => {
 		e.preventDefault();
 		try {
 			await userApi.createUser(user.authdata, userData);
-			handleCreateUserToast();
 			setUserData(initialUser);
+			SuccessToast();
 		} catch (error) {
-			console.log(error);
-			handleCreateUserErrorToast();
+			ErrorToast(error);
 		}
 	};
 
@@ -76,35 +76,9 @@ const UsersPage = ({ userContext }) => {
 			.then(response => {
 				setListSpace(response.data.content);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		return () => {};
 	}, [user.authdata]);
-
-	const handleCreateUserToast = () => {
-		toast('Пользователь успешно создан!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const handleCreateUserErrorToast = () => {
-		toast('Что-то пошло не так!', {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
 
 	return (
 		<>

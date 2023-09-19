@@ -8,6 +8,7 @@ import Pagination from '../../components/Pagination';
 import Dropdown from '../../components/Dropdown';
 import Header from '../../components/Header';
 import UserCard from '../../components/UserCardStr';
+import ErrorToast from "../../components/Toast/ErrorToast";
 
 const SpaceUsersPage = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -51,7 +52,7 @@ const SpaceUsersPage = ({ userContext }) => {
 				setTotalPages(response.data.totalPages);
 				setSizeItems(response.data.size);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		return () => {};
 	}, [
 		currentPage,

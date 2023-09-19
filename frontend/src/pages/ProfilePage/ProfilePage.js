@@ -4,6 +4,8 @@ import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfile.scss';
 import { toast } from 'wc-toast';
+import ErrorToast from "../../components/Toast/ErrorToast";
+import SuccessToast from "../../components/Toast/SuccessToast";
 
 const ProfilePage = ({ userContext }) => {
 	const user = userContext.getUser({ userContext });
@@ -30,10 +32,9 @@ const ProfilePage = ({ userContext }) => {
 		e.preventDefault();
 		try {
 			await userApi.changeSelfInfo(user.authdata, userProfile);
-			await handleChangeProfileToast();
+			SuccessToast();
 		} catch (error) {
-			console.log(error);
-			handleChangeProfileErrorToast();
+			ErrorToast(error);
 		}
 		if (selectedFile) {
 			const formData = new FormData();
@@ -41,7 +42,7 @@ const ProfilePage = ({ userContext }) => {
 			try {
 				await userApi.setAvatar(user.authdata, formData);
 			} catch (error) {
-				console.log(error);
+				ErrorToast(error);
 			}
 		}
 
@@ -54,11 +55,10 @@ const ProfilePage = ({ userContext }) => {
 				.getProfile(user.authdata)
 				.then(response => {
 					const info = response.data;
-					console.log(info);
 					setUserProfile(info);
 				})
 				.catch(error => {
-					console.log(error);
+					ErrorToast(error);
 				});
 		}
 		return () => {};
@@ -74,33 +74,6 @@ const ProfilePage = ({ userContext }) => {
 		reader.readAsDataURL(e.target.files[0]);
 	};
 
-	const handleChangeProfileToast = () => {
-		toast('Изменения успешно внесены!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const handleChangeProfileErrorToast = () => {
-		toast('Что-то пошло не так!', {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-	console.log('userprofile: ', userProfile);
-	console.log(preview);
 	return (
 		<>
 			{editProfile ? (

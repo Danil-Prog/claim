@@ -76,7 +76,7 @@ function changeIssue(authdata, Issue) {
 }
 
 function reassign(authdata, idIssue, idSpace) {
-	return instance.put(`/api/v1/issue/${idIssue}/Space/${idSpace}`, idSpace, {
+	return instance.put(`/api/v1/issue/${idIssue}/space/${idSpace}`, idSpace, {
 		headers: {
 			Authorization: `Bearer ${authdata}`,
 			'Content-type': 'application/json'
@@ -103,7 +103,5 @@ function createSubIssue(authdata, data, id) {
 }
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8080/'
+	baseURL: process.env.REACT_APP_URL_API
 });
-
-//
