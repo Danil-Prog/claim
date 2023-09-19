@@ -11,6 +11,6 @@ jobs:
     
     steps:
     - name: test print
-      run: ${{ secrets.TEST }}
+      run: echo ${{ secrets.TEST }}
     - name: connect and pull
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && mkdir /srv/test"
