@@ -1,8 +1,8 @@
 on:
+  pull_request:
   push:
     branches:
       - dev
-  workflow_dispatch:
   
 jobs:
   run_pull:
@@ -11,4 +11,4 @@ jobs:
     
     steps:
     - name: test print
-      run: echo ${{ secrets.TEST }}
+      run: echo ${{ secrets.TEST_SECRET }}
