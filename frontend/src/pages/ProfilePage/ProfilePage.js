@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfile.scss';
-import { toast } from 'wc-toast';
 import ErrorToast from "../../components/Toast/ErrorToast";
 import SuccessToast from "../../components/Toast/SuccessToast";
 
@@ -119,7 +118,22 @@ const ProfilePage = ({ userContext }) => {
 														alt='avatar'
 													/>
 												) : (
-													<div>avatar null</div>
+														<div className={
+															user.role ===
+															'ROLE_SUPER_ADMIN'
+																? 'large-null-avatar border-super-admin'
+																: user.role ===
+																'ROLE_ADMIN'
+																	? 'large-null-avatar border-admin'
+																	: user.role ===
+																	'ROLE_EXEC'
+																		? 'large-null-avatar border-exec'
+																		: user.role ===
+																		'ROLE_USER'
+																			? 'large-null-avatar border-user'
+																			: ''
+														}
+														></div>
 												)}
 												{user.role ===
 												'ROLE_SUPER_ADMIN' ? (
@@ -267,7 +281,7 @@ const ProfilePage = ({ userContext }) => {
 							<div className='page-content'>
 								<div className='profile-navigation'>
 									<div className='wrap-avatar'>
-										{userProfile.avatar != null && (
+										{userProfile.avatar != null ? (
 											<img
 												className={
 													user.role ===
@@ -289,6 +303,25 @@ const ProfilePage = ({ userContext }) => {
 												height={200}
 												alt='avatar'
 											/>
+										):(
+											<>
+												<div className={
+														 user.role ===
+														 'ROLE_SUPER_ADMIN'
+															 ? 'large-null-avatar border-super-admin'
+															 : user.role ===
+															 'ROLE_ADMIN'
+																 ? 'large-null-avatar border-admin'
+																 : user.role ===
+																 'ROLE_EXEC'
+																	 ? 'large-null-avatar border-exec'
+																	 : user.role ===
+																	 'ROLE_USER'
+																		 ? 'large-null-avatar border-user'
+																		 : ''
+													 }
+												></div>
+											</>
 										)}
 
 										{user.role === 'ROLE_SUPER_ADMIN' ? (

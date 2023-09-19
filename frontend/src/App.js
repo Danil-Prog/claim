@@ -18,7 +18,6 @@ import MonitoringPage from './pages/MonitoringPage';
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
 import Sidebar from './components/Sidebar';
-import Chat from './components/Chat';
 
 import UserContext from './context/UserContext';
 
@@ -32,7 +31,6 @@ function StaticElements() {
 		<div className='content'>
 			{userValue && <Sidebar />}
 			<Outlet />
-			{/*{userValue && <Chat userContext={userContext} />}*/}
 		</div>
 	);
 }

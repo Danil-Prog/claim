@@ -183,12 +183,27 @@ body {
   border-radius: 20px; /* округлость бегунка */
 }
 
-
-.null-avatar {
+.large-null-avatar {
+  height: 200px;
+  width: 200px;
+}
+.medium-null-avatar {
+  height: 80px;
+  width: 80px;
+}
+.small-null-avatar {
   height: 30px;
   width: 30px;
-  background-color: var(--text-color-light) !important;
 }
+
+.large-null-avatar,
+.medium-null-avatar,
+.small-null-avatar {
+  transition: var(--tran-03);
+  border-radius: 50%;
+  background-color: var(--body-color);
+}
+
 .mini-avatar,
 .null-avatar {
     transition: var(--tran-03);
