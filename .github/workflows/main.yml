@@ -11,4 +11,4 @@ jobs:
     
     steps:
     - name: connect and pull
-      run: ssh ${{ SSH_PRIVATE_KEY.SSH_USER }}@${{ SSH_PRIVATE_KEY.SSH_HOST }} "cd ${{ SSH_PRIVATE_KEY.WORK_DIR }} && git checkout ${{ SSH_PRIVATE_KEY.MAIN_BRANCH }} && git pull && mkdir /srv/test"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && mkdir /srv/test"
