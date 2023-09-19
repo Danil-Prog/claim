@@ -2,7 +2,7 @@ on:
   push:
     branches:
       - staging
-  workflow_dispatch:    
+  workflow_dispatch:
   
 jobs:
   run_pull:
