@@ -17,6 +17,7 @@
           .change-wrap-avatar {
             position: relative;
             margin: 0 auto;
+            cursor: pointer;
             label {
               &:hover .icon-camera {
                 opacity: 1;
@@ -135,6 +136,7 @@
             align-items: center;
             justify-content: space-between;
             border-bottom: 2px solid var(--content-color-light);
+            transition: var(--tran-03);
 
             .label-field {
               font-size: 18px;

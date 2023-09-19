@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../../components/Header';
 
 import { monitoringApi } from '../../misc/MonitoringApi';
+import ErrorToast from "../../components/Toast/ErrorToast";
 
 const MonitoringPage = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -25,70 +26,70 @@ const MonitoringPage = ({ userContext }) => {
 				.then(response => {
 					setJvmMemory(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getReadyTime(user.authdata)
 				.then(response => {
 					setReadyTime(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getDiskFree(user.authdata)
 				.then(response => {
 					setDiskFree(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getDiskTotal(user.authdata)
 				.then(response => {
 					setDiskTotal(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getCpuUsage(user.authdata)
 				.then(response => {
 					setCpuUsage(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getFilesOpen(user.authdata)
 				.then(response => {
 					setFilesOpen(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getFilesMax(user.authdata)
 				.then(response => {
 					setFilesMax(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getProcessUptime(user.authdata)
 				.then(response => {
 					setProcessUptime(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getSystemCpuCount(user.authdata)
 				.then(response => {
 					setSystemCpuCount(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 
 			monitoringApi
 				.getSystemCpuUsage(user.authdata)
 				.then(response => {
 					setSystemCpuUsage(response.data.measurements[0].value);
 				})
-				.catch(error => console.log(error));
+				.catch(error => ErrorToast(error));
 		}, 1000);
 
 		return () => clearInterval(intervalId);

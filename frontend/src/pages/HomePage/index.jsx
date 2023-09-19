@@ -8,6 +8,8 @@ import { SpaceApi } from '../../misc/SpaceApi';
 import { issueApi } from '../../misc/IssueApi';
 
 import style from './home.module.scss';
+import SuccessToast from "../../components/Toast/SuccessToast";
+import ErrorToast from "../../components/Toast/ErrorToast";
 
 const HomePage = ({ userContext }) => {
 	const user = userContext.getUser({ userContext });
@@ -27,10 +29,21 @@ const HomePage = ({ userContext }) => {
 		e.preventDefault();
 		try {
 			await issueApi.createIssue(user.authdata, valueIssue);
-			await handleCreateIssueToast();
+			SuccessToast('Заявка успешно создана!');
 			await setValueIssue(initialIssue);
 		} catch (error) {
-			console.log(error);
+			if (error.response) {
+				if(error.response.status === 400) {
+					ErrorToast(`${error.response.data.violations[0].fieldName}: 
+					${error.response.data.violations[0].message}`);
+				} else {
+					ErrorToast(error);
+				}
+			} else if (error.request) {
+				console.log(error.request);
+			} else {
+				console.log('Error', error.message);
+			}
 		}
 	};
 
@@ -67,37 +80,11 @@ const HomePage = ({ userContext }) => {
 				setListSpace(response.data.content);
 			})
 			.catch(error => {
-				handleCreateIssueErrorToast();
-				console.log(error);
+				ErrorToast('Не удалось получить список отделов.');
+				ErrorToast(error.response.data.message);
 			});
 		return () => {};
 	}, [user.authdata]);
-
-	const handleCreateIssueToast = () => {
-		toast('Заявка успешно создана!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const handleCreateIssueErrorToast = () => {
-		toast('Что-то пошло не так!', {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
 
 	return (
 		<>

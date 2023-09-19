@@ -3,7 +3,8 @@ import React from 'react';
 import Header from '../../components/Header';
 import { userApi } from '../../misc/UserApi';
 import './styleProfile.scss';
-import { toast } from 'wc-toast';
+import ErrorToast from "../../components/Toast/ErrorToast";
+import SuccessToast from "../../components/Toast/SuccessToast";
 
 const ProfilePage = ({ userContext }) => {
 	const user = userContext.getUser({ userContext });
@@ -30,10 +31,9 @@ const ProfilePage = ({ userContext }) => {
 		e.preventDefault();
 		try {
 			await userApi.changeSelfInfo(user.authdata, userProfile);
-			await handleChangeProfileToast();
+			SuccessToast();
 		} catch (error) {
-			console.log(error);
-			handleChangeProfileErrorToast();
+			ErrorToast(error);
 		}
 		if (selectedFile) {
 			const formData = new FormData();
@@ -41,7 +41,7 @@ const ProfilePage = ({ userContext }) => {
 			try {
 				await userApi.setAvatar(user.authdata, formData);
 			} catch (error) {
-				console.log(error);
+				ErrorToast(error);
 			}
 		}
 
@@ -54,11 +54,10 @@ const ProfilePage = ({ userContext }) => {
 				.getProfile(user.authdata)
 				.then(response => {
 					const info = response.data;
-					console.log(info);
 					setUserProfile(info);
 				})
 				.catch(error => {
-					console.log(error);
+					ErrorToast(error);
 				});
 		}
 		return () => {};
@@ -74,33 +73,6 @@ const ProfilePage = ({ userContext }) => {
 		reader.readAsDataURL(e.target.files[0]);
 	};
 
-	const handleChangeProfileToast = () => {
-		toast('Изменения успешно внесены!', {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const handleChangeProfileErrorToast = () => {
-		toast('Что-то пошло не так!', {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-	console.log('userprofile: ', userProfile);
-	console.log(preview);
 	return (
 		<>
 			{editProfile ? (
@@ -146,7 +118,22 @@ const ProfilePage = ({ userContext }) => {
 														alt='avatar'
 													/>
 												) : (
-													<div>avatar null</div>
+														<div className={
+															user.role ===
+															'ROLE_SUPER_ADMIN'
+																? 'large-null-avatar border-super-admin'
+																: user.role ===
+																'ROLE_ADMIN'
+																	? 'large-null-avatar border-admin'
+																	: user.role ===
+																	'ROLE_EXEC'
+																		? 'large-null-avatar border-exec'
+																		: user.role ===
+																		'ROLE_USER'
+																			? 'large-null-avatar border-user'
+																			: ''
+														}
+														></div>
 												)}
 												{user.role ===
 												'ROLE_SUPER_ADMIN' ? (
@@ -294,7 +281,7 @@ const ProfilePage = ({ userContext }) => {
 							<div className='page-content'>
 								<div className='profile-navigation'>
 									<div className='wrap-avatar'>
-										{userProfile.avatar != null && (
+										{userProfile.avatar != null ? (
 											<img
 												className={
 													user.role ===
@@ -316,6 +303,25 @@ const ProfilePage = ({ userContext }) => {
 												height={200}
 												alt='avatar'
 											/>
+										):(
+											<>
+												<div className={
+														 user.role ===
+														 'ROLE_SUPER_ADMIN'
+															 ? 'large-null-avatar border-super-admin'
+															 : user.role ===
+															 'ROLE_ADMIN'
+																 ? 'large-null-avatar border-admin'
+																 : user.role ===
+																 'ROLE_EXEC'
+																	 ? 'large-null-avatar border-exec'
+																	 : user.role ===
+																	 'ROLE_USER'
+																		 ? 'large-null-avatar border-user'
+																		 : ''
+													 }
+												></div>
+											</>
 										)}
 
 										{user.role === 'ROLE_SUPER_ADMIN' ? (

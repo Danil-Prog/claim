@@ -3,7 +3,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useOutletContext } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { toast } from 'wc-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { issueApi } from '../../../misc/IssueApi';
@@ -12,6 +11,8 @@ import { userApi } from '../../../misc/UserApi';
 
 import style from './issueInfo.module.scss';
 import UserCard from '../../../components/UserCardStr';
+import SuccessToast from "../../../components/Toast/SuccessToast";
+import ErrorToast from "../../../components/Toast/ErrorToast";
 
 const IssueInfo = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -31,35 +32,9 @@ const IssueInfo = ({ userContext }) => {
 	const [isModalReassign, setIsModalReassign] = React.useState(false);
 	const [isModalSubIssue, setIsModalSubIssue] = React.useState(false);
 	const [subIssueInfo, setSubIssueInfo] = React.useState('');
-	const [execModal, setExecModal] = React.useState(0);
 
 	const [openMenu, setOpenMenu] = React.useState(false);
 
-	const successToast = (message = 'Успешно') => {
-		toast(message, {
-			icon: { type: 'success' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
-
-	const errorToast = (message = 'Произошла ошибка!') => {
-		toast(message, {
-			icon: { type: 'error' },
-			theme: {
-				type: 'custom',
-				style: {
-					background: 'var(--primary-color-light)',
-					color: 'var(--text-color)'
-				}
-			}
-		});
-	};
 
 	React.useEffect(() => {
 		issueApi
@@ -67,7 +42,7 @@ const IssueInfo = ({ userContext }) => {
 			.then(response => {
 				setIssueInfo(response.data);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		userApi
 			.getSelfInfo(user.authdata)
 			.then(response => {
@@ -78,14 +53,14 @@ const IssueInfo = ({ userContext }) => {
 					setSpaceUsers(response.data.content);
 				});
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		const page = 0;
 		const size = 99999;
 		SpaceApi.getSpaces(user.authdata, page, size)
 			.then(response => {
 				setSpaces(response.data.content);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 
 		return () => {};
 	}, [IssueId, isReassignIssue, isChangeIssue, user.authdata]);
@@ -93,11 +68,11 @@ const IssueInfo = ({ userContext }) => {
 	const reassignIssue = async (idIssue, idSpace) => {
 		try {
 			await issueApi.reassign(user.authdata, idIssue, idSpace);
-			await successToast('Заявка отправлена в другой отдел!');
+			SuccessToast('Заявка отправлена в другой отдел!');
 			setIsModalReassign(false);
 			setIsReassignIssue(!isReassignIssue);
 		} catch (error) {
-			console.log(error);
+			ErrorToast(error);
 		}
 	};
 
@@ -108,11 +83,11 @@ const IssueInfo = ({ userContext }) => {
 				issueStatus: 'COMPLETED'
 			};
 			await issueApi.changeStatus(user.authdata, initialIssue);
-			await successToast('Заявка выполнена!');
+			SuccessToast('Заявка выполнена!');
 			setOpenMenu(false);
 			setIsChangeIssue(!isChangeIssue);
 		} catch (error) {
-			errorToast(error);
+			ErrorToast(error);
 		}
 	};
 
@@ -128,22 +103,22 @@ const IssueInfo = ({ userContext }) => {
 				issueStatus: 'CANCELED'
 			};
 			await issueApi.changeStatus(user.authdata, initialIssue);
-			await successToast('Заявка отменена!');
+			SuccessToast('Заявка отменена!');
 			setOpenMenu(false);
 			setIsChangeIssue(!isChangeIssue);
 		} catch (error) {
-			errorToast(error);
+			ErrorToast(error);
 		}
 	};
 	const removeIssue = async idIssue => {
 		try {
 			await issueApi.remove(user.authdata, idIssue);
-			await successToast('Заявка удалена!');
+			SuccessToast('Заявка удалена!');
 			setOpenMenu(false);
 			setIsReassignIssue(!isReassignIssue);
 			setIssueInfo({});
 		} catch (error) {
-			errorToast(error);
+			ErrorToast(error);
 		}
 	};
 
@@ -162,11 +137,11 @@ const IssueInfo = ({ userContext }) => {
 				issueApi.changeStatus(user.authdata, initialIssue);
 			});
 
-			successToast('Исполнитель назначен!');
+			SuccessToast('Исполнитель назначен!');
 			setIsChangeIssue(!isChangeIssue);
 			setIsAssignExec(false);
 		} catch (error) {
-			errorToast(error);
+			ErrorToast(error);
 		}
 	};
 
@@ -205,15 +180,14 @@ const IssueInfo = ({ userContext }) => {
 			issueApi.createSubIssue(user.authdata, subIssueInfo, id);
 			setIsModalSubIssue(false);
 			setIsChangeIssue(!isChangeIssue);
-			successToast('Дополнительная задача добавлена!');
+			SuccessToast('Дополнительная задача добавлена!');
 		} catch (error) {
-			errorToast(error);
+			ErrorToast(error);
 		}
 	};
 
 	const handleChangeSubIssue = event => {
 		const { name, value } = event.target;
-		console.log(event.target.id);
 		setSubIssueInfo(prevState => ({
 			...prevState,
 			[name]: value
