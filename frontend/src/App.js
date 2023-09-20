@@ -5,8 +5,7 @@ import React from 'react';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
-import SpacePage from './pages/SpacePage/SpacePage';
-import SpaceUsersPage from './pages/SpaceUsersPage';
+import SpaceUsersPage from './pages/Space/SpaceUsersPage';
 import UsersPage from './pages/Users/UsersPage';
 import IssuePage from './pages/Issue/IssuePage';
 import IssueInfo from './pages/Issue/IssueInfo';
@@ -14,6 +13,7 @@ import StatisticPage from './pages/StatisticPage';
 import ProfileUserPage from './pages/ProfileUserPage';
 import CreateUserPage from './pages/Users/CreateUserPage';
 import MonitoringPage from './pages/MonitoringPage';
+import SpaceCreatePage from './pages/Space/SpaceCreatePage'
 
 import AdminRoute from './Routes/AdminRoute';
 import ThemeMode from './Routes/ThemeMode';
@@ -23,6 +23,7 @@ import UserContext from './context/UserContext';
 
 import './index.scss';
 import './styles/themeMode.scss';
+import SpaceListPage from "./pages/Space/SpaceListPage";
 
 function StaticElements() {
 	const userContext = React.useContext(UserContext);
@@ -84,7 +85,11 @@ function App() {
 		},
 		{
 			path: '/Space',
-			element: <SpacePage userContext={userContext} />
+			element: <SpaceListPage userContext={userContext} />
+		},
+		{
+			path: '/Space/create',
+			element: <SpaceCreatePage userContext={userContext} />
 		},
 		{
 			path: '/Space/users?/:userId',

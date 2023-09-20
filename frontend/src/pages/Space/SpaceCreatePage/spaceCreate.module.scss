@@ -1,53 +1,5 @@
-.content {
-  .page {
-    .alerts {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      right: 3%;
-      top: 5%;
-      grid-gap: 10px;
-      z-index: 100;
-    }
-    .Space {
-      .page-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        grid-gap: 40px;
-        position: relative;
-        .page-content-top {
-          display: flex;
-          justify-content: space-between;
-          grid-gap: 40px;
-          @media screen and (max-width: 1100px) {
-            flex-direction: column;
-            align-items: center;
-          }
-          .search-Space {
-            display: flex;
-            justify-content: center;
-            position: relative;
-            .label-field {
-              .input-search-Space {
-                min-width: 100px;
-                width: 100%;
-                padding: 13px;
-                height: 50px;
-                border-radius: 10px 0 0 10px;
-                border: none;
-                outline: none;
-                font-size: 18px;
-                background-color: var(--input-color);
-                transition: var(--tran-03);
-                &:focus + span {
-                  background-color: var(--primary-color);
-                }
-                &:invalid + span {
-                  color: red;
-                  background-color: #000;
-                }
-              }
+
+            .labelField {
               span {
                 position: absolute;
                 top: -27px;
@@ -80,16 +32,16 @@
                 background-color: var(--primary-color-light);
               }
             }
-          }
-          .create-Space {
+
+          .createSpace {
             display: flex;
             position: relative;
             justify-content: space-between;
-            .label-field {
+            .labelField {
               form {
                 display: flex;
                 justify-content: center;
-                .input-create-Space {
+                .inputCreateSpace {
                   min-width: 100px;
                   width: 100%;
                   height: 50px;
@@ -116,7 +68,7 @@
                   transition: var(--tran-03);
                   cursor: text;
                 }
-                .btn-input {
+                .btnInput {
                   padding: 10px;
                   height: 50px;
                   border-radius: 0 10px 10px 0;
@@ -135,9 +87,9 @@
               }
             }
           }
-        }
 
-        .list-Space {
+
+        .listSpace {
           flex: 1;
           ul {
             li {
@@ -154,7 +106,3 @@
             }
           }
         }
-      }
-    }
-  }
-}
