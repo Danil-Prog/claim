@@ -2,6 +2,10 @@ node_modules/
 
 .gitignore
 
-.idea
+.idea/
 
-.vscode
+.vscode/
+
+.prettierrc
+
+.env

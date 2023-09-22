@@ -114,7 +114,7 @@ function getSystemCpuUsage(authdata) {
 }
 
 const instance = axios.create({
-	baseURL: 'http://localhost:8080/monitoring/metrics'
+	baseURL: `${process.env.REACT_APP_URL_API}/monitoring/metrics`
 });
 
 //

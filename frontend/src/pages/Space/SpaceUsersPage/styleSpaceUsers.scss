@@ -1,0 +1,89 @@
+.content {
+  .page {
+    .Space-users {
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        grid-gap: 40px;
+        position: relative;
+        .page-content-top {
+          display: flex;
+          justify-content: space-between;
+          grid-gap: 40px;
+          @media screen and (max-width: 1300px) {
+            flex-direction: column;
+            align-items: center;
+          }
+          .search-Space {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            .label-field {
+              .input-search-Space {
+                min-width: 100px;
+                width: 100%;
+                padding: 13px;
+                height: 50px;
+                border-radius: 10px 0 0 10px;
+                border: none;
+                outline: none;
+                font-size: 18px;
+                background-color: var(--input-color);
+                transition: var(--tran-03);
+                &:focus + span {
+                  background-color: var(--primary-color);
+                }
+                &:invalid + span {
+                  color: red;
+                  background-color: #000;
+                }
+              }
+              span {
+                position: absolute;
+                top: -27px;
+                left: 0;
+                color: var(--text-color);
+                background: var(--input-color);
+                font-size: 16px;
+                padding: 0 7px;
+                border-radius: 7px;
+                transition: var(--tran-03);
+                cursor: text;
+              }
+            }
+
+            .icon {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: 50px;
+              width: 50px;
+              font-size: 22px;
+              color: var(--text-color);
+              border-radius: 0 10px 10px 0;
+              background-color: var(--input-color);
+              border: none;
+              border-left: 2px solid var(--sidebar-color);
+              transition: var(--tran-03);
+              cursor: pointer;
+              &:hover {
+                background-color: var(--primary-color-light);
+              }
+            }
+          }
+        }
+
+        .list-Space-users {
+          display: flex;
+          justify-content: start;
+          align-items: start;
+          align-content: flex-start;
+          flex: 1;
+          flex-wrap: wrap;
+          grid-gap: 20px;
+        }
+      }
+    }
+  }
+}

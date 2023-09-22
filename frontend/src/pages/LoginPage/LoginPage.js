@@ -5,6 +5,7 @@ import { userApi } from '../../misc/UserApi';
 import UserContext from '../../context/UserContext';
 
 import s from './login.module.scss';
+import ErrorToast from "../../components/Toast/ErrorToast";
 
 const LoginPage = () => {
   const userContext = React.useContext(UserContext);
@@ -12,12 +13,10 @@ const LoginPage = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [isError, setIsError] = React.useState(false);
 
   React.useEffect(() => {
     const isLogIn = userContext.userIsAuthenticated();
     setIsLoggedIn(isLogIn);
-    console.log('Компонент обновлён');
   }, [userContext]);
 
   const auth = (username, password) => {
@@ -33,9 +32,29 @@ const LoginPage = () => {
         userContext.userLogin(user);
       })
       .catch((error) => {
-        console.log(error);
-        console.log(isError);
-        setIsError(true);
+        if (error.response) {
+          // Запрос был сделан, и сервер ответил кодом состояния, который
+          // выходит за пределы 2xx
+
+          // console.log(error.response.data);
+          if(error.response.status === 401) {
+            ErrorToast('Введен некорректный пароль!');
+          } else {
+            ErrorToast(error.response.data.message);
+          }
+          // console.log(error.response.headers);
+        } else if (error.request) {
+          // Запрос был сделан, но ответ не получен
+          // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
+          // http.ClientRequest в node.js
+          console.log(error.request);
+          ErrorToast();
+        } else {
+          // Произошло что-то при настройке запроса, вызвавшее ошибку
+          console.log('Error', error.message);
+          ErrorToast();
+        }
+        console.log(error.config);
       });
   };
 
