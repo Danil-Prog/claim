@@ -2,13 +2,13 @@ import React from 'react';
 
 import './styleSpaceUsers.scss';
 
-import { SpaceApi } from '../../misc/SpaceApi';
+import { SpaceApi } from '../../../misc/SpaceApi';
 import { useSearchParams } from 'react-router-dom';
-import Pagination from '../../components/Pagination';
-import Dropdown from '../../components/Dropdown';
-import Header from '../../components/Header';
-import UserCard from '../../components/UserCardStr';
-import ErrorToast from "../../components/Toast/ErrorToast";
+import Pagination from '../../../components/Pagination';
+import Dropdown from '../../../components/Dropdown';
+import Header from '../../../components/Header';
+import UserCard from '../../../components/UserCardStr';
+import ErrorToast from "../../../components/Toast/ErrorToast";
 
 const SpaceUsersPage = ({ userContext }) => {
 	const user = userContext.getUser();
