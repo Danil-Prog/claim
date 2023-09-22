@@ -17,7 +17,10 @@ jobs:
         java-version: 17
     - name: Build with Maven
       run: mvn -B package --file backend/pom.xml
-  
+    - name: Copy jar file  
+      with:
+        target: "./backend/produc/test/"
+      
   run_pull:
     name: run pull
     runs-on: ubuntu-latest
