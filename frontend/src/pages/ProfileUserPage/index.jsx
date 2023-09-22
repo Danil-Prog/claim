@@ -81,8 +81,7 @@ const ProfilePage = ({ userContext }) => {
 									<div className='profile-navigation'>
 										<div className='change-wrap-avatar'>
 											<label>
-												{userData.profile.avatar !=
-													null && (
+												{userData.profile && userData.profile.avatar !== null ? (
 													<img
 														className={
 															userData.role ===
@@ -104,6 +103,23 @@ const ProfilePage = ({ userContext }) => {
 														height={200}
 														alt='avatar'
 													/>
+												): (
+													<div className={
+														userData.role ===
+														'ROLE_SUPER_ADMIN'
+															? 'large-null-avatar border-super-admin'
+															: userData.role ===
+															'ROLE_ADMIN'
+																? 'large-null-avatar border-admin'
+																: userData.role ===
+																'ROLE_EXEC'
+																	? 'large-null-avatar border-exec'
+																	: userData.role ===
+																	'ROLE_USER'
+																		? 'large-null-avatar border-user'
+																		: ''
+													}
+													></div>
 												)}
 												{userData.role ===
 												'ROLE_SUPER_ADMIN' ? (
@@ -258,7 +274,7 @@ const ProfilePage = ({ userContext }) => {
 						title={'Профиль пользователя'}
 						subTitle={
 							userData.profile &&
-							`${userData.profile.username} (${userData.profile.firstname} ${userData.profile.lastname})`
+							`${userData.username} (${userData.profile.firstname} ${userData.profile.lastname})`
 						}
 					/>
 					<div className='page'>
@@ -266,7 +282,7 @@ const ProfilePage = ({ userContext }) => {
 							<div className='page-content'>
 								<div className='profile-navigation'>
 									<div className='wrap-avatar'>
-										{userData.profile != null && (
+										{userData.profile && userData.profile.avatar !== null ? (
 											<img
 												className={
 													userData.role ===
@@ -288,6 +304,23 @@ const ProfilePage = ({ userContext }) => {
 												height={200}
 												alt='avatar'
 											/>
+										): (
+											<div className={
+												userData.role ===
+												'ROLE_SUPER_ADMIN'
+													? 'large-null-avatar border-super-admin'
+													: userData.role ===
+													'ROLE_ADMIN'
+														? 'large-null-avatar border-admin'
+														: userData.role ===
+														'ROLE_EXEC'
+															? 'large-null-avatar border-exec'
+															: userData.role ===
+															'ROLE_USER'
+																? 'large-null-avatar border-user'
+																: ''
+											}
+											></div>
 										)}
 
 										{userData.role ===
