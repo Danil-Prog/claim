@@ -10,6 +10,7 @@ import Pagination from '../../../components/Pagination';
 
 import Header from '../../../components/Header';
 import Dropdown from '../../../components/Dropdown';
+import ErrorToast from "../../../components/Toast/ErrorToast";
 
 const UsersPage = ({ userContext }) => {
 	const user = userContext.getUser();
@@ -33,7 +34,7 @@ const UsersPage = ({ userContext }) => {
 				setTotalPages(response.data.totalPages);
 				setSizeItems(response.data.size);
 			})
-			.catch(error => console.log(error));
+			.catch(error => ErrorToast(error));
 		return () => {};
 	}, [currentPage, selectedSort, sizeItems, user.authdata]);
 

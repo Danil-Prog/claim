@@ -7,8 +7,8 @@ services:
     image: mysql:8.0.19
     hostname: mysql_db
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=claim
+      - MYSQL_PASSWORD=Mannul92
       - MYSQL_DATABASE=claim
     volumes:
       - mysql_data:/srv/backend-service/mysql_data

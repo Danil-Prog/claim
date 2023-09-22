@@ -75,7 +75,7 @@ const Sidebar = () => {
 							</NavLink>
 						</li>
 						<li className='nav-link'>
-							<NavLink to='/task'>
+							<NavLink to='/Issue'>
 								<i className='bx bx-task icon'></i>
 								<span className='text nav-text'>Задачи</span>
 							</NavLink>
@@ -89,7 +89,7 @@ const Sidebar = () => {
 							</NavLink>
 						</li>
 						<li className='nav-link'>
-							<NavLink to='department'>
+							<NavLink to='Space'>
 								<i className='bx bx-sitemap icon'></i>
 								<span className='text nav-text'>Отделы</span>
 							</NavLink>

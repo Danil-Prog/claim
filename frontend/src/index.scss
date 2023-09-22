@@ -10,10 +10,10 @@
 
 :root {
   --label: #7c7c7c;
-  --task-completed: #268112;
-  --task-review: #ffd454;
-  --task-in-progress: #6078ff;
-  --task-canceled: #9d0000;
+  --Issue-completed: #268112;
+  --Issue-review: #ffd454;
+  --Issue-in-progress: #6078ff;
+  --Issue-canceled: #9d0000;
   --body-color: #d6e8ff;
   --sidebar-color: #fff;
   --content-color: #fff;
@@ -96,16 +96,14 @@ body {
   flex-flow: row wrap;
   grid-gap: 0 30px;
   position: relative;
-
   left: 250px;
-  padding: 0 50px;
+  padding: 0 20px;
   width: calc(100% - 250px);
   transition: var(--tran-03);
 
   .page {
     flex: 1;
     width: 1100px;
-    margin-bottom: 20px;
 
     .top {
       .title-page {
@@ -120,10 +118,10 @@ body {
         display: flex;
         justify-content: space-between;
         transition: var(--tran-03);
-        min-height: 740px;
+        min-height: 830px;
         width: 100%;
         min-width: 500px;
-        max-width: 1700px;
+        max-width: 1800px;
         padding: 50px;
         border-radius: 10px;
         background-color: var(--content-color);
@@ -185,12 +183,27 @@ body {
   border-radius: 20px; /* округлость бегунка */
 }
 
-
-.null-avatar {
+.large-null-avatar {
+  height: 200px;
+  width: 200px;
+}
+.medium-null-avatar {
+  height: 80px;
+  width: 80px;
+}
+.small-null-avatar {
   height: 30px;
   width: 30px;
-  background-color: var(--text-color-light) !important;
 }
+
+.large-null-avatar,
+.medium-null-avatar,
+.small-null-avatar {
+  transition: var(--tran-03);
+  border-radius: 50%;
+  background-color: var(--body-color);
+}
+
 .mini-avatar,
 .null-avatar {
     transition: var(--tran-03);
