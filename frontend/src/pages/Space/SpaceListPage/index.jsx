@@ -90,7 +90,7 @@ const SpaceListPage = ({ userContext }) => {
 									<ul>
 										<li className={styles.spaceInfoLabel}>
 											<div className={styles.shortName}>
-												Коротное наименование
+												Короткое наименование
 											</div>
 											<div className={styles.fullName}>
 												Полное наименование
