@@ -51,25 +51,25 @@ public class SpaceService {
 
     public Space createSpace(Space space) {
         if (space.getName() != null) {
-            logger.info("Department name '{}' successfully created", space.getName());
+            logger.info("Space name '{}' successfully created", space.getName());
             return spaceRepository.save(space);
         }
-        throw new BadRequestException("Department name must not be empty");
+        throw new BadRequestException("Space name must not be empty");
     }
 
     public Space updateSpace(Long id, Space space) {
         Optional<Space> departmentOptional = spaceRepository.findById(id);
         if (departmentOptional.isPresent()) {
-            logger.info("Updated department named '{}'. New value '{}'", departmentOptional.get().getName(), space.getName());
+            logger.info("Updated space named '{}'. New value '{}'", departmentOptional.get().getName(), space.getName());
             return spaceRepository.save(space);
         }
-        logger.error("Error updating department. Department with id= '{}' does not exist", id);
-        throw new BadRequestException("Department with id=" + id + " does not exist");
+        logger.error("Error updating space. Space with id= '{}' does not exist", id);
+        throw new BadRequestException("Space with id=" + id + " does not exist");
     }
 
     public void removeSpace(Long id) {
         spaceRepository.findById(id).ifPresent(spaceRepository::delete);
-        logger.info("Department with id= {} successfully deleted", id);
+        logger.info("Space with id= {} successfully deleted", id);
     }
 
     public Page<User> getSpaceUsers(Long id, PageRequest pageRequest) {
@@ -77,7 +77,7 @@ public class SpaceService {
         if (departmentOptional.isPresent()) {
             return userRepository.findUsersByProfile_Space_Id(id, pageRequest);
         }
-        throw new BadRequestException("Department with id=" + id + " does not exist");
+        throw new BadRequestException("Space with id=" + id + " does not exist");
     }
 
     public void updateSpaceImage(Long id, MultipartFile image, Principal principal) {
