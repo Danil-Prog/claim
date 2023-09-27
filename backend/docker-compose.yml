@@ -54,11 +54,12 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql_container:3306/claim?autoReconnect=true&failOverReadOnly=false&maxReconnects=10
       SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "root"
+      SPRING_DATASOURCE_PASSWORD: "claim"
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_USER: "admin"
       SPRING_RABBITMQ_PASSWORD: "Mannul84"
       SPRING_RABBITMQ_PORT: 61613
+      app.cors.allowed-origins: http://localhost:3000
     ports:
       - "8080:8080"
     volumes:
