@@ -114,7 +114,7 @@ const UsersPage = ({ userContext }) => {
 																			? 'mini-avatar border-user'
 																			: 'mini-avatar null-avatar'
 																	}
-																	src={`http://localhost:8080/api/v1/user/avatar/${item.profile.avatar}`}
+																	src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${item.profile.avatar}`}
 																	alt='avatar'
 																/>
 															) : (
