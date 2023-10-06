@@ -371,7 +371,7 @@ const IssueInfo = ({ userContext }) => {
 													? 'mini-avatar border-user'
 													: 'mini-avatar null-avatar'
 											}
-											src={`http://localhost:8080/api/v1/user/avatar/${issueInfo.customer.profile.avatar}`}
+											src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${issueInfo.customer.profile.avatar}`}
 											alt='avatar'
 											width={30}
 											height={30}
@@ -455,7 +455,7 @@ const IssueInfo = ({ userContext }) => {
 													? 'mini-avatar border-user'
 													: 'mini-avatar null-avatar'
 											}
-											src={`http://localhost:8080/api/v1/user/avatar/${issueInfo.executor.profile.avatar}`}
+											src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${issueInfo.executor.profile.avatar}`}
 											alt='avatar'
 											width={30}
 											height={30}

@@ -97,7 +97,7 @@ const Chat = ({ userContext }) => {
 												? 'mini-avatar border-user'
 												: 'mini-avatar null-avatar'
 										}
-										src={`http://localhost:8080/api/v1/user/avatar/${userSelfData.avatar}`}
+										src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${userSelfData.avatar}`}
 										alt='avatar'
 										width={60}
 										height={60}

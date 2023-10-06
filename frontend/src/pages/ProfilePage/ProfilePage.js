@@ -111,7 +111,7 @@ const ProfilePage = ({ userContext }) => {
 														src={
 															preview
 																? preview
-																: `http://localhost:8080/api/v1/user/avatar/${userProfile.avatar}`
+																: `${process.env.REACT_APP_URL_API}api/v1/user/avatar/${userProfile.avatar}`
 														}
 														width={200}
 														height={200}
@@ -298,7 +298,7 @@ const ProfilePage = ({ userContext }) => {
 														? 'avatar border-user'
 														: ''
 												}
-												src={`http://localhost:8080/api/v1/user/avatar/${userProfile.avatar}`}
+												src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${userProfile.avatar}`}
 												width={200}
 												height={200}
 												alt='avatar'
