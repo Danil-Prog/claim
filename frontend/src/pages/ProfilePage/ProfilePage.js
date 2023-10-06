@@ -118,6 +118,33 @@ const ProfilePage = ({ userContext }) => {
 														alt='avatar'
 													/>
 												) : (
+													preview ?
+														<img
+															className={
+																user.role ===
+																'ROLE_SUPER_ADMIN'
+																	? 'avatar border-super-admin'
+																	: user.role ===
+																	'ROLE_ADMIN'
+																		? 'avatar border-admin'
+																		: user.role ===
+																		'ROLE_EXEC'
+																			? 'avatar border-exec'
+																			: user.role ===
+																			'ROLE_USER'
+																				? 'avatar border-user'
+																				: 'avatar'
+															}
+															src={
+																preview
+																	? preview
+																	: null
+															}
+															width={200}
+															height={200}
+															alt='avatar'
+														/>
+														:
 														<div className={
 															user.role ===
 															'ROLE_SUPER_ADMIN'
