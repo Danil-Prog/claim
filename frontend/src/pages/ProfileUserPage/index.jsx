@@ -98,7 +98,7 @@ const ProfilePage = ({ userContext }) => {
 																? 'avatar border-user'
 																: ''
 														}
-														src={`http://localhost:8080/api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
+														src={`${process.env.REACT_APP_URL_API}api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
 														width={200}
 														height={200}
 														alt='avatar'
@@ -299,7 +299,7 @@ const ProfilePage = ({ userContext }) => {
 														? 'avatar border-user'
 														: ''
 												}
-												src={`http://localhost:8080/api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
+												src={`${process.env.REACT_APP_URL_API}api/v1/user/${userData.profile.id}/avatar/${userData.profile.avatar}`}
 												width={200}
 												height={200}
 												alt='avatar'

@@ -21,7 +21,7 @@ function UserCard({ user, role = true, username = true }) {
 									? 'mini-avatar border-user'
 									: 'mini-avatar null-avatar'
 							}
-							src={`http://localhost:8080/api/v1/user/avatar/${user.profile.avatar}`}
+							src={`${process.env.REACT_APP_URL_API}api/v1/user/avatar/${user.profile.avatar}`}
 							alt='avatar'
 							width={60}
 							height={60}
