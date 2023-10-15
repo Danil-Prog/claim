@@ -1,0 +1,70 @@
+.wrapperHome {
+
+  .home {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center !important;
+    .contentTop {
+      transition: var(--tran-03);
+      color: var(--text-color);
+      padding-bottom: 35px;
+    }
+    form {
+      width: 90%;
+      height: 100%;
+      display: flex;
+      grid-gap: 20px;
+      flex-direction: column;
+      label {
+        color: var(--text-color);
+      }
+      .Space  {
+        transition: var(--tran-03);
+        color: var(--text-color);
+        select {
+          transition: var(--tran-03);
+          width: 100%;
+          font-size: 16px;
+          padding: 8px;
+          border: none;
+          border-radius: 10px;
+          background-color: var(--input-color);
+          color: var(--text-color);
+          cursor: pointer;
+        }
+
+        option {
+          font-size: 16px;
+          padding: 8px;
+          background-color: var(--input-color);
+          border: none;
+          color: var(--text-color);
+        }
+
+      }
+      .title {
+
+        input  {
+          transition: var(--tran-03);
+          background-color: var(--input-color);
+          border: none;
+          padding: 10px;
+          border-radius: 10px;
+          min-width: 250px;
+          width: 100%;
+
+        }
+      }
+      .description {
+        min-height: 300px;
+        height: 300px;
+        margin-bottom: 40px;
+        cursor: text;
+        color: var(--text-color);
+        p {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}

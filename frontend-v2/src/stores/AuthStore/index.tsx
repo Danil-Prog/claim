@@ -1,12 +1,11 @@
 import { makeAutoObservable } from 'mobx';
-import { TokenResponse } from '../../services/types';
 import { UserApi } from '../../services/Api/UserApi';
 import ErrorToast from '../../components/Toast/ErrorToast';
 
 export const isValidUsername = (username: string) =>
 	/^[a-zA-Z]{6,20}$/gi.test(username);
 
-class AuthStore {
+export class AuthStore {
 	// пока isAuthorized === undefined значит еще не прошла проверка
 	isAuthorized?: boolean = undefined;
 	username = '';
@@ -53,19 +52,14 @@ class AuthStore {
 		this.password = text;
 	};
 
-	public setAccessToken = (text: string) => {
-		this.access_token = text;
-	};
-
 	// @action('Send username to server')
 	public sendUsername = async (username: string, password: string) => {
 		try {
 			UserApi.authenticate(username, password)
-				.then(response => {
-					const authdata = response.data.token;
-					this.setAuthorizationStatus(true);
-					this.setAccessToken(authdata);
-					console.log(authdata);
+				.then(async response => {
+					this.authData = response.data.token;
+					await this.setAuthorizationStatus(true);
+					console.log(this.authData);
 				})
 				.catch(error => {
 					if (error.response) {

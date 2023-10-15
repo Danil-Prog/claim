@@ -6,7 +6,7 @@ import AuthStore from '../../stores/AuthStore';
 import { observer } from 'mobx-react-lite';
 
 const LoginPage = () => {
-	const [isLoggedIn, setIsLoggedIn] = React.useState(AuthStore.isAuthorized);
+	const [isLoggedIn] = React.useState(AuthStore.isAuthorized);
 
 	React.useEffect(() => {}, []);
 	const handleSubmit = (event: { preventDefault: () => void }) => {
