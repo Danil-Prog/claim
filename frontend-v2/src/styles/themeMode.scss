@@ -1,0 +1,44 @@
+// Цвета тёмной темы
+.dark,
+.light {
+  background-color: var(--body-color);
+  transition: var(--tran-03);
+
+  .login-page {
+    .signin {
+      form {
+        h2 {
+          color: var(--title-text-color);
+        }
+        background: var(--sidebar-color);
+
+        .field__item {
+          input {
+            background-color: var(--content-color-light);
+            &:focus {
+              + span {
+                background: var(--content-color);
+              }
+            }
+            &:valid {
+              + span {
+                background: var(--content-color);
+              }
+            }
+          }
+          span {
+            color: var(--text-color);
+          }
+        }
+        .btn-main {
+          background-color: var(--content-color);
+          color: var(--text-color);
+
+          &:hover {
+            box-shadow: 0 2px 0 var(--text-color);
+          }
+        }
+      }
+    }
+  }
+}
