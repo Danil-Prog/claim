@@ -77,6 +77,14 @@ public class UserController {
     @GetMapping
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Returns the profile information of an authorized user")
+    public ResponseEntity<UserDto> getAuthorizeUser(Principal principal) {
+        UserDto user = userMapper.toUserDto(userService.getUserByUsername(principal.getName()));
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/profile")
+    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+            description = "Returns the profile information of an authorized user")
     public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserProfileByUsername(principal));
     }
