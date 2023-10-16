@@ -8,7 +8,7 @@ import com.claim.api.controller.request.IssueStatusRequest;
 import com.claim.api.controller.request.IssueTypeRequest;
 import com.claim.api.entity.issue.Issue;
 import com.claim.api.entity.issue.IssueStatus;
-import com.claim.api.mapper.IssueMapper;
+import com.claim.api.mapper.issue.IssueMapper;
 import com.claim.api.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

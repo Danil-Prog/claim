@@ -1,7 +1,8 @@
-package com.claim.api.mapper;
+package com.claim.api.mapper.comment;
 
 import com.claim.api.controller.dto.CommentDto;
 import com.claim.api.entity.comment.Comment;
+import com.claim.api.mapper.user.UserMapper;
 import org.springframework.stereotype.Service;
 
 @Service

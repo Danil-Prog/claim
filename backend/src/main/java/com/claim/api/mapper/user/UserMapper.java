@@ -1,4 +1,4 @@
-package com.claim.api.mapper;
+package com.claim.api.mapper.user;
 
 import com.claim.api.controller.dto.UserDto;
 import com.claim.api.entity.user.User;

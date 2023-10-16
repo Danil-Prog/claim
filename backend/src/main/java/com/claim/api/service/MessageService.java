@@ -3,7 +3,7 @@ package com.claim.api.service;
 import com.claim.api.controller.dto.UserDto;
 import com.claim.api.entity.message.MessageType;
 import com.claim.api.entity.user.User;
-import com.claim.api.mapper.UserMapper;
+import com.claim.api.mapper.user.UserMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

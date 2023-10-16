@@ -6,7 +6,7 @@ import com.claim.api.entity.comment.Comment;
 import com.claim.api.entity.issue.Issue;
 import com.claim.api.entity.user.User;
 import com.claim.api.exception.BadRequestException;
-import com.claim.api.mapper.CommentMapper;
+import com.claim.api.mapper.comment.CommentMapper;
 import com.claim.api.repository.CommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -8,7 +8,7 @@ import com.claim.api.events.EventStatus;
 import com.claim.api.events.UserCreationEvent;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
-import com.claim.api.mapper.UserMapper;
+import com.claim.api.mapper.user.UserMapper;
 import com.claim.api.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
