@@ -42,7 +42,7 @@ public class Space {
     private Set<Attachment> attachments = new HashSet<>();
 
     @OneToOne
-    private SpaceConfiguration spaceConfiguration;
+    private SpaceConfiguration configuration;
 
     @Override
     public boolean equals(Object o) {
