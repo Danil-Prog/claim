@@ -25,17 +25,24 @@ public class Space {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "space_name")
     @Size(min = 3, max = 25)
     private String name;
+
     @Column(name = "short_name")
     @Size(min = 2, max = 7)
     private String shortName;
+
     @Column(name = "image")
     private String image;
+
     @OneToMany
     @JsonIgnore
     private Set<Attachment> attachments = new HashSet<>();
+
+    @OneToOne
+    private SpaceConfiguration spaceConfiguration;
 
     @Override
     public boolean equals(Object o) {
