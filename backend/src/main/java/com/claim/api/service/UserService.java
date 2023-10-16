@@ -108,11 +108,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            Long profileId = user.getProfile().getId();
-            userDto.profile().setId(profileId);
+            Profile profile = user.getProfile();
             user.setUsername(userDto.username());
             user.setRole(userDto.role());
-            user.setProfile(userDto.profile());
+            user.setProfile(profile);
             logger.info("Updated user named '{}' profile", user.getUsername());
             User updatedUser = userRepository.save(user);
             return new UserMapper().toUserDto(updatedUser);
