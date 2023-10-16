@@ -1,4 +1,4 @@
-package com.claim.api.entity;
+package com.claim.api.entity.issue;
 
 public enum IssueStatus {
 

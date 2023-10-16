@@ -1,7 +1,7 @@
 package com.claim.api.mapper;
 
 import com.claim.api.controller.dto.ProfileDto;
-import com.claim.api.entity.Profile;
+import com.claim.api.entity.user.Profile;
 import org.springframework.stereotype.Service;
 
 @Service

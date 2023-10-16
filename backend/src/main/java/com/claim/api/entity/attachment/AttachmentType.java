@@ -1,4 +1,4 @@
-package com.claim.api.entity;
+package com.claim.api.entity.attachment;
 
 public enum AttachmentType {
     USER_IMAGE,

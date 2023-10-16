@@ -1,7 +1,7 @@
 package com.claim.api.mapper;
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.User;
+import com.claim.api.entity.user.User;
 import org.springframework.stereotype.Service;
 
 @Service

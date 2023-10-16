@@ -2,8 +2,8 @@ package com.claim.api.controller;
 
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Profile;
-import com.claim.api.entity.User;
+import com.claim.api.entity.user.Profile;
+import com.claim.api.entity.user.User;
 import com.claim.api.mapper.UserMapper;
 import com.claim.api.service.AttachmentService;
 import com.claim.api.service.UserService;

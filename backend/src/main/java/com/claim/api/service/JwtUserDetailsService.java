@@ -1,6 +1,6 @@
 package com.claim.api.service;
 
-import com.claim.api.entity.User;
+import com.claim.api.entity.user.User;
 import com.claim.api.exception.UserNotFoundException;
 import com.claim.api.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

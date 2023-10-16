@@ -1,4 +1,4 @@
-package com.claim.api.entity;
+package com.claim.api.entity.message;
 
 public enum MessageType {
     CONNECT,

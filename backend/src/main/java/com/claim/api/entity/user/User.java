@@ -1,5 +1,6 @@
-package com.claim.api.entity;
+package com.claim.api.entity.user;
 
+import com.claim.api.entity.issue.Issue;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

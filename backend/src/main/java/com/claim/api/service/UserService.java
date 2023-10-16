@@ -1,8 +1,8 @@
 package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Profile;
-import com.claim.api.entity.User;
+import com.claim.api.entity.user.Profile;
+import com.claim.api.entity.user.User;
 import com.claim.api.events.EventStatus;
 import com.claim.api.events.UserCreationEvent;
 import com.claim.api.exception.BadRequestException;

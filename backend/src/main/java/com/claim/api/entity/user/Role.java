@@ -1,4 +1,4 @@
-package com.claim.api.entity;
+package com.claim.api.entity.user;
 
 import org.springframework.security.core.GrantedAuthority;
 

@@ -1,11 +1,9 @@
 package com.claim.api.mapper;
 
-import com.claim.api.controller.dto.CommentDto;
 import com.claim.api.controller.dto.SubTaskDto;
 import com.claim.api.controller.dto.IssueAllDto;
 import com.claim.api.controller.dto.IssueDto;
-import com.claim.api.entity.Comment;
-import com.claim.api.entity.Issue;
+import com.claim.api.entity.issue.Issue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

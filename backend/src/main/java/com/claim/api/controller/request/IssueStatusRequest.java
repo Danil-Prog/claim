@@ -1,6 +1,6 @@
 package com.claim.api.controller.request;
 
-import com.claim.api.entity.IssueStatus;
+import com.claim.api.entity.issue.IssueStatus;
 import lombok.Data;
 
 @Data

@@ -1,8 +1,8 @@
 package com.claim.api.controller.dto;
 
-import com.claim.api.entity.Space;
-import com.claim.api.entity.IssueStatus;
-import com.claim.api.entity.IssueType;
+import com.claim.api.entity.space.Space;
+import com.claim.api.entity.issue.IssueStatus;
+import com.claim.api.entity.issue.IssueType;
 
 import java.util.Date;
 import java.util.List;

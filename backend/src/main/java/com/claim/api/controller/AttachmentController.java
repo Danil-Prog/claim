@@ -1,6 +1,6 @@
 package com.claim.api.controller;
 
-import com.claim.api.entity.Attachment;
+import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.service.AttachmentService;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.claim.api.utils;
 
-import com.claim.api.entity.Attachment;
+import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.exception.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

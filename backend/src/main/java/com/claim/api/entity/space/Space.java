@@ -1,6 +1,7 @@
-package com.claim.api.entity;
+package com.claim.api.entity.space;
 
 
+import com.claim.api.entity.attachment.Attachment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;

@@ -1,5 +1,6 @@
-package com.claim.api.entity;
+package com.claim.api.entity.comment;
 
+import com.claim.api.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

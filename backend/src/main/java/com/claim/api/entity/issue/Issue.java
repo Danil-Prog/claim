@@ -1,5 +1,8 @@
-package com.claim.api.entity;
+package com.claim.api.entity.issue;
 
+import com.claim.api.entity.comment.Comment;
+import com.claim.api.entity.space.Space;
+import com.claim.api.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

@@ -1,7 +1,7 @@
 package com.claim.api.mapper;
 
 import com.claim.api.controller.dto.SubTaskDto;
-import com.claim.api.entity.Issue;
+import com.claim.api.entity.issue.Issue;
 import org.springframework.stereotype.Service;
 
 @Service

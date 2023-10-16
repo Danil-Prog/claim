@@ -1,7 +1,7 @@
 package com.claim.api.mapper;
 
 import com.claim.api.controller.dto.CommentDto;
-import com.claim.api.entity.Comment;
+import com.claim.api.entity.comment.Comment;
 import org.springframework.stereotype.Service;
 
 @Service
