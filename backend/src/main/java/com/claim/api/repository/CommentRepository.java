@@ -1,6 +1,6 @@
 package com.claim.api.repository;
 
-import com.claim.api.entity.Comment;
+import com.claim.api.entity.comment.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

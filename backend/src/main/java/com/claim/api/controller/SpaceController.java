@@ -1,7 +1,7 @@
 package com.claim.api.controller;
 
-import com.claim.api.entity.Space;
-import com.claim.api.entity.User;
+import com.claim.api.entity.space.Space;
+import com.claim.api.entity.user.User;
 import com.claim.api.service.SpaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

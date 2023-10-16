@@ -1,7 +1,7 @@
 package com.claim.api.repository;
 
-import com.claim.api.entity.Attachment;
-import com.claim.api.entity.Profile;
+import com.claim.api.entity.attachment.Attachment;
+import com.claim.api.entity.user.Profile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;

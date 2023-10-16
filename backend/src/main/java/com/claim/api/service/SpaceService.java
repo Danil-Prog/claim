@@ -1,9 +1,9 @@
 package com.claim.api.service;
 
-import com.claim.api.entity.Attachment;
-import com.claim.api.entity.AttachmentType;
-import com.claim.api.entity.Space;
-import com.claim.api.entity.User;
+import com.claim.api.entity.attachment.Attachment;
+import com.claim.api.entity.attachment.AttachmentType;
+import com.claim.api.entity.space.Space;
+import com.claim.api.entity.user.User;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.SpaceRepository;
 import com.claim.api.repository.UserRepository;

@@ -2,8 +2,8 @@ package com.claim.api.controller;
 
 import com.claim.api.controller.dto.CommentDto;
 import com.claim.api.controller.request.CommentUpdateRequest;
-import com.claim.api.entity.Comment;
-import com.claim.api.mapper.CommentMapper;
+import com.claim.api.entity.comment.Comment;
+import com.claim.api.mapper.comment.CommentMapper;
 import com.claim.api.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

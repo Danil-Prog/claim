@@ -1,13 +1,14 @@
 package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Profile;
-import com.claim.api.entity.User;
+import com.claim.api.controller.response.SuccessfullyResponse;
+import com.claim.api.entity.user.Profile;
+import com.claim.api.entity.user.User;
 import com.claim.api.events.EventStatus;
 import com.claim.api.events.UserCreationEvent;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.exception.UserNotFoundException;
-import com.claim.api.mapper.UserMapper;
+import com.claim.api.mapper.user.UserMapper;
 import com.claim.api.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,11 +108,10 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            Long profileId = user.getProfile().getId();
-            userDto.profile().setId(profileId);
+            Profile profile = user.getProfile();
             user.setUsername(userDto.username());
             user.setRole(userDto.role());
-            user.setProfile(userDto.profile());
+            user.setProfile(profile);
             logger.info("Updated user named '{}' profile", user.getUsername());
             User updatedUser = userRepository.save(user);
             return new UserMapper().toUserDto(updatedUser);
@@ -119,11 +119,11 @@ public class UserService {
             throw new BadRequestException("User id: " + id + " not found!");
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
-    public String updateAuthorizeUserProfile(Principal principal, Profile profile) {
+    public SuccessfullyResponse updateAuthorizeUserProfile(Principal principal, Profile profile) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent() && profile != null) {
             User user = userOptional.get();
@@ -131,7 +131,7 @@ public class UserService {
             user.setProfile(profile);
             userRepository.save(user);
             logger.info("User named '{}' updated my profile", principal.getName());
-            return "User profile updated successfully";
+            return new SuccessfullyResponse("User profile updated successfully");
         } else {
             logger.error("Error updating user named '{}'", principal.getName());
             throw new BadRequestException("Errors occurred while updating the user profile.");

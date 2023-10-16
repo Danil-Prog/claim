@@ -2,11 +2,11 @@ package com.claim.api.service;
 
 import com.claim.api.controller.dto.CommentDto;
 import com.claim.api.controller.request.CommentUpdateRequest;
-import com.claim.api.entity.Comment;
-import com.claim.api.entity.Issue;
-import com.claim.api.entity.User;
+import com.claim.api.entity.comment.Comment;
+import com.claim.api.entity.issue.Issue;
+import com.claim.api.entity.user.User;
 import com.claim.api.exception.BadRequestException;
-import com.claim.api.mapper.CommentMapper;
+import com.claim.api.mapper.comment.CommentMapper;
 import com.claim.api.repository.CommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

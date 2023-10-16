@@ -2,9 +2,11 @@ package com.claim.api.controller;
 
 
 import com.claim.api.controller.dto.UserDto;
-import com.claim.api.entity.Profile;
-import com.claim.api.entity.User;
-import com.claim.api.mapper.UserMapper;
+import com.claim.api.controller.response.SuccessfullyResponse;
+import com.claim.api.entity.user.Profile;
+import com.claim.api.entity.user.User;
+import com.claim.api.exception.BadRequestException;
+import com.claim.api.mapper.user.UserMapper;
 import com.claim.api.service.AttachmentService;
 import com.claim.api.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +73,7 @@ public class UserController {
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (userService.saveUser(user))
             return new ResponseEntity<>("User created", HttpStatus.OK);
-        return new ResponseEntity<>("User with the same name already exists", HttpStatus.FOUND);
+        throw new BadRequestException("User already exist");
     }
 
     @GetMapping
@@ -118,7 +120,7 @@ public class UserController {
     @PutMapping
     @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
             description = "Updates the profile information of an authorized user")
-    public ResponseEntity<String> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
+    public ResponseEntity<SuccessfullyResponse> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
         return ResponseEntity.ok(userService.updateAuthorizeUserProfile(principal, profile));
     }
 
