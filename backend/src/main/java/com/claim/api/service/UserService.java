@@ -1,6 +1,7 @@
 package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
+import com.claim.api.controller.response.SuccessfullyResponse;
 import com.claim.api.entity.user.Profile;
 import com.claim.api.entity.user.User;
 import com.claim.api.events.EventStatus;
@@ -123,7 +124,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String updateAuthorizeUserProfile(Principal principal, Profile profile) {
+    public SuccessfullyResponse updateAuthorizeUserProfile(Principal principal, Profile profile) {
         Optional<User> userOptional = userRepository.findByUsername(principal.getName());
         if (userOptional.isPresent() && profile != null) {
             User user = userOptional.get();
@@ -131,7 +132,7 @@ public class UserService {
             user.setProfile(profile);
             userRepository.save(user);
             logger.info("User named '{}' updated my profile", principal.getName());
-            return "User profile updated successfully";
+            return new SuccessfullyResponse("User profile updated successfully");
         } else {
             logger.error("Error updating user named '{}'", principal.getName());
             throw new BadRequestException("Errors occurred while updating the user profile.");
