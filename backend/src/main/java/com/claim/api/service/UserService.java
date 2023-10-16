@@ -119,8 +119,8 @@ public class UserService {
             throw new BadRequestException("User id: " + id + " not found!");
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public void save(User user) {
+        userRepository.save(user);
     }
 
     public SuccessfullyResponse updateAuthorizeUserProfile(Principal principal, Profile profile) {
