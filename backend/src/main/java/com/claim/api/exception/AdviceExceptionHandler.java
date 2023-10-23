@@ -45,6 +45,12 @@ public class AdviceExceptionHandler {
         return new ResponseEntity<>(customResponseException, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(AttachmentNotFoundException.class)
+    public ResponseEntity<CustomResponseException> attachmentNotFoundException(AttachmentNotFoundException ex) {
+        CustomResponseException customResponseException = new CustomResponseException(ex.getMessage());
+        return new ResponseEntity<>(customResponseException, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<CustomResponseException> userNotFoundException(UserNotFoundException ex) {
         CustomResponseException customResponseException = new CustomResponseException(ex.getMessage());

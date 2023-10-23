@@ -4,7 +4,6 @@ import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.exception.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -13,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Service
 public final class AttachmentStorageUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(AttachmentStorageUtil.class);
@@ -34,6 +32,7 @@ public final class AttachmentStorageUtil {
 
             return true;
         } catch (IOException ex) {
+            logger.error("There were errors while getting the file [{}]", ex.getMessage());
             throw new BadRequestException("There were errors while getting the file: " + ex);
         }
 
@@ -46,6 +45,7 @@ public final class AttachmentStorageUtil {
         try {
             file = Files.exists(pathToResource) ? Files.readAllBytes(pathToResource) : new byte[0];
         } catch (IOException ex) {
+            logger.error("An error occurred while retrieving a file from storage [{}]", ex.getMessage());
             throw new BadRequestException("There were errors while getting the file: " + ex);
         }
 
@@ -57,6 +57,7 @@ public final class AttachmentStorageUtil {
         try {
             return Files.deleteIfExists(pathToResource.resolve(attachment.getName()));
         } catch (IOException ex) {
+            logger.error("Failed to delete file from storage, read more [{}]", ex.getMessage());
             throw new BadRequestException("Errors occurred when deleting the file: " + ex);
         }
     }
@@ -75,6 +76,7 @@ public final class AttachmentStorageUtil {
                 return root.resolve(department).resolve(attachment.getUrl());
             }
         }
+        logger.error("Could not determine the type of attachment. [Attachment type] = {}", attachment.getAttachmentType());
         throw new BadRequestException("Attachment type not found");
     }
 }

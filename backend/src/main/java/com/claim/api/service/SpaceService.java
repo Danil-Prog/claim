@@ -26,14 +26,16 @@ public class SpaceService {
     private final SpaceRepository spaceRepository;
     private final UserRepository userRepository;
     private final AttachmentService attachmentService;
+    private final UserService userService;
 
     @Autowired
     public SpaceService(SpaceRepository spaceRepository,
                         UserRepository userRepository,
-                        AttachmentService attachmentService) {
+                        AttachmentService attachmentService, UserService userService) {
         this.spaceRepository = spaceRepository;
         this.userRepository = userRepository;
         this.attachmentService = attachmentService;
+        this.userService = userService;
     }
 
     public Page<Space> getSpacesList(PageRequest pageRequest) {
@@ -41,12 +43,12 @@ public class SpaceService {
     }
 
     public Space getSpaceById(Long id) {
-        Optional<Space> departmentOptional = spaceRepository.findById(id);
-        if (departmentOptional.isPresent()) {
-            logger.info("A department with id '{}' was received", id);
-            return departmentOptional.get();
+        Optional<Space> spaceOptional = spaceRepository.findById(id);
+        if (spaceOptional.isPresent()) {
+            logger.info("A space with id [{}] was received", id);
+            return spaceOptional.get();
         }
-        throw new BadRequestException("Department with id=" + id + " does not exist");
+        throw new BadRequestException("Space with id [" + id + "] does not exist");
     }
 
     public Space createSpace(Space space) {
@@ -58,49 +60,38 @@ public class SpaceService {
     }
 
     public Space updateSpace(Long id, Space space) {
-        Optional<Space> departmentOptional = spaceRepository.findById(id);
-        if (departmentOptional.isPresent()) {
-            logger.info("Updated space named '{}'. New value '{}'", departmentOptional.get().getName(), space.getName());
-            return spaceRepository.save(space);
-        }
-        logger.error("Error updating space. Space with id= '{}' does not exist", id);
-        throw new BadRequestException("Space with id=" + id + " does not exist");
+        Space searchSpace = this.getSpaceById(id);
+        logger.info("Updated space named [{}]. New value [{}]", searchSpace.getName(), space.getName());
+        return spaceRepository.save(space);
     }
 
     public void removeSpace(Long id) {
         spaceRepository.findById(id).ifPresent(spaceRepository::delete);
-        logger.info("Space with id= {} successfully deleted", id);
+        logger.info("Space with id [{}] successfully deleted", id);
     }
 
     public Page<User> getSpaceUsers(Long id, PageRequest pageRequest) {
-        Optional<Space> departmentOptional = spaceRepository.findById(id);
-        if (departmentOptional.isPresent()) {
-            return userRepository.findUsersByProfile_Space_Id(id, pageRequest);
-        }
-        throw new BadRequestException("Space with id=" + id + " does not exist");
+        Space space = this.getSpaceById(id);
+        return userRepository.findUsersByProfile_Space_Id(space.getId(), pageRequest);
     }
 
     public void updateSpaceImage(Long id, MultipartFile image, Principal principal) {
-        Optional<Space> optionalDepartment = spaceRepository.findById(id);
-        if (optionalDepartment.isPresent()) {
-            User user = userRepository.findByUsername(principal.getName()).get();
-            Space space = optionalDepartment.get();
-            String filename = UUID.randomUUID() + image.getOriginalFilename();
+        Space space = this.getSpaceById(id);
+        User user = this.userService.getUserByUsername(principal.getName());
+        String filename = UUID.randomUUID() + image.getOriginalFilename();
 
-            Attachment attachment = new Attachment(filename,
-                    image.getOriginalFilename(),
-                    AttachmentType.SPACE_IMAGE,
-                    space.getId() + "/images",
-                    image.getSize(),
-                    user.getProfile(),
-                    image.getContentType());
+        Attachment attachment = new Attachment(filename,
+                image.getOriginalFilename(),
+                AttachmentType.SPACE_IMAGE,
+                space.getId() + "/images",
+                image.getSize(),
+                user.getProfile(),
+                image.getContentType());
 
-            if (attachmentService.save(image, attachment)) {
-                space.setImage(filename);
-                space.getAttachments().add(attachment);
-                spaceRepository.save(space);
-            }
-        } else
-            throw new BadRequestException("Space with id: " + id + " not found");
+        if (attachmentService.save(image, attachment)) {
+            space.setImage(filename);
+            space.getAttachments().add(attachment);
+            spaceRepository.save(space);
+        }
     }
 }
