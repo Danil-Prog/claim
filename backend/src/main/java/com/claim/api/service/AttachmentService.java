@@ -4,7 +4,6 @@ import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.entity.attachment.AttachmentType;
 import com.claim.api.entity.user.User;
 import com.claim.api.exception.AttachmentNotFoundException;
-import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.AttachmentRepository;
 import com.claim.api.utils.AttachmentStorageUtil;
 import org.slf4j.Logger;
