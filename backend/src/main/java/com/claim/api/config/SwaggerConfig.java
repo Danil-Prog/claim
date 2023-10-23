@@ -18,10 +18,10 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(
-                        new Components().addSecuritySchemes(BASIC_AUTH_SECURITY_SCHEME,
-                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
+                        new Components().addSecuritySchemes(JWT_AUTH_SECURITY_SCHEME,
+                                new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer")))
                 .info(new Info().title(applicationName));
     }
 
-    public static final String BASIC_AUTH_SECURITY_SCHEME = "basicAuth";
+    public static final String JWT_AUTH_SECURITY_SCHEME = "JWT_BEARER";
 }
