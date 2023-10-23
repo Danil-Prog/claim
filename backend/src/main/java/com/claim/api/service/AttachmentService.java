@@ -3,6 +3,7 @@ package com.claim.api.service;
 import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.entity.attachment.AttachmentType;
 import com.claim.api.entity.user.User;
+import com.claim.api.exception.AttachmentNotFoundException;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.AttachmentRepository;
 import com.claim.api.utils.AttachmentStorageUtil;
@@ -42,20 +43,24 @@ public class AttachmentService {
     public Page<Attachment> getInformationAttachments(PageRequest pageRequest) {
         return attachmentRepository.findAll(pageRequest);
     }
+
+    public Attachment findAttachmentByFilename(String filename) {
+        return attachmentRepository.findAttachmentByName(filename)
+                .orElseThrow(() -> new AttachmentNotFoundException("Attachment with name [" + filename + "] not found"));
+    }
+
+    public Attachment findAttachmentById(Long id) {
+        return attachmentRepository.findById(id)
+                .orElseThrow(() -> new AttachmentNotFoundException("Attachment with id [" + id + "] not found"));
+    }
     public Resource getStorageFileByName(String filename) {
-        Optional<Attachment> attachmentOptional = attachmentRepository.findAttachmentByName(filename);
-        if (attachmentOptional.isPresent()) {
-            return new ByteArrayResource(AttachmentStorageUtil.loadAttachment(attachmentOptional.get()));
-        }
-        throw new BadRequestException("Attachment with filename: " + filename + " not found");
+        Attachment attachment = this.findAttachmentByFilename(filename);
+        return new ByteArrayResource(AttachmentStorageUtil.loadAttachment(attachment));
     }
 
     public Resource getStorageFileByAttachmentId(Long id) {
-        Optional<Attachment> attachmentOptional = attachmentRepository.findById(id);
-        if (attachmentOptional.isPresent()) {
-            return new ByteArrayResource(AttachmentStorageUtil.loadAttachment(attachmentOptional.get()));
-        }
-        throw new BadRequestException("Attachment with id: " + id + " not found");
+        Attachment attachment = this.findAttachmentById(id);
+        return new ByteArrayResource(AttachmentStorageUtil.loadAttachment(attachment));
     }
 
     public void updateUserAvatar(MultipartFile image, Principal principal) {
