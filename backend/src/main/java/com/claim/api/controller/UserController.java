@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
-import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
+import static com.claim.api.config.SwaggerConfig.JWT_AUTH_SECURITY_SCHEME;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -47,14 +47,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Returns user by id")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/all")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Gets a paginated list of users, user passwords are not taken into account")
     public ResponseEntity<Page<UserDto>> getUsers(@RequestParam(defaultValue = "0") int page,
                                                   @RequestParam(defaultValue = "10") int size,
@@ -68,7 +68,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Accepts the user in the request body, saves to the database")
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (userService.saveUser(user))
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @GetMapping
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Returns the profile information of an authorized user")
     public ResponseEntity<UserDto> getAuthorizeUser(Principal principal) {
         UserDto user = userMapper.toUserDto(userService.getUserByUsername(principal.getName()));
@@ -85,14 +85,14 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Returns the profile information of an authorized user")
     public ResponseEntity<Profile> getAuthorizeUserProfile(Principal principal) {
         return ResponseEntity.ok(userService.getUserProfileByUsername(principal));
     }
 
     @GetMapping("/avatar/{filename}")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Returns the user's photo, the user ID and photo name are passed to the parameters")
     public ResponseEntity<Resource> getUserAvatar(@PathVariable String filename) {
         return ResponseEntity.ok()
@@ -102,7 +102,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Deletes a user by id")
     public ResponseEntity<UserDto> removeUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.removeUserById(id));
@@ -111,21 +111,21 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Updated user by id")
     public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.update(id, userDto));
     }
 
     @PutMapping
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Updates the profile information of an authorized user")
     public ResponseEntity<SuccessfullyResponse> updateAuthorizeUserProfile(Principal principal, @RequestBody Profile profile) {
         return ResponseEntity.ok(userService.updateAuthorizeUserProfile(principal, profile));
     }
 
     @PostMapping("/avatar")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)},
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Updates the profile photo of an authorized user")
     public void updateUserImage(@RequestParam("image") MultipartFile image, Principal principal) {
        attachmentService.updateUserAvatar(image, principal);

@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
-import static com.claim.api.config.SwaggerConfig.BASIC_AUTH_SECURITY_SCHEME;
+import static com.claim.api.config.SwaggerConfig.JWT_AUTH_SECURITY_SCHEME;
 
 @RestController
 @RequestMapping("/api/v1/space")
@@ -30,6 +30,7 @@ public class SpaceController {
     }
 
     @GetMapping
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Page<Space>> getDepartmentsList(@RequestParam(defaultValue = "0") int page,
                                                           @RequestParam(defaultValue = "10") int size,
                                                           @RequestParam(defaultValue = "ASC") String sortBy,
@@ -39,6 +40,7 @@ public class SpaceController {
     }
 
     @GetMapping("/{spaceId}/users")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Page<User>> getSpaceUsers(@PathVariable Long spaceId,
                                                          @RequestParam(defaultValue = "0") int page,
                                                          @RequestParam(defaultValue = "10") int size,
@@ -49,6 +51,7 @@ public class SpaceController {
     }
 
     @GetMapping("/{spaceId}")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Space> getSpaceById(@PathVariable Long spaceId) {
         return ResponseEntity.ok(spaceService.getSpaceById(spaceId));
     }
@@ -56,28 +59,28 @@ public class SpaceController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Space> createSpace(@RequestBody Space space) {
         return ResponseEntity.ok(spaceService.createSpace(space));
     }
 
     @DeleteMapping("/{spaceId}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public void removeSpace(@PathVariable Long spaceId) {
         spaceService.removeSpace(spaceId);
     }
 
     @PutMapping("/{spaceId}")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Space> updateSpace(@PathVariable Long spaceId, Space space) {
         return ResponseEntity.ok(spaceService.updateSpace(spaceId, space));
     }
 
     @PostMapping("/{spaceId}/image")
     @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public void updateSpaceImage(@PathVariable Long spaceId, @RequestParam("image") MultipartFile image, Principal principal) {
         spaceService.updateSpaceImage(spaceId, image, principal);
     }
