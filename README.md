@@ -3,33 +3,52 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
+## Features
+
+- Users
+  -- Created, updated, deleted, enabled/disabled
+  -- Assigning roles
+  -- Privileges
+  -- Setting up a profile
+  -- Setting up an avatar
+- Spaces
+  -- Configuration (prohibit creating tasks, comments, setting default values)
+  -- Updated
+  -- Adding Users
+- Issue
+  -- Created, updated, deleted, moved
+  -- Enable/disable subtask
+  -- Add comments
+- Attachment
+  -- Upload/load (server storage)
+  -- Control
+  -- Statistics (for user by role Admin)
+- Export documents as Markdown, HTML and PDF
 
 
-## API Reference
+## Installation
 
-#### Authorization
+Dillinger requires [Node.js](https://nodejs.org/) v10+ to run.
 
+Install the dependencies and devDependencies and start the server.
+
+```sh
+git clone https://github.com/Danil-Prog/claim.git
 ```
-  POST /authenticate/
+```sh
+docker compose build
+```
+```sh
+docker compose up -d
 ```
 
-| Body | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `username` | `string` | Username  |
-| `password` | `string` | User password  |
+## SWAGGER (API Reference)
 
-Returns a ${token} for user rest api calls (the token is valid for 12 hours)
+After installation, go to the address below for a detailed study of the api
 
-#### Get task by id
-
+```sh
+http://localhost:8080/swagger-ui/index.html
 ```
-  GET /api/v1/task/${id}
-```
-Header Authorization: ${token}
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
 
 
 ## License
