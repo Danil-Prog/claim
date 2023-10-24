@@ -186,7 +186,7 @@ public class IssueService {
 
     public void updateIssueExecutor(IssueExecutorRequest issueExecutorRequest) {
         Issue issue = getIssueById(issueExecutorRequest.getId());
-        User user = this.userService.getUser(issueExecutorRequest.getExecutorId()).get();
+        User user = this.userService.getUserById(issueExecutorRequest.getExecutorId());
         issue.setExecutor(user);
         this.issueRepository.save(issue);
     }
