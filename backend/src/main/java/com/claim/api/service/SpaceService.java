@@ -1,6 +1,5 @@
 package com.claim.api.service;
 
-import com.claim.api.controller.dto.UserDto;
 import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.entity.attachment.AttachmentType;
 import com.claim.api.entity.space.Space;

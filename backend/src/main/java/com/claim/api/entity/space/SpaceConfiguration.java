@@ -1,6 +1,5 @@
 package com.claim.api.entity.space;
 
-import com.claim.api.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
