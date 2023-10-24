@@ -6,31 +6,32 @@
 ## Features
 
 - Users
-  -- Created, updated, deleted, enabled/disabled
-  -- Assigning roles
-  -- Privileges
-  -- Setting up a profile
-  -- Setting up an avatar
+
+  - Created, updated, deleted, enabled/disabled
+  - Assigning roles
+  - Privileges
+  - Setting up a profile
+  - Setting up an avatar
 - Spaces
-  -- Configuration (prohibit creating tasks, comments, setting default values)
-  -- Updated
-  -- Adding Users
+
+  - Configuration (prohibit creating tasks, comments, setting default values)
+  - Updated
+  - Adding Users
 - Issue
-  -- Created, updated, deleted, moved
-  -- Enable/disable subtask
-  -- Add comments
+
+  - Created, updated, deleted, moved
+  - Enable/disable subtask
+  - Add comments
 - Attachment
-  -- Upload/load (server storage)
-  -- Control
-  -- Statistics (for user by role Admin)
-- Export documents as Markdown, HTML and PDF
+
+  - Upload/load (server storage)
+  - Control
+  - Statistics (for user by role Admin)
 
 
 ## Installation
 
-Dillinger requires [Node.js](https://nodejs.org/) v10+ to run.
-
-Install the dependencies and devDependencies and start the server.
+In order to raise the project, use docker compose
 
 ```sh
 git clone https://github.com/Danil-Prog/claim.git
