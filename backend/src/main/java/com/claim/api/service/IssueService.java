@@ -10,7 +10,6 @@ import com.claim.api.events.EventStatus;
 import com.claim.api.events.IssueCreationEvent;
 import com.claim.api.exception.BadRequestException;
 import com.claim.api.repository.IssueRepository;
-import com.claim.api.repository.SpaceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +27,17 @@ public class IssueService {
 
     private static final Logger logger = LoggerFactory.getLogger(IssueService.class);
     private final IssueRepository issueRepository;
-    private final SpaceRepository spaceRepository;
+    private final SpaceService spaceService;
     private final UserService userService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public IssueService(IssueRepository issueRepository,
-                        SpaceRepository spaceRepository,
+                        SpaceService spaceService,
                         UserService userService,
                         ApplicationEventPublisher applicationEventPublisher) {
         this.issueRepository = issueRepository;
-        this.spaceRepository = spaceRepository;
+        this.spaceService = spaceService;
         this.userService = userService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -84,15 +83,15 @@ public class IssueService {
 
     public String createIssue(Principal principal, Issue issue) {
         User user = userService.getUserByUsername(principal.getName());
-        Optional<Space> spaceOptional = spaceRepository.findById(issue.getSpace().getId());
-        if (spaceOptional.isEmpty()) {
-            throw new BadRequestException("Space is not exist");
-        }
+        Space space = this.spaceService.getSpaceById(issue.getSpace().getId());
+
         if (issue.getExecutor() != null) {
-            Optional<User> executorOption = userService.getUser(issue.getExecutor().getId());
-            executorOption.ifPresent(issue::setExecutor);
+            User executor = userService.getUserByUsername(issue.getExecutor().getUsername());
+            issue.setExecutor(executor);
+        } else if (space.getConfiguration().getDefaultAssigneeId() != null) {
+            User defaultExecutor = this.userService.getUserById(space.getConfiguration().getDefaultAssigneeId());
+            issue.setExecutor(defaultExecutor);
         }
-        Space space = spaceOptional.get();
 
         issue.setCustomer(user);
         issue.setSpace(space);
@@ -127,20 +126,16 @@ public class IssueService {
         throw new BadRequestException("Issue id: " + issue.getId() + " not exist");
     }
 
-    public String reassignSpace(Long issueId, Long departmentId) {
+    public String reassignSpace(Long issueId, Long spaceId) {
         Optional<Issue> issueOptional = issueRepository.findById(issueId);
-        Optional<Space> departmentOptional = spaceRepository.findById(departmentId);
+        Space space = this.spaceService.getSpaceById(spaceId);
         if (issueOptional.isPresent()) {
-            if (departmentOptional.isPresent()) {
-                Issue issue = issueOptional.get();
-                issue.setSpace(departmentOptional.get());
-                issue.setExecutor(null);
-                issueRepository.save(issue);
-                logger.info("Issue with id: {} successfully reassign", issueId);
-                return "Issue with id: " + issueId + " successfully reassign";
-            } else
-                throw new BadRequestException("Space id: " + departmentId + " not exist");
-
+            Issue issue = issueOptional.get();
+            issue.setSpace(space);
+            issue.setExecutor(null);
+            issueRepository.save(issue);
+            logger.info("Issue with id: {} successfully reassign", issueId);
+            return "Issue with id: " + issueId + " successfully reassign";
         }
         throw new BadRequestException("Issue id: " + issueId + " not exist");
     }
@@ -191,7 +186,7 @@ public class IssueService {
 
     public void updateIssueExecutor(IssueExecutorRequest issueExecutorRequest) {
         Issue issue = getIssueById(issueExecutorRequest.getId());
-        User user = this.userService.getUser(issueExecutorRequest.getExecutorId()).get();
+        User user = this.userService.getUserById(issueExecutorRequest.getExecutorId());
         issue.setExecutor(user);
         this.issueRepository.save(issue);
     }

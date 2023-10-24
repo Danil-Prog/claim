@@ -31,10 +31,10 @@ public class SpaceController {
 
     @GetMapping
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
-    public ResponseEntity<Page<Space>> getDepartmentsList(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size,
-                                                          @RequestParam(defaultValue = "ASC") String sortBy,
-                                                          @RequestParam(defaultValue = "id") String[] sort) {
+    public ResponseEntity<Page<Space>> getSpaces(@RequestParam(defaultValue = "0") int page,
+                                                 @RequestParam(defaultValue = "10") int size,
+                                                 @RequestParam(defaultValue = "ASC") String sortBy,
+                                                 @RequestParam(defaultValue = "id") String[] sort) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortBy), sort));
         return ResponseEntity.ok(spaceService.getSpacesList(pageRequest));
     }

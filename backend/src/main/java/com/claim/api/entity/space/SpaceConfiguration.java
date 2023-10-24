@@ -1,6 +1,5 @@
 package com.claim.api.entity.space;
 
-import com.claim.api.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,8 +12,7 @@ public class SpaceConfiguration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private User defaultAssignee;
+    private Long defaultAssigneeId;
 
     @Column(name = "is_space_archive")
     private boolean isSpaceArchive = false;
@@ -22,6 +20,6 @@ public class SpaceConfiguration {
     @Column(name = "is_subtask_enabled")
     private boolean isSubTaskEnabled = true;
 
-    @Column(name = "is_comments_created")
-    private boolean isCommentsCreated = true;
+    @Column(name = "is_comments_enabled")
+    private boolean isCommentsEnabled = true;
 }

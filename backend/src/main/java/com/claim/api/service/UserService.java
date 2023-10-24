@@ -70,7 +70,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional;
         } else
-            throw new UserNotFoundException("User with id: " + id + " not found");
+            throw new UserNotFoundException("User with id [" + id + "] not found");
     }
 
     public User getUserByUsername(String username) {
@@ -78,16 +78,24 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else
-            throw new UserNotFoundException("User with username: " + username + " not found");
+            throw new UserNotFoundException("User with username [" + username + "] not found");
     }
 
-    public UserDto getUserById(Long id) {
+    public User getUserById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else
+            throw new UserNotFoundException("User with id [" + id + "] not found");
+    }
+
+    public UserDto getUserDtoById(Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return new UserMapper().toUserDto(user);
         } else
-            throw new UserNotFoundException("User with id: " + id + " not found");
+            throw new UserNotFoundException("User with id [" + id + "] not found");
     }
 
     public UserDto removeUserById(Long id) {

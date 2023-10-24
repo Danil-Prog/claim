@@ -3,8 +3,10 @@ package com.claim.api.service;
 import com.claim.api.entity.attachment.Attachment;
 import com.claim.api.entity.attachment.AttachmentType;
 import com.claim.api.entity.space.Space;
+import com.claim.api.entity.space.SpaceConfiguration;
 import com.claim.api.entity.user.User;
 import com.claim.api.exception.BadRequestException;
+import com.claim.api.repository.SpaceConfigurationRepository;
 import com.claim.api.repository.SpaceRepository;
 import com.claim.api.repository.UserRepository;
 import org.slf4j.Logger;
@@ -24,15 +26,19 @@ public class SpaceService {
 
     private static final Logger logger = LoggerFactory.getLogger(SpaceService.class);
     private final SpaceRepository spaceRepository;
+    private final SpaceConfigurationRepository spaceConfigurationRepository;
     private final UserRepository userRepository;
     private final AttachmentService attachmentService;
     private final UserService userService;
 
     @Autowired
     public SpaceService(SpaceRepository spaceRepository,
+                        SpaceConfigurationRepository spaceConfigurationRepository,
                         UserRepository userRepository,
-                        AttachmentService attachmentService, UserService userService) {
+                        AttachmentService attachmentService,
+                        UserService userService) {
         this.spaceRepository = spaceRepository;
+        this.spaceConfigurationRepository = spaceConfigurationRepository;
         this.userRepository = userRepository;
         this.attachmentService = attachmentService;
         this.userService = userService;
@@ -45,18 +51,27 @@ public class SpaceService {
     public Space getSpaceById(Long id) {
         Optional<Space> spaceOptional = spaceRepository.findById(id);
         if (spaceOptional.isPresent()) {
-            logger.info("A space with id [{}] was received", id);
             return spaceOptional.get();
         }
         throw new BadRequestException("Space with id [" + id + "] does not exist");
     }
 
     public Space createSpace(Space space) {
-        if (space.getName() != null) {
-            logger.info("Space name '{}' successfully created", space.getName());
-            return spaceRepository.save(space);
+        boolean isExist = this.spaceRepository.findByName(space.getName())
+                        .isPresent();
+        if (isExist)
+            throw new BadRequestException("Space with name [" + space.getName() + "] already exist");
+
+        if (space.getConfiguration() == null) {
+            SpaceConfiguration sc = new SpaceConfiguration();
+            spaceConfigurationRepository.save(sc);
+            space.setConfiguration(sc);
         }
-        throw new BadRequestException("Space name must not be empty");
+        User user = this.userService.getUserById(space.getConfiguration().getDefaultAssigneeId());
+        this.spaceConfigurationRepository.save(space.getConfiguration());
+
+        logger.info("Space name '{}' successfully created", space.getName());
+        return this.spaceRepository.save(space);
     }
 
     public Space updateSpace(Long id, Space space) {
