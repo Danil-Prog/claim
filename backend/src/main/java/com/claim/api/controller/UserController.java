@@ -50,7 +50,7 @@ public class UserController {
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Returns user by id")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
+        return ResponseEntity.ok(userService.getUserDtoById(id));
     }
 
     @GetMapping("/all")
