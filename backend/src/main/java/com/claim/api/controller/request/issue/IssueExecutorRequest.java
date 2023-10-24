@@ -1,4 +1,4 @@
-package com.claim.api.controller.request;
+package com.claim.api.controller.request.issue;
 
 import lombok.Data;
 

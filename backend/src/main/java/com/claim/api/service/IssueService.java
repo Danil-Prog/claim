@@ -1,8 +1,6 @@
 package com.claim.api.service;
 
-import com.claim.api.controller.request.IssueExecutorRequest;
-import com.claim.api.controller.request.IssueStatusRequest;
-import com.claim.api.controller.request.IssueTypeRequest;
+import com.claim.api.controller.request.issue.*;
 import com.claim.api.entity.issue.Issue;
 import com.claim.api.entity.issue.IssueStatus;
 import com.claim.api.entity.issue.IssueType;
@@ -208,4 +206,18 @@ public class IssueService {
     }
 
 
+    public void updateIssueDescription(IssueDescriptionRequest issueDescriptionRequest) {
+        Issue issue = getIssueById(issueDescriptionRequest.getId());
+        issue.setDescription(issueDescriptionRequest.getDescription());
+        logger.info("Updated the description in the problem with id [{}], old [{}], new [{}]",
+                issue.getId(), issue.getDescription(), issueDescriptionRequest.getDescription());
+        this.issueRepository.save(issue);
+    }
+
+    public void updateIssueTitle(IssueTitleRequest issueTitleRequest) {
+        Issue issue = getIssueById(issueTitleRequest.getId());
+        logger.info("Updated the title in the problem with id [{}], old [{}], new [{}]", issue.getId(), issue.getTitle(), issueTitleRequest.getTitle());
+        issue.setTitle(issueTitleRequest.getTitle());
+        this.issueRepository.save(issue);
+    }
 }

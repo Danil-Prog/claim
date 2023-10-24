@@ -3,9 +3,7 @@ package com.claim.api.controller;
 
 import com.claim.api.controller.dto.IssueAllDto;
 import com.claim.api.controller.dto.IssueDto;
-import com.claim.api.controller.request.IssueExecutorRequest;
-import com.claim.api.controller.request.IssueStatusRequest;
-import com.claim.api.controller.request.IssueTypeRequest;
+import com.claim.api.controller.request.issue.*;
 import com.claim.api.entity.issue.Issue;
 import com.claim.api.entity.issue.IssueStatus;
 import com.claim.api.mapper.issue.IssueMapper;
@@ -115,6 +113,18 @@ public class IssueController {
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public void updateIssueType(@RequestBody IssueTypeRequest issueTypeRequest) {
         this.issueService.updateIssueType(issueTypeRequest);
+    }
+
+    @PutMapping("/description")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    public void updateIssueDescription(@RequestBody IssueDescriptionRequest issueDescriptionRequest) {
+        this.issueService.updateIssueDescription(issueDescriptionRequest);
+    }
+
+    @PutMapping("/title")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    public void updateIssueTitle(@RequestBody IssueTitleRequest issueTitleRequest) {
+        this.issueService.updateIssueTitle(issueTitleRequest);
     }
 
     @PutMapping("/{taskId}/department/{spaceId}")
