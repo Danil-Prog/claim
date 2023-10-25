@@ -1,8 +1,10 @@
 package com.claim.api.controller.dto;
 
-import com.claim.api.entity.user.Role;
+import com.claim.api.entity.user.RoleEnum;
 
-public record UserDto(Long id, String username, Role role,
+public record UserDto(Long id,
+                      String username,
+                      String role,
                       String firstname,
                       String lastname,
                       String email,
