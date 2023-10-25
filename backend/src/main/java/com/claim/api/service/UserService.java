@@ -2,6 +2,7 @@ package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
 import com.claim.api.controller.response.SuccessfullyResponse;
+import com.claim.api.entity.user.Authorities;
 import com.claim.api.entity.user.Profile;
 import com.claim.api.entity.user.User;
 import com.claim.api.events.EventStatus;
@@ -45,7 +46,7 @@ public class UserService {
             applicationEventPublisher.publishEvent(new UserCreationEvent(user.getUsername(), EventStatus.ERROR));
             return false;
         }
-        user.setRole(user.getRole());
+        user.setRights(user.getRights());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         applicationEventPublisher.publishEvent(new UserCreationEvent(user.getUsername(), EventStatus.SUCCESSFULLY));
@@ -118,7 +119,6 @@ public class UserService {
             User user = userOptional.get();
             Profile profile = user.getProfile();
             user.setUsername(userDto.username());
-            user.setRole(userDto.role());
             user.setProfile(profile);
             logger.info("Updated user named '{}' profile", user.getUsername());
             User updatedUser = userRepository.save(user);
