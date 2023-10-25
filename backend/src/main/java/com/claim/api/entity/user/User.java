@@ -33,9 +33,8 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @OneToOne(fetch = FetchType.EAGER)
+    private Authorities rights;
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
@@ -49,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> role.getAuthority());
+        return List.of(() -> rights.getAuthority());
     }
 
     @Override
