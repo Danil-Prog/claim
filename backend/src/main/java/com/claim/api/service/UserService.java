@@ -2,7 +2,6 @@ package com.claim.api.service;
 
 import com.claim.api.controller.dto.UserDto;
 import com.claim.api.controller.response.SuccessfullyResponse;
-import com.claim.api.entity.user.Authorities;
 import com.claim.api.entity.user.Profile;
 import com.claim.api.entity.user.User;
 import com.claim.api.events.EventStatus;
