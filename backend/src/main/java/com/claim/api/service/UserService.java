@@ -131,17 +131,12 @@ public class UserService {
     }
 
     public SuccessfullyResponse updateAuthorizeUserProfile(Principal principal, Profile profile) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent() && profile != null) {
-            User user = userOptional.get();
-            profile.setId(user.getProfile().getId());
-            user.setProfile(profile);
-            userRepository.save(user);
-            logger.info("User named '{}' updated my profile", principal.getName());
-            return new SuccessfullyResponse("User profile updated successfully");
-        } else {
-            logger.error("Error updating user named '{}'", principal.getName());
-            throw new BadRequestException("Errors occurred while updating the user profile.");
-        }
+        User user = this.getUserByUsername(principal.getName());
+        profile.setId(user.getProfile().getId());
+        user.setProfile(profile);
+        userRepository.save(user);
+
+        logger.info("User named '{}' updated my profile", principal.getName());
+        return new SuccessfullyResponse("User profile updated successfully");
     }
 }
