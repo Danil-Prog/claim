@@ -67,7 +67,7 @@ public class UserController {
 
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'USER_CREATE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Accepts the user in the request body, saves to the database")
     public ResponseEntity<String> createUser(@RequestBody User user) {
@@ -101,7 +101,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'USER_DELETE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Deletes a user by id")
     public ResponseEntity<UserDto> removeUserById(@PathVariable Long id) {
@@ -110,7 +110,7 @@ public class UserController {
 
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'USER_UPDATE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
             description = "Updated user by id")
     public ResponseEntity<UserDto> updateUserById(@PathVariable Long id, @RequestBody UserDto userDto) {

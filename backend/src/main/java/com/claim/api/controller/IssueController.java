@@ -127,14 +127,20 @@ public class IssueController {
         this.issueService.updateIssueTitle(issueTitleRequest);
     }
 
-    @PutMapping("/{taskId}/department/{spaceId}")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @PutMapping("/{taskId}/space/{spaceId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_MANAGER', 'ISSUE_MOVE')")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Allows you to transfer the problem to another space. " +
+                                    "Available only to a user with the super admin role or the move issued privilege")
     public ResponseEntity<String> reassignSpace(@PathVariable Long taskId, @PathVariable Long spaceId) {
         return ResponseEntity.ok(issueService.reassignSpace(taskId, spaceId));
     }
 
     @DeleteMapping("/{issueId}")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ISSUE_DELETE')")
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Removed issue by id. " +
+                                    "Available only to a user with the super admin role or the delete issued privilege")
     public ResponseEntity<String> removeIssueById(@PathVariable Long issueId) {
         return ResponseEntity.ok(issueService.removeIssueById(issueId));
     }
