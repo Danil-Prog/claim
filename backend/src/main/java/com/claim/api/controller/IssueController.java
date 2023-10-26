@@ -81,7 +81,8 @@ public class IssueController {
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Get all issues (Available only to super admin)")
     public ResponseEntity<Page<IssueAllDto>> getIssues(@RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") int size,
                                                        @RequestParam(defaultValue = "ASC") String sortBy,
@@ -92,37 +93,44 @@ public class IssueController {
     }
 
     @GetMapping("{id}")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Get issue by id. " +
+                                    "Checks that the user is the author or is in the same space")
     public ResponseEntity<IssueDto> getIssueById(@PathVariable Long id, Principal principal) {
         return ResponseEntity.ok(issueMapper.toIssueDto(issueService.getIssueByIdAndByUserAuthorities(id, principal)));
     }
 
     @PostMapping("/status")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Update issue status")
     public void updateIssueStatus(@RequestBody IssueStatusRequest issueStatusRequest) {
         this.issueService.updateIssueStatus(issueStatusRequest);
     }
 
     @PostMapping("/executor")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Update issue executor")
     public void updateIssueExecutor(@RequestBody IssueExecutorRequest issueExecutorRequest) {
         this.issueService.updateIssueExecutor(issueExecutorRequest);
     }
 
     @PostMapping("/type")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Update issue type")
     public void updateIssueType(@RequestBody IssueTypeRequest issueTypeRequest) {
         this.issueService.updateIssueType(issueTypeRequest);
     }
 
     @PutMapping("/description")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)},
+                            description = "Update issue description")
     public void updateIssueDescription(@RequestBody IssueDescriptionRequest issueDescriptionRequest) {
         this.issueService.updateIssueDescription(issueDescriptionRequest);
     }
 
     @PutMapping("/title")
-    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
+    @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)}
+                , description = "Update issue title")
     public void updateIssueTitle(@RequestBody IssueTitleRequest issueTitleRequest) {
         this.issueService.updateIssueTitle(issueTitleRequest);
     }
