@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -46,6 +47,7 @@ public class AttachmentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN')")
     public void removeListAttachments(@RequestBody List<Attachment> attachments) {
         attachmentService.removeListAttachments(attachments);
     }

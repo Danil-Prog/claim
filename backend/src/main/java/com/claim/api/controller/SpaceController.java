@@ -65,21 +65,21 @@ public class SpaceController {
     }
 
     @DeleteMapping("/{spaceId}")
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'SPACE_DELETE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public void removeSpace(@PathVariable Long spaceId) {
         spaceService.removeSpace(spaceId);
     }
 
     @PutMapping("/{spaceId}")
-    @PreAuthorize("hasAuthority('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_MANEGER', 'SPACE_UPDATE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public ResponseEntity<Space> updateSpace(@PathVariable Long spaceId, Space space) {
         return ResponseEntity.ok(spaceService.updateSpace(spaceId, space));
     }
 
     @PostMapping("/{spaceId}/image")
-    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SUPER_ADMIN', 'ROLE_MANEGER', 'SPACE_UPDATE')")
     @Operation(security = {@SecurityRequirement(name = JWT_AUTH_SECURITY_SCHEME)})
     public void updateSpaceImage(@PathVariable Long spaceId, @RequestParam("image") MultipartFile image, Principal principal) {
         spaceService.updateSpaceImage(spaceId, image, principal);

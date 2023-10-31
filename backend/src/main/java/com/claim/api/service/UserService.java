@@ -45,7 +45,7 @@ public class UserService {
             applicationEventPublisher.publishEvent(new UserCreationEvent(user.getUsername(), EventStatus.ERROR));
             return false;
         }
-        user.setRole(user.getRole());
+        user.setRights(user.getRights());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         applicationEventPublisher.publishEvent(new UserCreationEvent(user.getUsername(), EventStatus.SUCCESSFULLY));
@@ -118,7 +118,6 @@ public class UserService {
             User user = userOptional.get();
             Profile profile = user.getProfile();
             user.setUsername(userDto.username());
-            user.setRole(userDto.role());
             user.setProfile(profile);
             logger.info("Updated user named '{}' profile", user.getUsername());
             User updatedUser = userRepository.save(user);
@@ -132,17 +131,12 @@ public class UserService {
     }
 
     public SuccessfullyResponse updateAuthorizeUserProfile(Principal principal, Profile profile) {
-        Optional<User> userOptional = userRepository.findByUsername(principal.getName());
-        if (userOptional.isPresent() && profile != null) {
-            User user = userOptional.get();
-            profile.setId(user.getProfile().getId());
-            user.setProfile(profile);
-            userRepository.save(user);
-            logger.info("User named '{}' updated my profile", principal.getName());
-            return new SuccessfullyResponse("User profile updated successfully");
-        } else {
-            logger.error("Error updating user named '{}'", principal.getName());
-            throw new BadRequestException("Errors occurred while updating the user profile.");
-        }
+        User user = this.getUserByUsername(principal.getName());
+        profile.setId(user.getProfile().getId());
+        user.setProfile(profile);
+        userRepository.save(user);
+
+        logger.info("User named '{}' updated my profile", principal.getName());
+        return new SuccessfullyResponse("User profile updated successfully");
     }
 }

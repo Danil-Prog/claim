@@ -48,12 +48,12 @@ public class IssueService {
 
     public Page<Issue> getIssueForSpace(Principal principal, PageRequest pageRequest, IssueStatus issueStatus) {
         User user = userService.getUserByUsername(principal.getName());
-        Long departmentId = user.getProfile().getSpace().getId();
+        Long spaceId = user.getProfile().getSpace().getId();
 
         if (issueStatus != null)
-            return issueRepository.getIssuesBySpace_IdAndIssueStatus(departmentId, pageRequest, issueStatus);
+            return issueRepository.getIssuesBySpace_IdAndIssueStatus(spaceId, pageRequest, issueStatus);
 
-        return issueRepository.getIssuesBySpace_Id(departmentId, pageRequest);
+        return issueRepository.getIssuesBySpace_Id(spaceId, pageRequest);
     }
 
     public Issue getIssueById(Long id) {
@@ -105,77 +105,66 @@ public class IssueService {
     }
 
     public Issue updateIssue(Issue issue) {
-        Optional<Issue> issueOptional = issueRepository.findById(issue.getId());
-        if (issueOptional.isPresent()) {
-            Issue issueExisting = issueOptional.get();
-            if (issueExisting.getCustomer() != null) {
-                issue.setCustomer(issueOptional.get().getCustomer());
-            }
-            if (issue.getExecutor() != null) {
-                Optional<User> executorOptional = userService.getUser(issue.getExecutor().getId());
-                executorOptional.ifPresent(issue::setExecutor);
-            }
-            Space issueSpace = issueExisting.getSpace();
-            if (issueSpace != null) {
-                issue.setSpace(issueSpace);
-            }
-            logger.info("Issue with id= '{}' successfully updated", issueOptional.get().getId());
-            return issueRepository.save(issue);
+        Issue issueExisting = this.getIssueById(issue.getId());
+        if (issueExisting.getCustomer() != null) {
+            issue.setCustomer(issueExisting.getCustomer());
         }
-        logger.info("Error while updating issue. Issues with ID= '{}' does not exist", issueOptional.get().getId());
-        throw new BadRequestException("Issue id: " + issue.getId() + " not exist");
+        if (issue.getExecutor() != null) {
+            Optional<User> executorOptional = userService.getUser(issue.getExecutor().getId());
+            executorOptional.ifPresent(issue::setExecutor);
+        }
+        Space issueSpace = issueExisting.getSpace();
+        if (issueSpace != null) {
+            issue.setSpace(issueSpace);
+        }
+        logger.info("Issue with id= '{}' successfully updated", issueExisting.getId());
+        return issueRepository.save(issue);
     }
 
     public String reassignSpace(Long issueId, Long spaceId) {
-        Optional<Issue> issueOptional = issueRepository.findById(issueId);
+        Issue issue = this.getIssueById(issueId);
         Space space = this.spaceService.getSpaceById(spaceId);
-        if (issueOptional.isPresent()) {
-            Issue issue = issueOptional.get();
-            issue.setSpace(space);
-            issue.setExecutor(null);
-            issueRepository.save(issue);
-            logger.info("Issue with id: {} successfully reassign", issueId);
-            return "Issue with id: " + issueId + " successfully reassign";
-        }
-        throw new BadRequestException("Issue id: " + issueId + " not exist");
+
+        issue.setSpace(space);
+        issue.setExecutor(null);
+        issueRepository.save(issue);
+
+        logger.info("Issue with id: {} successfully reassign", issueId);
+        return "Issue with id: " + issueId + " successfully reassign";
+
     }
 
     public String removeIssueById(Long issueId) {
-        Optional<Issue> issueOptional = issueRepository.findById(issueId);
-        if (issueOptional.isPresent()) {
-            issueRepository.deleteById(issueOptional.get().getId());
-            return "Issue with id: " + issueId + " was deleted successfully";
-        }
-        throw new BadRequestException("Not found issue with id: " + issueId);
+        Issue issue = this.getIssueById(issueId);
+        issueRepository.deleteById(issue.getId());
+
+        return "Issue with id: " + issueId + " was deleted successfully";
     }
 
     public String createSubtask(Long id, Principal principal, Issue issue) {
-        Optional<Issue> epicIssueOptional = issueRepository.findById(id);
-        if (epicIssueOptional.isPresent()) {
-            Issue epicIssue = epicIssueOptional.get();
+        Issue epicIssue = this.getIssueById(id);
 
-            if (epicIssue.getIssueType() == IssueType.SUBTASK) {
-                throw new BadRequestException("It is not possible to create a subtask in a subtask");
-            }
-            epicIssue.setIssueType(IssueType.EPIC);
-
-            User customer = userService.getUserByUsername(principal.getName());
-            issue.setCustomer(customer);
-
-            if (issue.getExecutor() != null) {
-                Optional<User> executor = userService.getUser(issue.getExecutor().getId());
-                executor.ifPresent(issue::setExecutor);
-            }
-
-            issue.setSpace(epicIssue.getSpace());
-
-            issue.setIssueType(IssueType.SUBTASK);
-            epicIssue.getSubtask().add(issue);
-            this.issueRepository.save(epicIssue);
-
-            return "Subtask successfully created";
+        if (epicIssue.getIssueType() == IssueType.SUBTASK) {
+            throw new BadRequestException("It is not possible to create a subtask in a subtask");
         }
-        throw new BadRequestException("Issue with id: " + id + " not exist");
+        epicIssue.setIssueType(IssueType.EPIC);
+
+        User customer = userService.getUserByUsername(principal.getName());
+        issue.setCustomer(customer);
+
+        if (issue.getExecutor() != null) {
+            Optional<User> executor = userService.getUser(issue.getExecutor().getId());
+            executor.ifPresent(issue::setExecutor);
+        }
+
+        issue.setSpace(epicIssue.getSpace());
+
+        issue.setIssueType(IssueType.SUBTASK);
+        epicIssue.getSubtask().add(issue);
+
+        this.issueRepository.save(epicIssue);
+
+        return "Subtask successfully created";
     }
 
     public void updateIssueStatus(IssueStatusRequest issueStatusRequest) {
@@ -197,6 +186,7 @@ public class IssueService {
             this.issueRepository.deleteAll(issue.getSubtask());
         }
         issue.setIssueType(issueTypeRequest.getIssueType());
+
         this.issueRepository.save(issue);
     }
 
@@ -206,6 +196,7 @@ public class IssueService {
         issue.setDescription(issueDescriptionRequest.getDescription());
         logger.info("Updated the description in the problem with id [{}], old [{}], new [{}]",
                 issue.getId(), issue.getDescription(), issueDescriptionRequest.getDescription());
+
         this.issueRepository.save(issue);
     }
 
@@ -213,6 +204,7 @@ public class IssueService {
         Issue issue = getIssueById(issueTitleRequest.getId());
         logger.info("Updated the title in the problem with id [{}], old [{}], new [{}]", issue.getId(), issue.getTitle(), issueTitleRequest.getTitle());
         issue.setTitle(issueTitleRequest.getTitle());
+
         this.issueRepository.save(issue);
     }
 }

@@ -17,7 +17,7 @@ public final class AttachmentStorageUtil {
     private static final Logger logger = LoggerFactory.getLogger(AttachmentStorageUtil.class);
     private static final Path root = Paths.get("storage");
     private static final Path user = Paths.get("users");
-    private static final Path department = Paths.get("department");
+    private static final Path space = Paths.get("space");
 
     private AttachmentStorageUtil() {
     }
@@ -73,7 +73,7 @@ public final class AttachmentStorageUtil {
                 return root.resolve(user).resolve(attachment.getUrl());
             }
             case SPACE_IMAGE -> {
-                return root.resolve(department).resolve(attachment.getUrl());
+                return root.resolve(space).resolve(attachment.getUrl());
             }
         }
         logger.error("Could not determine the type of attachment. [Attachment type] = {}", attachment.getAttachmentType());

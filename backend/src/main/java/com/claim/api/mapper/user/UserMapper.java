@@ -13,7 +13,7 @@ public class UserMapper {
             return null;
         return new UserDto(user.getId(),
                 user.getUsername(),
-                user.getRole(),
+                user.getRights().getAuthority(),
                 user.getProfile().getFirstname(),
                 user.getProfile().getLastname(),
                 user.getProfile().getEmail(),
